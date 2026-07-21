@@ -128,39 +128,32 @@
 
       <!-- COLUNA 3: DIREITA (~340px) -->
       <div class="col-right">
-        <!-- SUA ADRIÇA PREVIEW -->
-        <div class="card-panel hoist-card" id="hoist-card">
-          <div class="inventory-header" style="margin-bottom: 0.4rem;">
-            <h5 style="margin:0; font-size:0.85rem; font-weight:700;">⛵ Sua Adriça</h5>
-            <button class="collapse-btn" onclick="toggleCollapse('hoist-card')" title="Minimizar/Maximizar" style="background:none; border:none; color:#fff; cursor:pointer; font-size:0.85rem; padding:0 4px;">➖</button>
-          </div>
-          <div class="player-hoist-box">
-            <div class="player-hoist-flags" id="player-hoist-preview">
-              <span class="empty-hint">Selecione bandeiras para montar seu sinal...</span>
-            </div>
-          </div>
-          <div class="action-buttons">
-            <button class="btn btn-primary" onclick="submitPlayerHoist()">Içar Sinal</button>
-            <button class="btn btn-danger" onclick="clearPlayerHoist()">Arriar / Limpar</button>
-          </div>
-        </div>
-
-        <!-- ADRIÇA DE RESPOSTA (AP) -->
-        <div class="card-panel ap-card" id="ap-card" style="display:none;">
-          <!-- Oculto pois agora temos os botões de AP na barra do simulador de forma fixa -->
-        </div>
-
-        <!-- ARMÁRIO DE BANDEIRAS (INVENTÁRIO) -->
+        <!-- PAINEL DE SINAIS E BANDEIRAS INTEGRADO -->
         <div class="card-panel inventory-card" id="inventory-card">
-          <div class="inventory-header">
-            <h5 style="margin:0; font-size:0.85rem; font-weight:700;">🎏 Bandeiras</h5>
+          <div class="inventory-header" style="margin-bottom: 0.4rem;">
+            <h5 style="margin:0; font-size:0.85rem; font-weight:700;">🎏 Painel de Sinais</h5>
             <div style="display:flex; align-items:center; gap:0.4rem;">
               <button class="btn btn-secondary btn-xs" id="toggle-labels-btn" onclick="toggleInventoryLabels()" title="Mostrar/Ocultar Legendas" style="padding: 2px 5px; font-size: 0.8rem;">🙈</button>
               <button class="collapse-btn" onclick="toggleCollapse('inventory-card')" title="Minimizar/Maximizar" style="background:none; border:none; color:#fff; cursor:pointer; font-size:0.85rem; padding:0 4px;">➖</button>
             </div>
           </div>
+          
+          <!-- 1. Seleção (Carrossel no Mobile / Grid no Desktop) -->
           <div class="flag-selector-grid" id="flag-inventory">
             <!-- Grid com botões para selecionar as bandeiras -->
+          </div>
+
+          <!-- 2. Rascunho da Adriça (Sua Adriça Preview) -->
+          <div class="player-hoist-box" style="margin-top: 0.5rem; margin-bottom: 0.5rem; width: 100%; box-sizing: border-box;">
+            <div class="player-hoist-flags" id="player-hoist-preview">
+              <span class="empty-hint">Selecione bandeiras acima para montar seu sinal...</span>
+            </div>
+          </div>
+
+          <!-- 3. Botões de Içar / Arriar -->
+          <div class="action-buttons" style="width: 100%;">
+            <button class="btn btn-primary" onclick="submitPlayerHoist()">Içar Sinal</button>
+            <button class="btn btn-danger" onclick="clearPlayerHoist()">Arriar / Limpar</button>
           </div>
         </div>
       </div>
@@ -1701,18 +1694,15 @@
     function arrangeMobileLayout() {
       const scene = document.querySelector('.col-center .game-scene');
       const inv = document.querySelector('.inventory-card');
-      const hoist = document.querySelector('.hoist-card');
-      if (!scene || !inv || !hoist) return;
-      [inv, hoist].forEach(el => { if (!el._origParent) { el._origParent = el.parentElement; el._origNext = el.nextElementSibling; } });
+      if (!scene || !inv) return;
+      if (!inv._origParent) { inv._origParent = inv.parentElement; inv._origNext = inv.nextElementSibling; }
       const isMobile = window.matchMedia('(max-width: 850px)').matches;
       let host = document.getElementById('mobile-sim-controls');
       if (isMobile) {
         if (!host) { host = document.createElement('div'); host.id = 'mobile-sim-controls'; scene.appendChild(host); }
         if (inv.parentElement !== host) host.appendChild(inv);
-        if (hoist.parentElement !== host) host.appendChild(hoist);
       } else if (host) {
         inv._origParent.insertBefore(inv, inv._origNext);
-        hoist._origParent.insertBefore(hoist, hoist._origNext);
         host.remove();
       }
     }
