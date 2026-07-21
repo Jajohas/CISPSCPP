@@ -1641,8 +1641,7 @@
       
       let index = 0;
       if (tabName === 'center') index = 1;
-      if (tabName === 'right') index = 2;
-      if (tabName === 'translator') index = 3;
+      if (tabName === 'translator') index = 2;
       if (navItems[index]) navItems[index].classList.add('active');
       
       const tabGame = document.getElementById('tab-game');
@@ -1667,7 +1666,28 @@
         
         if (colLeft) colLeft.classList.toggle('mobile-visible', tabName === 'left');
         if (colCenter) colCenter.classList.toggle('mobile-visible', tabName === 'center');
-        if (colRight) colRight.classList.toggle('mobile-visible', tabName === 'right');
+        // Painel foi fundido ao Simulador: o conteúdo de col-right é movido para a cena no mobile
+      }
+    }
+
+    // No mobile: move o armário de bandeiras (carrossel) e a barra içar/arriar
+    // para dentro da cena do Simulador — fundindo a antiga aba "Painel".
+    function arrangeMobileLayout() {
+      const scene = document.querySelector('.col-center .game-scene');
+      const inv = document.querySelector('.inventory-card');
+      const hoist = document.querySelector('.hoist-card');
+      if (!scene || !inv || !hoist) return;
+      [inv, hoist].forEach(el => { if (!el._origParent) { el._origParent = el.parentElement; el._origNext = el.nextElementSibling; } });
+      const isMobile = window.matchMedia('(max-width: 850px)').matches;
+      let host = document.getElementById('mobile-sim-controls');
+      if (isMobile) {
+        if (!host) { host = document.createElement('div'); host.id = 'mobile-sim-controls'; scene.appendChild(host); }
+        if (inv.parentElement !== host) host.appendChild(inv);
+        if (hoist.parentElement !== host) host.appendChild(hoist);
+      } else if (host) {
+        inv._origParent.insertBefore(inv, inv._origNext);
+        hoist._origParent.insertBefore(hoist, hoist._origNext);
+        host.remove();
       }
     }
 
@@ -1676,12 +1696,14 @@
       initDictionary();
       initInventory();
       loadLevel(1);
-      
+      arrangeMobileLayout();
+
       if (window.innerWidth <= 850) {
-        setMobileTab('left');
+        setMobileTab('center');
       }
-      
+
       window.addEventListener('resize', () => {
+        arrangeMobileLayout();
         if (window.innerWidth <= 850) {
           setMobileTab(currentMobileTab);
         } else {
@@ -1708,10 +1730,6 @@
     <button class="mobile-nav-item" onclick="setMobileTab('center')">
       <span class="nav-icon">⛵</span>
       <span class="nav-text">Simulador</span>
-    </button>
-    <button class="mobile-nav-item" onclick="setMobileTab('right')">
-      <span class="nav-icon">🎏</span>
-      <span class="nav-text">Painel</span>
     </button>
     <button class="mobile-nav-item" onclick="setMobileTab('translator')">
       <span class="nav-icon">🔄</span>

@@ -1430,11 +1430,11 @@ html, body {
 
   /* Estilização Rádio Sky no Mobile */
   .sky-radio-panel {
-    height: 140px !important;
+    height: 196px !important;
     top: 6px !important;
     left: 8px !important;
     right: 8px !important;
-    padding: 0.3rem 0.5rem !important;
+    padding: 0.35rem 0.6rem !important;
   }
   
   .sky-radio-header {
@@ -1443,8 +1443,9 @@ html, body {
   }
   
   .sky-radio-logs {
-    font-size: 0.68rem !important;
-    gap: 0.25rem !important;
+    font-size: 0.8rem !important;
+    line-height: 1.3 !important;
+    gap: 0.32rem !important;
   }
 
   /* Reposicionamento e Redimensionamento dos navios no Mobile (Impede Overlapping) */
@@ -1593,6 +1594,65 @@ html, body {
     border-radius: 8px !important;
     min-height: 32px;
     white-space: nowrap;
+  }
+
+  /* ===== SIMULADOR UNIFICADO (antiga aba "Painel" fundida) ===== */
+  .ap-card { display: none !important; } /* AP agora vive no painel de rádio */
+
+  /* Armário (carrossel) + içar/arriar sobrepostos na cena, logo abaixo do rádio */
+  #mobile-sim-controls {
+    position: absolute;
+    top: 212px;
+    left: 8px;
+    right: 8px;
+    z-index: 16;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  #mobile-sim-controls .card-panel {
+    background: rgba(4, 12, 26, 0.62);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 0.4rem 0.5rem !important;
+    margin: 0 !important;
+  }
+  #mobile-sim-controls .inventory-header { margin-bottom: 0.3rem; }
+  #mobile-sim-controls .inventory-header h5 { font-size: 0.72rem; }
+
+  /* Carrossel: 2 linhas, rolagem horizontal para escolher a bandeira */
+  #mobile-sim-controls .flag-selector-grid {
+    display: grid !important;
+    grid-auto-flow: column !important;
+    grid-template-rows: repeat(2, 40px) !important;
+    grid-auto-columns: 44px !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 0 0 4px 0 !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+  #mobile-sim-controls .flag-selector-btn {
+    width: 44px !important;
+    height: 40px !important;
+    scroll-snap-align: start;
+  }
+
+  /* Barra içar/arriar discreta */
+  #mobile-sim-controls .hoist-card h5 { display: none; }
+  #mobile-sim-controls .player-hoist-box {
+    min-height: 26px !important;
+    padding: 0.25rem 0.4rem !important;
+    margin-bottom: 0.35rem;
+  }
+  #mobile-sim-controls .action-buttons { display: flex; gap: 0.4rem; }
+  #mobile-sim-controls .action-buttons .btn {
+    flex: 1;
+    padding: 0.42rem !important;
+    font-size: 0.78rem !important;
   }
 }
 
