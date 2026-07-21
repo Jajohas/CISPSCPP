@@ -1460,14 +1460,14 @@ html, body {
     left: 4% !important;
     width: 160px !important;
     height: 90px !important;
-    bottom: 5px !important;
+    bottom: 45px !important;
   }
   
   .ship-right {
     right: 4% !important;
     width: 160px !important;
     height: 90px !important;
-    bottom: 5px !important;
+    bottom: 45px !important;
   }
 
   .ship-mast {
@@ -1728,7 +1728,10 @@ html, body {
 .collapsed .sky-radio-logs,
 .collapsed .player-hoist-box,
 .collapsed .action-buttons,
-.collapsed .flag-selector-grid {
+.collapsed .flag-selector-grid,
+#mobile-sim-controls .collapsed .flag-selector-grid,
+#mobile-sim-controls .collapsed .player-hoist-box,
+#mobile-sim-controls .collapsed .action-buttons {
   display: none !important;
 }
 
