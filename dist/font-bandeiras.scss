@@ -1,0 +1,152 @@
+@font-face {font-family: "font-bandeiras";
+  src: url('font-bandeiras.eot?t=1784633971603'); /* IE9*/
+  src: url('font-bandeiras.eot?t=1784633971603#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url("font-bandeiras.woff2?t=1784633971603") format("woff2"),
+  url("font-bandeiras.woff?t=1784633971603") format("woff"),
+  url('font-bandeiras.ttf?t=1784633971603') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('font-bandeiras.svg?t=1784633971603#font-bandeiras') format('svg'); /* iOS 4.1- */
+}
+
+[class^="font-bandeiras-"], [class*=" font-bandeiras-"] {
+  font-family: 'font-bandeiras' !important;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-bandeiras-0:before { content: "\ea01"; }
+.font-bandeiras-1:before { content: "\ea02"; }
+.font-bandeiras-2:before { content: "\ea03"; }
+.font-bandeiras-3:before { content: "\ea04"; }
+.font-bandeiras-4:before { content: "\ea05"; }
+.font-bandeiras-5:before { content: "\ea06"; }
+.font-bandeiras-6:before { content: "\ea07"; }
+.font-bandeiras-7:before { content: "\ea08"; }
+.font-bandeiras-8:before { content: "\ea09"; }
+.font-bandeiras-9:before { content: "\ea0a"; }
+.font-bandeiras-A:before { content: "\ea0b"; }
+.font-bandeiras-AP:before { content: "\ea0c"; }
+.font-bandeiras-a_lower:before { content: "\ea0d"; }
+.font-bandeiras-B:before { content: "\ea0e"; }
+.font-bandeiras-b_lower:before { content: "\ea0f"; }
+.font-bandeiras-C:before { content: "\ea10"; }
+.font-bandeiras-c_lower:before { content: "\ea11"; }
+.font-bandeiras-D:before { content: "\ea12"; }
+.font-bandeiras-d_lower:before { content: "\ea13"; }
+.font-bandeiras-E:before { content: "\ea14"; }
+.font-bandeiras-e_lower:before { content: "\ea15"; }
+.font-bandeiras-F:before { content: "\ea16"; }
+.font-bandeiras-f_lower:before { content: "\ea17"; }
+.font-bandeiras-G:before { content: "\ea18"; }
+.font-bandeiras-g_lower:before { content: "\ea19"; }
+.font-bandeiras-H:before { content: "\ea1a"; }
+.font-bandeiras-h_lower:before { content: "\ea1b"; }
+.font-bandeiras-I:before { content: "\ea1c"; }
+.font-bandeiras-i_lower:before { content: "\ea1d"; }
+.font-bandeiras-J:before { content: "\ea1e"; }
+.font-bandeiras-j_lower:before { content: "\ea1f"; }
+.font-bandeiras-K:before { content: "\ea20"; }
+.font-bandeiras-k_lower:before { content: "\ea21"; }
+.font-bandeiras-L:before { content: "\ea22"; }
+.font-bandeiras-l_lower:before { content: "\ea23"; }
+.font-bandeiras-M:before { content: "\ea24"; }
+.font-bandeiras-m_lower:before { content: "\ea25"; }
+.font-bandeiras-N:before { content: "\ea26"; }
+.font-bandeiras-n_lower:before { content: "\ea27"; }
+.font-bandeiras-O:before { content: "\ea28"; }
+.font-bandeiras-o_lower:before { content: "\ea29"; }
+.font-bandeiras-P:before { content: "\ea2a"; }
+.font-bandeiras-p_lower:before { content: "\ea2b"; }
+.font-bandeiras-Q:before { content: "\ea2c"; }
+.font-bandeiras-q_lower:before { content: "\ea2d"; }
+.font-bandeiras-R:before { content: "\ea2e"; }
+.font-bandeiras-r_lower:before { content: "\ea2f"; }
+.font-bandeiras-S:before { content: "\ea30"; }
+.font-bandeiras-space:before { content: "\ea31"; }
+.font-bandeiras-Sub1:before { content: "\ea32"; }
+.font-bandeiras-Sub2:before { content: "\ea33"; }
+.font-bandeiras-Sub3:before { content: "\ea34"; }
+.font-bandeiras-s_lower:before { content: "\ea35"; }
+.font-bandeiras-T:before { content: "\ea36"; }
+.font-bandeiras-t_lower:before { content: "\ea37"; }
+.font-bandeiras-U:before { content: "\ea38"; }
+.font-bandeiras-u_lower:before { content: "\ea39"; }
+.font-bandeiras-V:before { content: "\ea3a"; }
+.font-bandeiras-v_lower:before { content: "\ea3b"; }
+.font-bandeiras-W:before { content: "\ea3c"; }
+.font-bandeiras-w_lower:before { content: "\ea3d"; }
+.font-bandeiras-X:before { content: "\ea3e"; }
+.font-bandeiras-x_lower:before { content: "\ea3f"; }
+.font-bandeiras-Y:before { content: "\ea40"; }
+.font-bandeiras-y_lower:before { content: "\ea41"; }
+.font-bandeiras-Z:before { content: "\ea42"; }
+.font-bandeiras-z_lower:before { content: "\ea43"; }
+
+$font-bandeiras-0: "\ea01";
+$font-bandeiras-1: "\ea02";
+$font-bandeiras-2: "\ea03";
+$font-bandeiras-3: "\ea04";
+$font-bandeiras-4: "\ea05";
+$font-bandeiras-5: "\ea06";
+$font-bandeiras-6: "\ea07";
+$font-bandeiras-7: "\ea08";
+$font-bandeiras-8: "\ea09";
+$font-bandeiras-9: "\ea0a";
+$font-bandeiras-A: "\ea0b";
+$font-bandeiras-AP: "\ea0c";
+$font-bandeiras-a_lower: "\ea0d";
+$font-bandeiras-B: "\ea0e";
+$font-bandeiras-b_lower: "\ea0f";
+$font-bandeiras-C: "\ea10";
+$font-bandeiras-c_lower: "\ea11";
+$font-bandeiras-D: "\ea12";
+$font-bandeiras-d_lower: "\ea13";
+$font-bandeiras-E: "\ea14";
+$font-bandeiras-e_lower: "\ea15";
+$font-bandeiras-F: "\ea16";
+$font-bandeiras-f_lower: "\ea17";
+$font-bandeiras-G: "\ea18";
+$font-bandeiras-g_lower: "\ea19";
+$font-bandeiras-H: "\ea1a";
+$font-bandeiras-h_lower: "\ea1b";
+$font-bandeiras-I: "\ea1c";
+$font-bandeiras-i_lower: "\ea1d";
+$font-bandeiras-J: "\ea1e";
+$font-bandeiras-j_lower: "\ea1f";
+$font-bandeiras-K: "\ea20";
+$font-bandeiras-k_lower: "\ea21";
+$font-bandeiras-L: "\ea22";
+$font-bandeiras-l_lower: "\ea23";
+$font-bandeiras-M: "\ea24";
+$font-bandeiras-m_lower: "\ea25";
+$font-bandeiras-N: "\ea26";
+$font-bandeiras-n_lower: "\ea27";
+$font-bandeiras-O: "\ea28";
+$font-bandeiras-o_lower: "\ea29";
+$font-bandeiras-P: "\ea2a";
+$font-bandeiras-p_lower: "\ea2b";
+$font-bandeiras-Q: "\ea2c";
+$font-bandeiras-q_lower: "\ea2d";
+$font-bandeiras-R: "\ea2e";
+$font-bandeiras-r_lower: "\ea2f";
+$font-bandeiras-S: "\ea30";
+$font-bandeiras-space: "\ea31";
+$font-bandeiras-Sub1: "\ea32";
+$font-bandeiras-Sub2: "\ea33";
+$font-bandeiras-Sub3: "\ea34";
+$font-bandeiras-s_lower: "\ea35";
+$font-bandeiras-T: "\ea36";
+$font-bandeiras-t_lower: "\ea37";
+$font-bandeiras-U: "\ea38";
+$font-bandeiras-u_lower: "\ea39";
+$font-bandeiras-V: "\ea3a";
+$font-bandeiras-v_lower: "\ea3b";
+$font-bandeiras-W: "\ea3c";
+$font-bandeiras-w_lower: "\ea3d";
+$font-bandeiras-X: "\ea3e";
+$font-bandeiras-x_lower: "\ea3f";
+$font-bandeiras-Y: "\ea40";
+$font-bandeiras-y_lower: "\ea41";
+$font-bandeiras-Z: "\ea42";
+$font-bandeiras-z_lower: "\ea43";
+

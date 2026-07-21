@@ -1,0 +1,349 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="0" height="0" style="display:none;"><symbol viewBox="0 0 500 500" id="font-bandeiras-0">
+  <!-- Zero -->
+  <polygon points="0,100 500,200 500,300 0,400" fill="#FFCC00"></polygon>
+  <polygon points="200,140 300,160 300,340 200,360" fill="#D21034"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-1">
+  <!-- Um -->
+  <polygon points="0,100 500,200 500,300 0,400" fill="#FFFFFF"></polygon>
+  <circle cx="250" cy="250" r="50" fill="#D21034"></circle>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-2">
+  <!-- Dois -->
+  <polygon points="0,100 500,200 500,300 0,400" fill="#0A3A60"></polygon>
+  <circle cx="250" cy="250" r="50" fill="#FFFFFF"></circle>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-3">
+  <!-- Três -->
+  <polygon points="0,100 166.67,133.33 166.67,266.67 0,400" fill="#D21034"></polygon>
+  <polygon points="166.67,133.33 333.33,166.67 333.33,233.33 166.67,266.67" fill="#FFFFFF"></polygon>
+  <polygon points="333.33,166.67 500,200 500,300 333.33,233.33" fill="#0A3A60"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-4">
+  <!-- Quatro -->
+  <polygon points="0,100 500,200 500,300 0,400" fill="#D21034"></polygon>
+  <polygon points="200,140 300,160 300,340 200,360" fill="#FFFFFF"></polygon>
+  <polygon points="0,220 500,220 500,280 0,280" fill="#FFFFFF"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-5">
+  <!-- Cinco -->
+  <polygon points="0,100 250,150 250,350 0,400" fill="#FFCC00"></polygon>
+  <polygon points="250,150 500,200 500,300 250,350" fill="#0A3A60"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-6">
+  <!-- Seis -->
+  <polygon points="0,100 500,200 500,250 0,250" fill="#1E252B"></polygon>
+  <polygon points="0,250 500,250 500,300 0,400" fill="#FFFFFF"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-7">
+  <!-- Sete -->
+  <polygon points="0,100 500,200 500,250 0,250" fill="#FFCC00"></polygon>
+  <polygon points="0,250 500,250 500,300 0,400" fill="#D21034"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-8">
+  <!-- Oito -->
+  <polygon points="0,100 500,200 500,300 0,400" fill="#FFFFFF"></polygon>
+  <polygon points="200,140 300,160 300,340 200,360" fill="#D21034"></polygon>
+  <polygon points="0,220 500,220 500,280 0,280" fill="#D21034"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-9">
+  <!-- Nove -->
+  <polygon points="0,100 250,150 250,250 0,250" fill="#FFFFFF"></polygon>
+  <polygon points="250,150 500,200 500,250 250,250" fill="#1E252B"></polygon>
+  <polygon points="0,250 250,250 250,350 0,400" fill="#FFCC00"></polygon>
+  <polygon points="250,250 500,250 500,300 250,350" fill="#D21034"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-A">
+  <!-- Alpha -->
+  <path d="M 2.5,2.5 H 250 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <path d="M 250,0 H 500 L 375,250 L 500,500 H 250 Z" fill="#0A3A60"></path>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-AP">
+  <!-- Answering Pendant -->
+  <polygon points="0,100 100,120 100,380 0,400" fill="#D21034"></polygon>
+  <polygon points="100,120 200,140 200,360 100,380" fill="#FFFFFF"></polygon>
+  <polygon points="200,140 300,160 300,340 200,360" fill="#D21034"></polygon>
+  <polygon points="300,160 400,180 400,320 300,340" fill="#FFFFFF"></polygon>
+  <polygon points="400,180 500,200 500,300 400,320" fill="#D21034"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-a_lower">
+  <!-- Alpha -->
+  <path d="M 2.5,2.5 H 250 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <path d="M 250,0 H 500 L 375,250 L 500,500 H 250 Z" fill="#0A3A60"></path>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-B">
+  <!-- Bravo -->
+  <path d="M 0,0 H 500 L 375,250 L 500,500 H 0 Z" fill="#D21034"></path>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-b_lower">
+  <!-- Bravo -->
+  <path d="M 0,0 H 500 L 375,250 L 500,500 H 0 Z" fill="#D21034"></path>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-C">
+  <!-- Charlie -->
+  <rect x="0" y="0" width="500" height="100" fill="#0A3A60"></rect>
+  <rect x="0" y="100" width="500" height="100" fill="#FFFFFF"></rect>
+  <rect x="0" y="200" width="500" height="100" fill="#D21034"></rect>
+  <rect x="0" y="300" width="500" height="100" fill="#FFFFFF"></rect>
+  <rect x="0" y="400" width="500" height="100" fill="#0A3A60"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-c_lower">
+  <!-- Charlie -->
+  <rect x="0" y="0" width="500" height="100" fill="#0A3A60"></rect>
+  <rect x="0" y="100" width="500" height="100" fill="#FFFFFF"></rect>
+  <rect x="0" y="200" width="500" height="100" fill="#D21034"></rect>
+  <rect x="0" y="300" width="500" height="100" fill="#FFFFFF"></rect>
+  <rect x="0" y="400" width="500" height="100" fill="#0A3A60"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-D">
+  <!-- Delta -->
+  <rect x="0" y="0" width="500" height="166.67" fill="#FFCC00"></rect>
+  <rect x="0" y="166.67" width="500" height="166.67" fill="#0A3A60"></rect>
+  <rect x="0" y="333.33" width="500" height="166.67" fill="#FFCC00"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-d_lower">
+  <!-- Delta -->
+  <rect x="0" y="0" width="500" height="166.67" fill="#FFCC00"></rect>
+  <rect x="0" y="166.67" width="500" height="166.67" fill="#0A3A60"></rect>
+  <rect x="0" y="333.33" width="500" height="166.67" fill="#FFCC00"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-E">
+  <!-- Echo -->
+  <rect x="0" y="0" width="500" height="250" fill="#0A3A60"></rect>
+  <rect x="0" y="250" width="500" height="250" fill="#D21034"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-e_lower">
+  <!-- Echo -->
+  <rect x="0" y="0" width="500" height="250" fill="#0A3A60"></rect>
+  <rect x="0" y="250" width="500" height="250" fill="#D21034"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-F">
+  <!-- Foxtrot -->
+  <path d="M 2.5,2.5 H 497.5 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <polygon points="250,50 450,250 250,450 50,250" fill="#D21034"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-f_lower">
+  <!-- Foxtrot -->
+  <path d="M 2.5,2.5 H 497.5 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <polygon points="250,50 450,250 250,450 50,250" fill="#D21034"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-G">
+  <!-- Golf -->
+  <rect x="0" y="0" width="83.33" height="500" fill="#FFCC00"></rect>
+  <rect x="83.33" y="0" width="83.33" height="500" fill="#0A3A60"></rect>
+  <rect x="166.67" y="0" width="83.33" height="500" fill="#FFCC00"></rect>
+  <rect x="250" y="0" width="83.33" height="500" fill="#0A3A60"></rect>
+  <rect x="333.33" y="0" width="83.33" height="500" fill="#FFCC00"></rect>
+  <rect x="416.67" y="0" width="83.33" height="500" fill="#0A3A60"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-g_lower">
+  <!-- Golf -->
+  <rect x="0" y="0" width="83.33" height="500" fill="#FFCC00"></rect>
+  <rect x="83.33" y="0" width="83.33" height="500" fill="#0A3A60"></rect>
+  <rect x="166.67" y="0" width="83.33" height="500" fill="#FFCC00"></rect>
+  <rect x="250" y="0" width="83.33" height="500" fill="#0A3A60"></rect>
+  <rect x="333.33" y="0" width="83.33" height="500" fill="#FFCC00"></rect>
+  <rect x="416.67" y="0" width="83.33" height="500" fill="#0A3A60"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-H">
+  <!-- Hotel -->
+  <path d="M 2.5,2.5 H 250 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <rect x="250" y="0" width="250" height="500" fill="#D21034"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-h_lower">
+  <!-- Hotel -->
+  <path d="M 2.5,2.5 H 250 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <rect x="250" y="0" width="250" height="500" fill="#D21034"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-I">
+  <!-- India -->
+  <rect x="0" y="0" width="500" height="500" fill="#FFCC00"></rect>
+  <circle cx="250" cy="250" r="120" fill="#1E252B"></circle>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-i_lower">
+  <!-- India -->
+  <rect x="0" y="0" width="500" height="500" fill="#FFCC00"></rect>
+  <circle cx="250" cy="250" r="120" fill="#1E252B"></circle>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-J">
+  <!-- Juliet -->
+  <rect x="0" y="0" width="500" height="166.67" fill="#0A3A60"></rect>
+  <rect x="0" y="166.67" width="500" height="166.67" fill="#FFFFFF"></rect>
+  <rect x="0" y="333.33" width="500" height="166.67" fill="#0A3A60"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-j_lower">
+  <!-- Juliet -->
+  <rect x="0" y="0" width="500" height="166.67" fill="#0A3A60"></rect>
+  <rect x="0" y="166.67" width="500" height="166.67" fill="#FFFFFF"></rect>
+  <rect x="0" y="333.33" width="500" height="166.67" fill="#0A3A60"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-K">
+  <!-- Kilo -->
+  <rect x="0" y="0" width="250" height="500" fill="#FFCC00"></rect>
+  <rect x="250" y="0" width="250" height="500" fill="#0A3A60"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-k_lower">
+  <!-- Kilo -->
+  <rect x="0" y="0" width="250" height="500" fill="#FFCC00"></rect>
+  <rect x="250" y="0" width="250" height="500" fill="#0A3A60"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-L">
+  <!-- Lima -->
+  <rect x="0" y="0" width="250" height="250" fill="#FFCC00"></rect>
+  <rect x="250" y="0" width="250" height="250" fill="#1E252B"></rect>
+  <rect x="0" y="250" width="250" height="250" fill="#1E252B"></rect>
+  <rect x="250" y="250" width="250" height="250" fill="#FFCC00"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-l_lower">
+  <!-- Lima -->
+  <rect x="0" y="0" width="250" height="250" fill="#FFCC00"></rect>
+  <rect x="250" y="0" width="250" height="250" fill="#1E252B"></rect>
+  <rect x="0" y="250" width="250" height="250" fill="#1E252B"></rect>
+  <rect x="250" y="250" width="250" height="250" fill="#FFCC00"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-M">
+  <!-- Mike -->
+  <rect x="0" y="0" width="500" height="500" fill="#0A3A60"></rect>
+  <path d="M 0,0 L 42.4,0 L 500,457.6 V 500 H 457.6 L 0,42.4 Z" fill="#FFFFFF"></path>
+  <path d="M 500,0 H 457.6 L 0,457.6 V 500 H 42.4 L 500,42.4 Z" fill="#FFFFFF"></path>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-m_lower">
+  <!-- Mike -->
+  <rect x="0" y="0" width="500" height="500" fill="#0A3A60"></rect>
+  <path d="M 0,0 L 42.4,0 L 500,457.6 V 500 H 457.6 L 0,42.4 Z" fill="#FFFFFF"></path>
+  <path d="M 500,0 H 457.6 L 0,457.6 V 500 H 42.4 L 500,42.4 Z" fill="#FFFFFF"></path>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-N">
+  <!-- November -->
+  <rect x="0" y="0" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="125" y="0" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="250" y="0" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="375" y="0" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="0" y="125" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="125" y="125" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="250" y="125" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="375" y="125" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="0" y="250" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="125" y="250" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="250" y="250" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="375" y="250" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="0" y="375" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="125" y="375" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="250" y="375" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="375" y="375" width="125" height="125" fill="#0A3A60"></rect>
+
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-n_lower">
+  <!-- November -->
+  <rect x="0" y="0" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="125" y="0" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="250" y="0" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="375" y="0" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="0" y="125" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="125" y="125" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="250" y="125" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="375" y="125" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="0" y="250" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="125" y="250" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="250" y="250" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="375" y="250" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="0" y="375" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="125" y="375" width="125" height="125" fill="#0A3A60"></rect>
+  <rect x="250" y="375" width="125" height="125" fill="#FFFFFF"></rect>
+  <rect x="375" y="375" width="125" height="125" fill="#0A3A60"></rect>
+
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-O">
+  <!-- Oscar -->
+  <polygon points="0,0 500,0 500,500" fill="#FFCC00"></polygon>
+  <polygon points="0,0 500,500 0,500" fill="#D21034"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-o_lower">
+  <!-- Oscar -->
+  <polygon points="0,0 500,0 500,500" fill="#FFCC00"></polygon>
+  <polygon points="0,0 500,500 0,500" fill="#D21034"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-P">
+  <!-- Papa -->
+  <rect x="0" y="0" width="500" height="500" fill="#0A3A60"></rect>
+  <rect x="166.67" y="166.67" width="166.67" height="166.67" fill="#FFFFFF"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-p_lower">
+  <!-- Papa -->
+  <rect x="0" y="0" width="500" height="500" fill="#0A3A60"></rect>
+  <rect x="166.67" y="166.67" width="166.67" height="166.67" fill="#FFFFFF"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-Q">
+  <!-- Quebec -->
+  <rect x="0" y="0" width="500" height="500" fill="#FFCC00"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-q_lower">
+  <!-- Quebec -->
+  <rect x="0" y="0" width="500" height="500" fill="#FFCC00"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-R">
+  <!-- Romeo -->
+  <rect x="0" y="0" width="500" height="500" fill="#D21034"></rect>
+  <path d="M 0,200 H 200 V 0 H 300 V 200 H 500 V 300 H 300 V 500 H 200 V 300 H 0 Z" fill="#FFCC00"></path>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-r_lower">
+  <!-- Romeo -->
+  <rect x="0" y="0" width="500" height="500" fill="#D21034"></rect>
+  <path d="M 0,200 H 200 V 0 H 300 V 200 H 500 V 300 H 300 V 500 H 200 V 300 H 0 Z" fill="#FFCC00"></path>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-S">
+  <!-- Sierra -->
+  <path d="M 2.5,2.5 H 497.5 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <rect x="166.67" y="166.67" width="166.67" height="166.67" fill="#0A3A60"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-space">
+  <!-- Espaço em branco transparente -->
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-Sub1">
+  <!-- 1st Substitute -->
+  <polygon points="0,100 500,250 0,400" fill="#0A3A60"></polygon>
+  <polygon points="0,140 350,250 0,360" fill="#FFCC00"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-Sub2">
+  <!-- 2nd Substitute -->
+  <polygon points="0,100 250,175 250,325 0,400" fill="#0A3A60"></polygon>
+  <polygon points="250,175 500,250 250,325" fill="#FFFFFF"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-Sub3">
+  <!-- 3rd Substitute -->
+  <polygon points="0,100 500,250 0,250" fill="#FFFFFF"></polygon>
+  <polygon points="0,250 500,250 0,400" fill="#1E252B"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-s_lower">
+  <!-- Sierra -->
+  <path d="M 2.5,2.5 H 497.5 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <rect x="166.67" y="166.67" width="166.67" height="166.67" fill="#0A3A60"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-T">
+  <!-- Tango -->
+  <rect x="0" y="0" width="166.67" height="500" fill="#D21034"></rect>
+  <rect x="166.67" y="0" width="166.67" height="500" fill="#FFFFFF"></rect>
+  <rect x="333.33" y="0" width="166.67" height="500" fill="#0A3A60"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-t_lower">
+  <!-- Tango -->
+  <rect x="0" y="0" width="166.67" height="500" fill="#D21034"></rect>
+  <rect x="166.67" y="0" width="166.67" height="500" fill="#FFFFFF"></rect>
+  <rect x="333.33" y="0" width="166.67" height="500" fill="#0A3A60"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-U">
+  <!-- Uniform -->
+  <rect x="0" y="0" width="250" height="250" fill="#D21034"></rect>
+  <path d="M 250,2.5 H 497.5 V 250 H 250 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <path d="M 2.5,250 H 250 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <rect x="250" y="250" width="250" height="250" fill="#D21034"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-u_lower">
+  <!-- Uniform -->
+  <rect x="0" y="0" width="250" height="250" fill="#D21034"></rect>
+  <path d="M 250,2.5 H 497.5 V 250 H 250 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <path d="M 2.5,250 H 250 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <rect x="250" y="250" width="250" height="250" fill="#D21034"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-V">
+  <!-- Victor -->
+  <path d="M 2.5,2.5 H 497.5 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <path d="M 0,0 L 42.4,0 L 500,457.6 V 500 H 457.6 L 0,42.4 Z" fill="#D21034"></path>
+  <path d="M 500,0 H 457.6 L 0,457.6 V 500 H 42.4 L 500,42.4 Z" fill="#D21034"></path>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-v_lower">
+  <!-- Victor -->
+  <path d="M 2.5,2.5 H 497.5 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <path d="M 0,0 L 42.4,0 L 500,457.6 V 500 H 457.6 L 0,42.4 Z" fill="#D21034"></path>
+  <path d="M 500,0 H 457.6 L 0,457.6 V 500 H 42.4 L 500,42.4 Z" fill="#D21034"></path>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-W">
+  <!-- Whiskey -->
+  <rect x="0" y="0" width="500" height="500" fill="#0A3A60"></rect>
+  <rect x="83.33" y="83.33" width="333.33" height="333.33" fill="#FFFFFF"></rect>
+  <rect x="166.67" y="166.67" width="166.67" height="166.67" fill="#D21034"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-w_lower">
+  <!-- Whiskey -->
+  <rect x="0" y="0" width="500" height="500" fill="#0A3A60"></rect>
+  <rect x="83.33" y="83.33" width="333.33" height="333.33" fill="#FFFFFF"></rect>
+  <rect x="166.67" y="166.67" width="166.67" height="166.67" fill="#D21034"></rect>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-X">
+  <!-- X-ray -->
+  <path d="M 2.5,2.5 H 497.5 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <path d="M 0,200 H 200 V 0 H 300 V 200 H 500 V 300 H 300 V 500 H 200 V 300 H 0 Z" fill="#0A3A60"></path>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-x_lower">
+  <!-- X-ray -->
+  <path d="M 2.5,2.5 H 497.5 V 497.5 H 2.5 Z" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="5"></path>
+  <path d="M 0,200 H 200 V 0 H 300 V 200 H 500 V 300 H 300 V 500 H 200 V 300 H 0 Z" fill="#0A3A60"></path>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-Y">
+  <!-- Yankee -->
+  <rect x="0" y="0" width="500" height="500" fill="#D21034"></rect>
+  <path d="M 100,0 L 200,0 L 0,200 L 0,100 Z" fill="#FFCC00"></path>
+  <path d="M 300,0 L 400,0 L 0,400 L 0,300 Z" fill="#FFCC00"></path>
+  <path d="M 500,0 L 500,0 L 500,100 L 100,500 L 0,500 L 0,500 Z" fill="#FFCC00"></path>
+  <path d="M 500,200 L 500,300 L 300,500 L 200,500 Z" fill="#FFCC00"></path>
+  <path d="M 500,400 L 500,500 L 500,500 L 400,500 Z" fill="#FFCC00"></path>
+
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-y_lower">
+  <!-- Yankee -->
+  <rect x="0" y="0" width="500" height="500" fill="#D21034"></rect>
+  <path d="M 100,0 L 200,0 L 0,200 L 0,100 Z" fill="#FFCC00"></path>
+  <path d="M 300,0 L 400,0 L 0,400 L 0,300 Z" fill="#FFCC00"></path>
+  <path d="M 500,0 L 500,0 L 500,100 L 100,500 L 0,500 L 0,500 Z" fill="#FFCC00"></path>
+  <path d="M 500,200 L 500,300 L 300,500 L 200,500 Z" fill="#FFCC00"></path>
+  <path d="M 500,400 L 500,500 L 500,500 L 400,500 Z" fill="#FFCC00"></path>
+
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-Z">
+  <!-- Zulu -->
+  <polygon points="0,0 500,0 250,250" fill="#FFCC00"></polygon>
+  <polygon points="500,0 500,500 250,250" fill="#0A3A60"></polygon>
+  <polygon points="500,500 0,500 250,250" fill="#D21034"></polygon>
+  <polygon points="0,500 0,0 250,250" fill="#1E252B"></polygon>
+</symbol><symbol viewBox="0 0 500 500" id="font-bandeiras-z_lower">
+  <!-- Zulu -->
+  <polygon points="0,0 500,0 250,250" fill="#FFCC00"></polygon>
+  <polygon points="500,0 500,500 250,250" fill="#0A3A60"></polygon>
+  <polygon points="500,500 0,500 250,250" fill="#D21034"></polygon>
+  <polygon points="0,500 0,0 250,250" fill="#1E252B"></polygon>
+</symbol></svg>

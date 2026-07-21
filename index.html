@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador e Tradutor do Código Internacional de Sinais</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dist/font-bandeiras.css">
+</head>
+<body>
+
+  <div class="container-slim">
+
+    <!-- HEADER SLIM -->
+    <header class="header-slim">
+      <div class="header-slim-brand">
+        <span class="brand-badge">⚓ CIS PSCPP</span>
+        <h1 class="brand-title">Font das Bandeiras</h1>
+        <div class="header-tabs">
+          <button class="tab-btn active" id="btn-tab-game" onclick="switchTab('game')">🎮 Simulador</button>
+          <button class="tab-btn" id="btn-tab-translator" onclick="switchTab('translator')">🔄 Tradutor & Dicionário</button>
+        </div>
+      </div>
+      
+      <!-- TRILHA DE PROGRESSO COM OS 13 DOTS -->
+      <div class="tutor-progress" id="tutor-progress-track">
+        <!-- Gerado dinamicamente via JS -->
+      </div>
+    </header>
+
+    <!-- ABA 1: SIMULADOR CIS (JOGO) — GRID DE 3 COLUNAS (WIDESCREEN 100VH) -->
+    <div id="tab-game" class="tab-content active game-view-container">
+      
+      <!-- COLUNA 1: ESQUERDA (~290px) -->
+      <div class="col-left">
+        <div class="card-panel level-card">
+          <h4 id="level-title">Nível 1: O Sinal de Resposta</h4>
+          <p id="level-desc">Aprenda a responder a um sinal simples usando o AP.</p>
+        </div>
+
+        <div class="card-panel manual-card">
+          <h5>📖 Manual do Marinheiro</h5>
+          <div id="instruction-text" class="manual-content">
+            O navio adversário fará um sinal. Siga os passos indicados.
+          </div>
+          <div class="manual-citation" id="manual-citation">
+            <!-- Citação oficial da DPC / IMO 2005 renderizada via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUNA 2: CENTRO (1fr, A HERO AREA - CENA DOS NAVIOS) -->
+      <div class="col-center">
+        <div class="game-scene">
+          <div class="starry-sky"></div>
+          <div class="sea-waves"></div>
+          <div class="cloud-obstruct" id="cloud"></div>
+          
+          <!-- PAINEL DE LOGS FLUTUANTE NO CÉU (SKY OVERLAY) -->
+          <div class="sky-radio-panel">
+            <div class="sky-radio-header">
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <span>📻 Transmissão Rádio VHF & Sinais (Canal 16)</span>
+                <button id="day-night-toggle-btn" class="day-night-btn" onclick="toggleDayNightMode()">☀️ DIA</button>
+              </div>
+              <span style="font-size: 0.65rem; color: #94a3b8;">TEMPO REAL</span>
+            </div>
+            <div class="sky-radio-logs" id="radio-logs">
+              <!-- Logs color-coded com horário aparecem aqui -->
+            </div>
+          </div>
+
+          <!-- BOTÃO DE AÇÃO INTERATIVO DE FIM DE NÍVEL -->
+          <div id="level-complete-action-container" class="level-complete-action-container">
+            <button id="level-complete-action-btn" class="level-action-btn"></button>
+          </div>
+
+          <!-- Navio Esquerdo (Jogador - N.M. BRASIL) -->
+          <div class="ship ship-left">
+            <svg viewBox="0 0 220 140" width="100%" height="100%">
+              <path d="M 10,90 L 35,120 H 185 L 210,90 Z" class="ship-hull" />
+              <rect x="50" y="55" width="110" height="35" class="ship-superstructure" />
+              <rect x="70" y="30" width="50" height="25" class="ship-superstructure" />
+              <rect x="130" y="35" width="20" height="20" fill="#D21034" />
+              <rect x="130" y="30" width="20" height="5" fill="#1E252B" />
+              <circle cx="80" cy="42" r="5" fill="#FFCC00" />
+              <circle cx="105" cy="42" r="5" fill="#FFCC00" />
+              <circle cx="65" cy="72" r="6" fill="#1E252B" />
+              <circle cx="95" cy="72" r="6" fill="#1E252B" />
+              <circle cx="125" cy="72" r="6" fill="#1E252B" />
+            </svg>
+            <div class="ship-mast"></div>
+            <div class="ship-halyard" id="player-halyard"></div>
+            <div class="ship-name">N. M. BRASIL</div>
+          </div>
+
+          <!-- Navio Direito (Adversário / Computador - N.M. ALBATROZ) -->
+          <div class="ship ship-right">
+            <svg viewBox="0 0 220 140" width="100%" height="100%">
+              <path d="M 10,90 L 35,120 H 185 L 210,90 Z" class="ship-hull" />
+              <rect x="50" y="55" width="110" height="35" class="ship-superstructure" />
+              <rect x="90" y="30" width="50" height="25" class="ship-superstructure" />
+              <rect x="65" y="35" width="20" height="20" fill="#0A3A60" />
+              <rect x="65" y="30" width="20" height="5" fill="#1E252B" />
+              <circle cx="105" cy="42" r="5" fill="#FFCC00" />
+              <circle cx="125" cy="42" r="5" fill="#FFCC00" />
+              <circle cx="85" cy="72" r="6" fill="#1E252B" />
+              <circle cx="115" cy="72" r="6" fill="#1E252B" />
+              <circle cx="145" cy="72" r="6" fill="#1E252B" />
+            </svg>
+            <div class="ship-mast"></div>
+            <div class="ship-marks" id="other-ship-marks"></div>
+            <div class="ship-halyard" id="other-halyard"></div>
+            <div class="ship-name" id="other-ship-name">N. M. ALBATROZ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUNA 3: DIREITA (~340px) -->
+      <div class="col-right">
+        <!-- SUA ADRIÇA PREVIEW -->
+        <div class="card-panel hoist-card">
+          <h5>⛵ Sua Adriça (Preparação)</h5>
+          <div class="player-hoist-box">
+            <div class="player-hoist-flags" id="player-hoist-preview">
+              <span class="empty-hint">Selecione bandeiras para montar seu sinal...</span>
+            </div>
+          </div>
+          <div class="action-buttons">
+            <button class="btn btn-primary" onclick="submitPlayerHoist()">Içar Sinal</button>
+            <button class="btn btn-danger" onclick="clearPlayerHoist()">Arriar / Limpar</button>
+          </div>
+        </div>
+
+        <!-- ADRIÇA DE RESPOSTA (AP) -->
+        <div class="card-panel ap-card">
+          <h5>🚩 Adriça de Resposta (AP)</h5>
+          <div class="ap-buttons">
+            <button class="btn btn-secondary btn-sm" onclick="setPlayerAP('dip')">AP a Meio (Dip)</button>
+            <button class="btn btn-secondary btn-sm" onclick="setPlayerAP('closeup')">AP no Topo (Close-up)</button>
+          </div>
+        </div>
+
+        <!-- ARMÁRIO DE BANDEIRAS (INVENTÁRIO) -->
+        <div class="card-panel inventory-card">
+          <div class="inventory-header">
+            <h5>🎏 Armário de Bandeiras</h5>
+            <button class="btn btn-secondary btn-xs" id="toggle-labels-btn" onclick="toggleInventoryLabels()">🙈 Legendas</button>
+          </div>
+          <div class="flag-selector-grid" id="flag-inventory">
+            <!-- Grid com botões para selecionar as bandeiras -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ABA 2: TRADUTOR & DICIONÁRIO -->
+    <div id="tab-translator" class="tab-content" style="padding: 1.5rem; overflow-y: auto; max-height: calc(100vh - 50px);">
+      
+      <!-- Painel do Tradutor -->
+      <div class="translator-card">
+        <div class="input-group">
+          <label for="text-input">Digite o texto para tradução (A-Z, 0-9)</label>
+          <input type="text" id="text-input" placeholder="Digite algo aqui... Ex: NAVEGAR 10" value="NAVEGAR 10" autocomplete="off">
+        </div>
+
+        <div class="output-section">
+          <div class="output-title">Tradução Visual (Bandeiras Coloridas)</div>
+          <div class="flag-container" id="flag-output">
+            <!-- Gerado dinamicamente -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela do Dicionário -->
+      <h2 style="font-size: 1.5rem; margin: 1.5rem 0; text-align: center; font-weight: 700;">Dicionário de Sinais (A - Z, 0 - 9, Substitutos)</h2>
+      <div class="alphabet-grid" id="alphabet-dictionary">
+        <!-- Gerado via JS -->
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- MODAL DE QUESTÃO REAL DA DPC (OVERLAY) -->
+  <div class="modal-overlay" id="exam-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-badge" id="modal-badge">🏆 JÁ CAIU EM PROVA DE PRÁTICO</div>
+        <h3 id="modal-title">Prova DPC 2006 — Questão 2</h3>
+      </div>
+      <div class="modal-body">
+        <p class="exam-question-text" id="modal-question-text"></p>
+        
+        <div class="exam-options-list" id="modal-options-list">
+          <!-- Opções renderizadas via JS -->
+        </div>
+
+        <div class="exam-feedback-box" id="modal-feedback-box" style="display: none;">
+          <!-- Feedback de alternativas -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="exam-source" id="modal-source-text">Fonte: CIS Cap. XI</div>
+        <button class="btn btn-primary" id="modal-continue-btn" onclick="closeExamModalAndAdvance()" disabled>Avançar para o Próximo Nível ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Configurações de cores e SVGs globais
+    const COLORS = {
+      white: '#FFFFFF',
+      blue: '#0A3A60',
+      red: '#D21034',
+      yellow: '#FFCC00',
+      black: '#1E252B'
+    };
+
+    const FLAG_SVGS = {
+      A: `<path d="M 2.5,2.5 H 250 V 497.5 H 2.5 Z" fill="${COLORS.white}" stroke="#D1D5DB" stroke-width="5" /><path d="M 250,0 H 500 L 375,250 L 500,500 H 250 Z" fill="${COLORS.blue}" />`,
+      B: `<path d="M 0,0 H 500 L 375,250 L 500,500 H 0 Z" fill="${COLORS.red}" />`,
+      C: `<rect x="0" y="0" width="500" height="100" fill="${COLORS.blue}" /><rect x="0" y="100" width="500" height="100" fill="${COLORS.white}" /><rect x="0" y="200" width="500" height="100" fill="${COLORS.red}" /><rect x="0" y="300" width="500" height="100" fill="${COLORS.white}" /><rect x="0" y="400" width="500" height="100" fill="${COLORS.blue}" />`,
+      D: `<rect x="0" y="0" width="500" height="166.67" fill="${COLORS.yellow}" /><rect x="0" y="166.67" width="500" height="166.67" fill="${COLORS.blue}" /><rect x="0" y="333.33" width="500" height="166.67" fill="${COLORS.yellow}" />`,
+      E: `<rect x="0" y="0" width="500" height="250" fill="${COLORS.blue}" /><rect x="0" y="250" width="500" height="250" fill="${COLORS.red}" />`,
+      F: `<path d="M 2.5,2.5 H 497.5 V 497.5 H 2.5 Z" fill="${COLORS.white}" stroke="#D1D5DB" stroke-width="5" /><polygon points="250,50 450,250 250,450 50,250" fill="${COLORS.red}" />`,
+      G: `<rect x="0" y="0" width="83.33" height="500" fill="${COLORS.yellow}" /><rect x="83.33" y="0" width="83.33" height="500" fill="${COLORS.blue}" /><rect x="166.67" y="0" width="83.33" height="500" fill="${COLORS.yellow}" /><rect x="250" y="0" width="83.33" height="500" fill="${COLORS.blue}" /><rect x="333.33" y="0" width="83.33" height="500" fill="${COLORS.yellow}" /><rect x="416.67" y="0" width="83.33" height="500" fill="${COLORS.blue}" />`,
+      H: `<path d="M 2.5,2.5 H 250 V 497.5 H 2.5 Z" fill="${COLORS.white}" stroke="#D1D5DB" stroke-width="5" /><rect x="250" y="0" width="250" height="500" fill="${COLORS.red}" />`,
+      I: `<rect x="0" y="0" width="500" height="500" fill="${COLORS.yellow}" /><circle cx="250" cy="250" r="120" fill="${COLORS.black}" />`,
+      J: `<rect x="0" y="0" width="500" height="166.67" fill="${COLORS.blue}" /><rect x="0" y="166.67" width="500" height="166.67" fill="${COLORS.white}" /><rect x="0" y="333.33" width="500" height="166.67" fill="${COLORS.blue}" />`,
+      K: `<rect x="0" y="0" width="250" height="500" fill="${COLORS.yellow}" /><rect x="250" y="0" width="250" height="500" fill="${COLORS.blue}" />`,
+      L: `<rect x="0" y="0" width="250" height="250" fill="${COLORS.yellow}" /><rect x="250" y="0" width="250" height="250" fill="${COLORS.black}" /><rect x="0" y="250" width="250" height="250" fill="${COLORS.black}" /><rect x="250" y="250" width="250" height="250" fill="${COLORS.yellow}" />`,
+      M: `<rect x="0" y="0" width="500" height="500" fill="${COLORS.blue}" /><path d="M 0,0 L 42.4,0 L 500,457.6 V 500 H 457.6 L 0,42.4 Z" fill="${COLORS.white}" /><path d="M 500,0 H 457.6 L 0,457.6 V 500 H 42.4 L 500,42.4 Z" fill="${COLORS.white}" />`,
+      N: Array.from({length: 16}, (_, i) => {
+        const r = Math.floor(i / 4);
+        const c = i % 4;
+        const fill = (r + c) % 2 === 0 ? COLORS.blue : COLORS.white;
+        return `<rect x="${c * 125}" y="${r * 125}" width="125" height="125" fill="${fill}" />`;
+      }).join(''),
+      O: `<polygon points="0,0 500,0 500,500" fill="${COLORS.yellow}" /><polygon points="0,0 500,500 0,500" fill="${COLORS.red}" />`,
+      P: `<rect x="0" y="0" width="500" height="500" fill="${COLORS.blue}" /><rect x="166.67" y="166.67" width="166.67" height="166.67" fill="${COLORS.white}" />`,
+      Q: `<rect x="0" y="0" width="500" height="500" fill="${COLORS.yellow}" />`,
+      R: `<rect x="0" y="0" width="500" height="500" fill="${COLORS.red}" /><path d="M 0,200 H 200 V 0 H 300 V 200 H 500 V 300 H 300 V 500 H 200 V 300 H 0 Z" fill="${COLORS.yellow}" />`,
+      S: `<path d="M 2.5,2.5 H 497.5 V 497.5 H 2.5 Z" fill="${COLORS.white}" stroke="#D1D5DB" stroke-width="5" /><rect x="166.67" y="166.67" width="166.67" height="166.67" fill="${COLORS.blue}" />`,
+      T: `<rect x="0" y="0" width="166.67" height="500" fill="${COLORS.red}" /><rect x="166.67" y="0" width="166.67" height="500" fill="${COLORS.white}" /><rect x="333.33" y="0" width="166.67" height="500" fill="${COLORS.blue}" />`,
+      U: `<rect x="0" y="0" width="250" height="250" fill="${COLORS.red}" /><path d="M 250,2.5 H 497.5 V 250 H 250 Z" fill="${COLORS.white}" stroke="#D1D5DB" stroke-width="5" /><path d="M 2.5,250 H 250 V 497.5 H 2.5 Z" fill="${COLORS.white}" stroke="#D1D5DB" stroke-width="5" /><rect x="250" y="250" width="250" height="250" fill="${COLORS.red}" />`,
+      V: `<path d="M 2.5,2.5 H 497.5 V 497.5 H 2.5 Z" fill="${COLORS.white}" stroke="#D1D5DB" stroke-width="5" /><path d="M 0,0 L 42.4,0 L 500,457.6 V 500 H 457.6 L 0,42.4 Z" fill="${COLORS.red}" /><path d="M 500,0 H 457.6 L 0,457.6 V 500 H 42.4 L 500,42.4 Z" fill="${COLORS.red}" />`,
+      W: `<rect x="0" y="0" width="500" height="500" fill="${COLORS.blue}" /><rect x="83.33" y="83.33" width="333.33" height="333.33" fill="${COLORS.white}" /><rect x="166.67" y="166.67" width="166.67" height="166.67" fill="${COLORS.red}" />`,
+      X: `<path d="M 2.5,2.5 H 497.5 V 497.5 H 2.5 Z" fill="${COLORS.white}" stroke="#D1D5DB" stroke-width="5" /><path d="M 0,200 H 200 V 0 H 300 V 200 H 500 V 300 H 300 V 500 H 200 V 300 H 0 Z" fill="${COLORS.blue}" />`,
+      Y: (() => {
+        let svg = `<rect x="0" y="0" width="500" height="500" fill="${COLORS.red}" />`;
+        for (let i = 1; i < 10; i += 2) {
+          const C1 = i * 100;
+          const C2 = (i + 1) * 100;
+          let pathD = '';
+          if (C1 <= 500 && C2 <= 500) {
+            pathD = `M ${C1},0 L ${C2},0 L 0,${C2} L 0,${C1} Z`;
+          } else if (C1 <= 500 && C2 > 500) {
+            pathD = `M ${C1},0 L 500,0 L 500,${C2-500} L ${C2-500},500 L 0,500 L 0,${C1} Z`;
+          } else {
+            pathD = `M 500,${C1-500} L 500,${C2-500} L ${C2-500},500 L ${C1-500},500 Z`;
+          }
+          svg += `<path d="${pathD}" fill="${COLORS.yellow}" />`;
+        }
+        return svg;
+      })(),
+      Z: `<polygon points="0,0 500,0 250,250" fill="${COLORS.yellow}" /><polygon points="500,0 500,500 250,250" fill="${COLORS.blue}" /><polygon points="500,500 0,500 250,250" fill="${COLORS.red}" /><polygon points="0,500 0,0 250,250" fill="${COLORS.black}" />`,
+      
+      // Números (Flâmulas)
+      0: `<polygon points="0,100 500,200 500,300 0,400" fill="${COLORS.yellow}" /><polygon points="200,140 300,160 300,340 200,360" fill="${COLORS.red}" />`,
+      1: `<polygon points="0,100 500,200 500,300 0,400" fill="${COLORS.white}" /><circle cx="250" cy="250" r="50" fill="${COLORS.red}" />`,
+      2: `<polygon points="0,100 500,200 500,300 0,400" fill="${COLORS.blue}" /><circle cx="250" cy="250" r="50" fill="${COLORS.white}" />`,
+      3: `<polygon points="0,100 166.67,133.33 166.67,266.67 0,400" fill="${COLORS.red}" /><polygon points="166.67,133.33 333.33,166.67 333.33,233.33 166.67,266.67" fill="${COLORS.white}" /><polygon points="333.33,166.67 500,200 500,300 333.33,233.33" fill="${COLORS.blue}" />`,
+      4: `<polygon points="0,100 500,200 500,300 0,400" fill="${COLORS.red}" /><polygon points="200,140 300,160 300,340 200,360" fill="${COLORS.white}" /><polygon points="0,220 500,220 500,280 0,280" fill="${COLORS.white}" />`,
+      5: `<polygon points="0,100 250,150 250,350 0,400" fill="${COLORS.yellow}" /><polygon points="250,150 500,200 500,300 250,350" fill="${COLORS.blue}" />`,
+      6: `<polygon points="0,100 500,200 500,250 0,250" fill="${COLORS.black}" /><polygon points="0,250 500,250 500,300 0,400" fill="${COLORS.white}" />`,
+      7: `<polygon points="0,100 500,200 500,250 0,250" fill="${COLORS.yellow}" /><polygon points="0,250 500,250 500,300 0,400" fill="${COLORS.red}" />`,
+      8: `<polygon points="0,100 500,200 500,300 0,400" fill="${COLORS.white}" /><polygon points="200,140 300,160 300,340 200,360" fill="${COLORS.red}" /><polygon points="0,220 500,220 500,280 0,280" fill="${COLORS.red}" />`,
+      9: `<polygon points="0,100 250,150 250,250 0,250" fill="${COLORS.white}" /><polygon points="250,150 500,200 500,250 250,250" fill="${COLORS.black}" /><polygon points="0,250 250,250 250,350 0,400" fill="${COLORS.yellow}" /><polygon points="250,250 500,250 500,300 250,350" fill="${COLORS.red}" />`,
+      
+      // Repetidores e Sinais de Procedimento
+      AP: `<polygon points="0,100 100,120 100,380 0,400" fill="${COLORS.red}" /><polygon points="100,120 200,140 200,360 100,380" fill="${COLORS.white}" /><polygon points="200,140 300,160 300,340 200,360" fill="${COLORS.red}" /><polygon points="300,160 400,180 400,320 300,340" fill="${COLORS.white}" /><polygon points="400,180 500,200 500,300 400,320" fill="${COLORS.red}" />`,
+      Sub1: `<polygon points="0,100 500,250 0,400" fill="${COLORS.blue}" /><polygon points="0,140 350,250 0,360" fill="${COLORS.yellow}" />`,
+      Sub2: `<polygon points="0,100 250,175 250,325 0,400" fill="${COLORS.blue}" /><polygon points="250,175 500,250 250,325" fill="${COLORS.white}" />`,
+      Sub3: `<polygon points="0,100 500,250 0,250" fill="${COLORS.white}" /><polygon points="0,250 500,250 0,400" fill="${COLORS.black}" />`,
+      tackline: `<line x1="250" y1="0" x2="250" y2="500" stroke="#9CA3AF" stroke-width="28" stroke-linecap="round" />`
+    };
+
+    const SIGNAL_MEANINGS = {
+      A: { name: 'Alfa', desc: 'Tenho mergulhador na água; mantenha-se afastado e em baixa velocidade.' },
+      B: { name: 'Bravo', desc: 'Estou carregando, descarregando ou transportando mercadorias perigosas.' },
+      C: { name: 'Charlie', desc: 'Sim (afirmativo).' },
+      D: { name: 'Delta', desc: 'Mantenha-se afastado; estou com dificuldades de manobra.' },
+      E: { name: 'Echo', desc: 'Estou alterando o meu rumo para boreste (direita).' },
+      F: { name: 'Foxtrot', desc: 'Estou avariado; comunique-se comigo.' },
+      G: { name: 'Golf', desc: 'Preciso de PRÁTICO (na pesca: recolhendo redes).' },
+      H: { name: 'Hotel', desc: 'Tenho PRÁTICO a bordo.' },
+      I: { name: 'India', desc: 'Estou alterando o meu rumo para bombordo (esquerda).' },
+      J: { name: 'Juliet', desc: 'Tenho fogo a bordo e carga perigosa; afaste-se.' },
+      K: { name: 'Kilo', desc: 'Desejo comunicar-me com você.' },
+      L: { name: 'Lima', desc: 'Pare o seu navio imediatamente.' },
+      M: { name: 'Mike', desc: 'Meu navio está parado e sem seguimento.' },
+      N: { name: 'November', desc: 'Não (negativo).' },
+      O: { name: 'Oscar', desc: 'Homem ao mar.' },
+      P: { name: 'Papa', desc: 'Todos a bordo; o navio vai seguir viagem.' },
+      Q: { name: 'Quebec', desc: 'Meu navio está limpo e peço livre prática.' },
+      R: { name: 'Romeo', desc: 'Sinal de procedimento ("recebido"). Não é usado como bandeira de mensagem isolada.' },
+      S: { name: 'Sierra', desc: 'Minhas máquinas estão dando atrás.' },
+      T: { name: 'Tango', desc: 'Mantenha-se afastado; pesca de arrasto em dupla.' },
+      U: { name: 'Uniform', desc: 'Você está correndo perigo.' },
+      V: { name: 'Victor', desc: 'Preciso de assistência.' },
+      W: { name: 'Whiskey', desc: 'Preciso de assistência médica.' },
+      X: { name: 'X-ray', desc: 'Pare o que faz e atente aos meus sinais.' },
+      Y: { name: 'Yankee', desc: 'Estou arrastando a minha âncora.' },
+      Z: { name: 'Zulu', desc: 'Preciso de rebocador.' },
+      0: { name: 'Zero', desc: 'Flâmula numeral 0.' },
+      1: { name: 'Um', desc: 'Flâmula numeral 1.' },
+      2: { name: 'Dois', desc: 'Flâmula numeral 2.' },
+      3: { name: 'Três', desc: 'Flâmula numeral 3.' },
+      4: { name: 'Quatro', desc: 'Flâmula numeral 4.' },
+      5: { name: 'Cinco', desc: 'Flâmula numeral 5.' },
+      6: { name: 'Seis', desc: 'Flâmula numeral 6.' },
+      7: { name: 'Sete', desc: 'Flâmula numeral 7.' },
+      8: { name: 'Oito', desc: 'Flâmula numeral 8.' },
+      9: { name: 'Nove', desc: 'Flâmula numeral 9.' },
+      AP: { name: 'Answering Pendant', desc: 'Sinal de Resposta e indicador de decimal.' },
+      Sub1: { name: '1º Substituto', desc: 'Repete a primeira bandeira da mesma classe.' },
+      Sub2: { name: '2º Substituto', desc: 'Repete a segunda bandeira da mesma classe.' },
+      Sub3: { name: '3º Substituto', desc: 'Repete a terceira bandeira da mesma classe.' },
+      tackline: { name: 'Tackline', desc: 'Espaçador de adriça (aproximadamente 2 metros de cabo) usado para separar dois grupos na mesma adriça.' }
+    };
+
+    // Alternar entre Abas
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      if (tab === 'game') {
+        document.querySelector('button[onclick="switchTab(\'game\')"]').classList.add('active');
+        document.getElementById('tab-game').classList.add('active');
+      } else {
+        document.querySelector('button[onclick="switchTab(\'translator\')"]').classList.add('active');
+        document.getElementById('tab-translator').classList.add('active');
+      }
+    }
+
+    // ==========================================
+    // DICIONÁRIO E TRADUTOR (ABA 2)
+    // ==========================================
+    
+    // Renderizar Dicionário de A-Z, 0-9 e Repetidores
+    function initDictionary() {
+      const dictionaryGrid = document.getElementById('alphabet-dictionary');
+      if (!dictionaryGrid) return;
+      dictionaryGrid.innerHTML = '';
+      
+      Object.keys(FLAG_SVGS).forEach(letter => {
+        if (letter === 'tackline') return;
+        const item = document.createElement('div');
+        item.className = 'alphabet-item';
+        
+        const flagSvg = `<svg viewBox="0 0 500 500" width="100%" height="100%">${FLAG_SVGS[letter]}</svg>`;
+        const meaning = SIGNAL_MEANINGS[letter] ? SIGNAL_MEANINGS[letter].name : letter;
+        const desc = SIGNAL_MEANINGS[letter] ? SIGNAL_MEANINGS[letter].desc : '';
+        
+        item.innerHTML = `
+          <div class="alphabet-flag">${flagSvg}</div>
+          <div class="alphabet-letter">${letter}</div>
+          <div class="alphabet-meaning">${meaning}</div>
+        `;
+        item.title = desc;
+        dictionaryGrid.appendChild(item);
+      });
+
+      const textInput = document.getElementById('text-input');
+      if (textInput) {
+        textInput.removeEventListener('input', translateText);
+        textInput.addEventListener('input', translateText);
+        translateText();
+      }
+    }
+
+    function translateText() {
+      const textInput = document.getElementById('text-input');
+      const flagOutput = document.getElementById('flag-output');
+      if (!textInput || !flagOutput) return;
+
+      const text = textInput.value.toUpperCase();
+      flagOutput.innerHTML = '';
+
+      let delay = 0;
+      for (let char of text) {
+        if (FLAG_SVGS[char]) {
+          const item = document.createElement('div');
+          item.className = 'flag-item';
+          item.style.animationDelay = `${delay}s`;
+          delay += 0.05;
+
+          const flagSvg = `<svg viewBox="0 0 500 500" width="100%" height="100%">${FLAG_SVGS[char]}</svg>`;
+          
+          item.innerHTML = `
+            <div class="flag-graphic">${flagSvg}</div>
+            <div class="flag-letter">${char}</div>
+          `;
+          flagOutput.appendChild(item);
+        } else if (char === ' ') {
+          const space = document.createElement('div');
+          space.style.width = '40px';
+          flagOutput.appendChild(space);
+        }
+      }
+
+      if (flagOutput.children.length === 0) {
+        flagOutput.innerHTML = `<span style="color: var(--color-text-muted)">Digite letras de A-Z ou números de 0-9...</span>`;
+      }
+    }
+
+
+    // ==========================================
+    // ENGINE DO JOGO SIMULADOR CIS (ABA 1)
+    // ==========================================
+
+    let currentLevel = 1;
+    let playerHoist = [];           // Bandeiras na adriça sendo preparadas (rascunho)
+    let playerHoistedOnMast = [];   // Bandeiras de fato içadas no mastro do navio
+    let playerAPState = 'none';     // 'none', 'dip', 'closeup'
+    let otherHoist = [];            // Bandeiras na adriça do computador
+    let otherAPState = 'none';      // 'none', 'dip', 'closeup'
+    let levelStep = 0;              // Passo corrente dentro do nível
+    
+    // Definição dos 13 níveis do Tutor de CIS, alinhados estritamente às normas da DPC/IMO 2005
+    const LEVELS = {
+      1: {
+        title: "Nível 1: O Sinal de Resposta (Básico)",
+        desc: "Aprenda a responder a um sinal simples recebido utilizando o Answering Pendant (AP) de acordo com o CIS Cap. V.",
+        instructions: `O <strong>N.M. ALBATROZ</strong> iça a bandeira <strong>O (Oscar)</strong> (Homem ao Mar).
+          <br><br><strong>Passo 1:</strong> Ao ver a bandeira subir, ice seu <strong>AP a meio mastro (Dip)</strong>.
+          <br><strong>Passo 2:</strong> Ao compreender o sinal, suba o AP para <strong>mastro cheio (Close-up)</strong>.
+          <br><strong>Passo 3:</strong> Quando ele arriar a bandeira, retorne seu AP para <strong>Dip</strong>.
+          <br><strong>Passo 4:</strong> Ele iça o AP isolado (Fim). Ice seu AP para <strong>Close-up</strong>.`,
+        citation: `📜 <strong>Fundamentação Regulamentar: CIS (IMO 2005) Cap. V §1</strong>
+          <br><em>"The Answering Pendant should be hoisted at the dip by the vessel receiving a signal as soon as it is seen, and hoisted close-up when the signal is understood."</em>
+          <br><br>👉 <strong>Regra da DPC:</strong> O AP a meio mastro sinaliza <em>avistamento do sinal</em>; no topo sinaliza <em>compreensão completa</em>.`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist(['O']);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 1 (Fonte: CIS Cap. V). O N.M. ALBATROZ está chamando...");
+          addLog("Outro Navio", "Içou o sinal [ O ] (Homem ao mar).");
+          addLog("Dica", "Clique no botão 'AP a Meio (Dip)' no painel de controle.");
+        }
+      },
+      2: {
+        title: "Nível 2: Mensagem Sequencial com SQ",
+        desc: "Pratique a coordenação do seu AP ao responder a mensagens sequenciais com grupos regulamentares do CIS Cap. X.",
+        instructions: `Você receberá dois sinais em sequência:
+          <br>1. Primeiro o grupo <strong>D (Delta)</strong> (Afastar-se / Dificuldade de manobra).
+          <br>2. Depois o grupo <strong>SQ (Sierra Quebec)</strong> (<em>"Você deve parar ou capear / heave to"</em>).
+          <br><br>Coorde seu AP entre <strong>Dip</strong> (ao ver subir/arriar) e <strong>Close-up</strong> (ao compreender).`,
+        citation: `📜 <strong>Fundamentação Regulamentar: CIS Cap. V §2 & Cap. X</strong>
+          <br><em>"SQ = You should stop or heave to immediately."</em>
+          <br><br>👉 <strong>Regra da DPC:</strong> Quando a estação emissora transmite vários grupos em sequência, a estação receptora retorna o AP para o <em>Dip</em> entre cada grupo para indicar avistamento da nova combinação antes do <em>Close-up</em>.`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist(['D']);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 2 (Fonte: CIS Cap. V & X). Comunicação sequencial.");
+          addLog("Outro Navio", "Içou o primeiro grupo: [ D ].");
+          addLog("Dica", "Coloque seu AP em meio mastro (Dip) para sinalizar avistamento.");
+        }
+      },
+      3: {
+        title: "Nível 3: Cores e Formas (Concurso DPC 2006)",
+        desc: "Solicite assistência de um rebocador identificando a bandeira pelas especificações formais de cores e geometria da DPC.",
+        instructions: `Seu navio (<strong>N.M. BRASIL</strong>) aproxima-se da bacia de evolução e precisa solicitar apoio de um rebocador para manobra de atracação.
+          <br><br><strong>Passo 1:</strong> Identifique no armário a bandeira descrita na Questão 2 da prova DPC-2006: <em>4 triângulos partindo do centro: preto (tralha/esquerda), amarelo (topo), azul (extremidade/direita) e vermelho (base)</em>.
+          <br><strong>Passo 2:</strong> Selecione a bandeira <strong>Z (Zulu)</strong>, adicione à sua adriça e clique em <strong>'Içar Sinal'</strong>.`,
+        citation: `📜 <strong>Fundamentação Oficial: DPC PSCPP 2006 Q2 & CIS Cap. XI</strong>
+          <br><em>"Z (Zulu) = Solicito rebocador."</em>
+          <br><br>👉 <strong>Cobrado em Prova:</strong> A banca exige memorização exata da geometria das tralhas e triângulos: Preto (tralha/esquerda), Amarelo (superior), Azul (extremidade/direita) e Encarnado (base/inferior).`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist([]);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 3 (Fonte: Questão 2 DPC-2006 / CIS Cap. XI).");
+          addLog("Jogador (Prático)", "Precisamos solicitar apoio de um rebocador para a manobra de atracação no berço.");
+          addLog("Dica", "Monte o sinal regulamentar para solicitar rebocador (Bandeira Z) e clique em 'Içar Sinal'.");
+        }
+      },
+      4: {
+        title: "Nível 4: CIS + COLREG (Concurso DPC 2008)",
+        desc: "Interprete a combinação de marcas/luzes RIPEAM Regra 28 e bandeiras de sinalização do CIS em um navio restrito.",
+        instructions: `O <strong>N.M. ALBATROZ</strong> é um navio restrito pelo seu calado.
+          <br>De dia, exibe a marca diurna de <strong>1 Cilindro Preto</strong>. À noite, exibe <strong>3 luzes encarnadas circulares em linha vertical</strong> (RIPEAM Regra 28).
+          <br>Junto ao sinal RIPEAM, iça as bandeiras <strong>D (Delta)</strong> e <strong>H (Hotel)</strong>: <em>"Tenho PRÁTICO a bordo (H) e manobro com dificuldade (D)."</em>
+          <br><br>👉 <em>Use o botão <strong>☀️ DIA / 🌙 NOITE</strong> no cabeçalho do rádio para alternar a iluminação visual!</em>
+          <br><br><strong>Ação:</strong> Coloque seu <strong>AP em mastro cheio (Close-up)</strong> para confirmar compreensão.`,
+        citation: `📜 <strong>Fundamentação Oficial: DPC PSCPP 2008 Q57 & RIPEAM Regra 28 / Regra 34(d)</strong>
+          <br><em>"Regra 28 RIPEAM: Toda embarcação de propulsão mecânica restrita por seu calado poderá exibir no lugar mais visível: de dia, um CILINDRO PRETO; à noite, TRÊS LUZES ENCARNADAS circulares em linha vertical."</em>
+          <br><br>👉 <strong>Sinais do CIS anexados:</strong> Hotel (H) = Tenho prático a bordo. Delta (D) = Mantenha-se afastado; manobro com dificuldade.`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist(['D', 'H']);
+          setOtherAP('none');
+          setOtherMarksConfig({ day: ['cylinder'], night: ['red-light', 'red-light', 'red-light'] });
+          setDayNightMode(Math.random() < 0.5);
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 4 (Fonte: Questão 57 DPC-2008 / RIPEAM R.28 + CIS Cap. V).");
+          addLog("Outro Navio", `Exibe ${currentIsNight ? '3 luzes encarnadas noturnas (R.28 - Calado)' : '1 cilindro preto diurno (R.28 - Calado)'} e içou: [ D ] [ H ] (Tenho PRÁTICO a bordo e manobro com dificuldade).`);
+          addLog("Dica", "Coloque o AP no topo (Close-up). Clique em ☀️ DIA / 🌙 NOITE no topo do rádio para ver a transformação!");
+        }
+      },
+      5: {
+        title: "Nível 5: Falha na Comunicação e Dúvida (ZL)",
+        desc: "Aprenda a sinalizar quando o sinal avistado não puder ser compreendido (Código ZL).",
+        instructions: `Uma nuvem encobriu o mastro do outro navio.
+          <br><br><strong>Passo 1:</strong> Coloque seu <strong>AP a meio mastro (Dip)</strong>.
+          <br><strong>Passo 2:</strong> A nuvem abre mostrando o sinal inválido <strong>XF9</strong>. Içe o grupo <strong>ZL</strong> (<em>"Sinal recebido, mas não compreendido"</em>).
+          <br><strong>Passo 3:</strong> O adversário arria e iça <strong>K</strong> (Desejo comunicar-me). Suba seu <strong>AP para Close-up</strong>.`,
+        citation: `📜 <strong>Fundamentação Regulamentar: CIS Cap. V §4 (Unanswered Signals)</strong>
+          <br><em>"If the receiving vessel cannot distinguish the signal made to her, she should keep the Answering Pendant at the dip. If the signal is seen but not understood, she should hoist ZL."</em>
+          <br><br>👉 <strong>Regra da DPC:</strong> ZL é a resposta padrão regulamentar quando um sinal é visualizado com clareza, mas seu código não consta na tabela ou não faz sentido no contexto.`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist(['O']); 
+          setOtherAP('none');
+          setOtherMarksConfig({ day: [], night: [] });
+          setDayNightMode(false);
+          setTimeout(() => {
+            const cloud = document.getElementById('cloud');
+            if (cloud) cloud.classList.add('active');
+          }, 100);
+          addLog("Sistema", "Iniciando Nível 5 (Fonte: CIS Cap. V pág. 20 - Regra ZL).");
+          addLog("Dica", "Mantenha o AP a meio mastro (Dip) quando a visibilidade for ruim.");
+        }
+      },
+      6: {
+        title: "Nível 6: Marca Diurna + Semântica (Concurso DPC 2011/2012)",
+        desc: "Diferencie o status de governo (RIPEAM) do status de propulsão (CIS Bandeira M).",
+        instructions: `O N.M. ALBATROZ exibe o status de <strong>Sem Governo (NUC - RIPEAM Regra 27)</strong>.
+          <br>De dia exibe <strong>2 esferas pretas</strong>; à noite exibe <strong>2 luzes encarnadas em linha vertical</strong>.
+          <br>No mastro iça a bandeira <strong>M (Mike)</strong>: <em>"Meu navio está parado e sem seguimento"</em> (Mike).
+          <br><br>👉 <em>Use o botão <strong>☀️ DIA / 🌙 NOITE</strong> no cabeçalho do rádio para alternar a iluminação visual!</em>
+          <br><br><strong>Ação:</strong> Coloque seu <strong>AP em mastro cheio (Close-up)</strong>.`,
+        citation: `📜 <strong>Fundamentação Oficial: DPC PSCPP 2012 Q12 & RIPEAM R.27(a)</strong>
+          <br><em>"Regra 27(a) RIPEAM: Embarcação sem governo (NUC) exibe de dia DUAS ESFERAS PRETAS em linha vertical; à noite, DUAS LUZES ENCARNADAS circulares em linha vertical."</em>
+          <br><br>👉 <strong>Aparato de Prova:</strong> A banca exige distinguir NUC (incapacidade de manobrar por avaria) da situação de máquina parada sem seguimento na água (Mike).`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist(['M']);
+          setOtherAP('none');
+          setOtherMarksConfig({ day: ['sphere', 'sphere'], night: ['red-light', 'red-light'] });
+          setDayNightMode(Math.random() < 0.5);
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 6 (Fonte: Questão 12 DPC-2011 / Questão 12 DPC-2012).");
+          addLog("Outro Navio", `Exibe ${currentIsNight ? '2 luzes encarnadas noturnas (R.27 - Sem Governo)' : '2 esferas pretas diurnas (R.27 - Sem Governo)'} e içou: [ M ] (Parado e sem seguimento).`);
+          addLog("Dica", "Coloque o AP no topo (Close-up). Clique em ☀️ DIA / 🌙 NOITE para ver a transformação!");
+        }
+      },
+      7: {
+        title: "Nível 7: O Desafio dos Substitutos (Concurso DPC 2011)",
+        desc: "Transmita coordenadas numéricas complexas com algarismos repetidos ('1100') usando repetidores.",
+        instructions: `Transmita o grupo <strong>1100</strong> usando Substitutos:
+          <br>- O 1º substituto repete o 1º numeral (o 1).
+          <br>- O 3º substituto repete o 3º numeral (o 0).
+          <br><br><strong>Passo 1:</strong> Monte a adriça: <strong>1</strong> -> <strong>Sub1</strong> -> <strong>0</strong> -> <strong>Sub3</strong> e ice.
+          <br><strong>Passo 2:</strong> O adversário iça o AP dele. Arrie suas bandeiras e ice seu <strong>AP isolado</strong> (Close-up).`,
+        citation: `📜 <strong>Fundamentação Oficial: DPC PSCPP 2011 Q51 & CIS Cap. V §6</strong>
+          <br><em>"Substitutes allow the repetition of the same signal flag or numeral pennant without duplicating physical flags in the locker."</em>
+          <br><br>👉 <strong>Regra de Substituição:</strong> Cada substituto se refere exclusivamente à classe de caracteres da mesma categoria (numeral ou letra) em posição relativa no grupo. Em 1100: 1, Sub1 (1º numeral), 0, Sub3 (3º numeral).`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist([]);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 7 (Fonte: Questão 51 DPC-2011 / CIS Cap. V §6).");
+          addLog("Dica", "Monte o sinal: [ 1 ] [ Sub1 ] [ 0 ] [ Sub3 ] e clique em 'Içar Sinal'.");
+        }
+      },
+      8: {
+        title: "Nível 8: Soletrar em Linguagem Clara (Concurso DPC 2011)",
+        desc: "Utilize o prefixo YZ e o Tackline para soletrar nomes comuns de acordo com o CIS.",
+        instructions: `Você precisa soletrar o porto de destino: <strong>RIO</strong>.
+          <br>O prefixo de soletração é <strong>YZ</strong>. Separe o grupo de controle da palavra com o <strong>Tackline</strong>.
+          <br><br><strong>Ação:</strong> Monte a adriça: <strong>Y</strong> -> <strong>Z</strong> -> <strong>Tackline</strong> -> <strong>R</strong> -> <strong>I</strong> -> <strong>O</strong> e ice.`,
+        citation: `📜 <strong>Fundamentação Oficial: CIS Cap. V §5 & Cap. X (Prefix YZ)</strong>
+          <br><em>"When words or names are to be spelled out, the signal YZ is to be used as a prefix, followed by a tackline before the letters of the word."</em>
+          <br><br>👉 <strong>Regra do Concurso:</strong> Não se iça palavras em linguagem clara diretamente sem anteceder o grupo indicador YZ seguido do tirador de separação (Tackline).`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist([]);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 8 (Fonte: Questão 51 DPC-2011 / CIS Cap. V & X).");
+          addLog("Dica", "Adicione Y, Z, Tackline, R, I, O na adriça e clique em 'Içar Sinal'.");
+        }
+      },
+      9: {
+        title: "Nível 9: Tackline (Separar Grupos na Mesma Adriça)",
+        desc: "Transmita múltiplos grupos distintos na mesma adriça utilizando o cabo divisor Tackline (CIS Cap. II & V).",
+        instructions: `Transmita os grupos <strong>RY</strong> e <strong>UM</strong> juntos na mesma adriça:
+          <br>- <strong>RY</strong>: <em>"Passe a baixa velocidade ao passar por mim."</em>
+          <br>- <strong>UM</strong>: <em>"O porto está fechado ao tráfego."</em>
+          <br><br><strong>Regra do CIS:</strong> Quando mais de um grupo é exibido na mesma adriça, eles DEVEM ser separados por um <strong>Tackline</strong>.
+          <br><br><strong>Ação:</strong> Monte a adriça: <strong>R</strong> -> <strong>Y</strong> -> <strong>Tackline</strong> -> <strong>U</strong> -> <strong>M</strong> e ice.`,
+        citation: `📜 <strong>Fundamentação Regulamentar: CIS Cap. II (Definições) & Cap. V §3</strong>
+          <br><em>"Tackline is a length of halyard about 2 metres long, used to separate each group of flags on the same halyard."</em>
+          <br><br>👉 <strong>Propósito Prático:</strong> O Tackline de ~2 metros impede a fusão semântica acidental de dois grupos independentes (como RY e UM) em um único grupo de 4 letras.`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist([]);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 9 (Fonte: CIS Cap. II Definições & Cap. V Sinalização).");
+          addLog("Dica", "Monte o sinal: [ R ] [ Y ] [ Tackline ] [ U ] [ M ] e clique em 'Içar Sinal'.");
+        }
+      },
+      10: {
+        title: "Nível 10: Substitutas da Mesma Classe (Regra Completa)",
+        desc: "Domine a regra de repetição por classe de caracteres (letras vs numerais) segundo o CIS Cap. V §6.",
+        instructions: `Transmita o código <strong>L2330</strong>.
+          <br><br><strong>Regra de Classe:</strong> A substituta repete apenas caracteres DA MESMA CLASSE (alfabética ou numeral) que a antecedem no grupo.
+          <br>- No grupo L2330, os numerais formam a classe ativa '2330'. O número a repetir é o segundo '3' (2º numeral da classe).
+          <br>- Portanto, deve-se usar a <strong>2ª Substituto (Sub2)</strong>, pois ela repete a 2ª bandeira da classe numeral!
+          <br><br><strong>Ação:</strong> Monte a adriça: <strong>L</strong> -> <strong>2</strong> -> <strong>3</strong> -> <strong>Sub2</strong> -> <strong>0</strong> e ice.`,
+        citation: `📜 <strong>Fundamentação Regulamentar: CIS Cap. V §6 (Class Rules for Substitutes)</strong>
+          <br><em>"Substitutes repeat only flags of the SAME CLASS (either letters or numerals) preceding them in the hoist."</em>
+          <br><br>👉 <strong>Pegadinha de Concurso:</strong> A letra 'L' abre o grupo, mas a sequência de repetidores é contada dentro do bloco numeral. Por ser o segundo numeral a repetir, usa-se obrigatoriamente a 2ª Substituta (Sub2).`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist([]);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 10 (Fonte: CIS Cap. V §6 - Regra de Classe das Substitutas).");
+          addLog("Dica", "Monte o sinal: [ L ] [ 2 ] [ 3 ] [ Sub2 ] [ 0 ] e clique em 'Içar Sinal'.");
+        }
+      },
+      11: {
+        title: "Nível 11: Interrogativo / Afirmativo / Negativo (C, N, RQ)",
+        desc: "Compreenda a regra de modificadores de sinal e aprenda que C, N e RQ NÃO podem ser usados com sinais de 1 letra.",
+        instructions: `O N.M. ALBATROZ iça o grupo: <strong>CB</strong> + <strong>Tackline</strong> + <strong>RQ</strong>.
+          <br>(<em>CB = "Necessito assistência imediata"</em>; <em>RQ = Interrogativo</em> ➔ <em>"Você necessita de assistência imediata?"</em>).
+          <br><br><strong>Regra-Pegadinha DPC (Cap. X pág. 25):</strong> Os modificadores <strong>C</strong> (Sim), <strong>N</strong> (Não) e <strong>RQ</strong> (Pergunta) NÃO podem ser anexados a sinais de UMA única letra!
+          <br><br><strong>Ação:</strong> Responda afirmando que SIM, você necessita: ice a bandeira <strong>C (Charlie)</strong> no seu mastro.`,
+        citation: `📜 <strong>Fundamentação Oficial: CIS Cap. X pág. 25 (Modifying Signals)</strong>
+          <br><em>"The signals C, N and RQ must NOT be used in conjunction with single-letter signals."</em>
+          <br><br>👉 <strong>Pegadinha de Exame:</strong> Para grupos de 2 ou mais letras (como CB), anexar RQ transforma a declaração em pergunta. Para responder 'Sim', iça-se a bandeira C (Charlie) isoladamente.`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist(['C', 'B', 'tackline', 'R', 'Q']);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 11 (Fonte: CIS Cap. X pág. 25 - Modificadores C, N e RQ).");
+          addLog("Outro Navio", "Içou: [ C ] [ B ] [ Tackline ] [ R ] [ Q ] (Você necessita de assistência imediata?).");
+          addLog("Dica", "Responda afirmativamente içando a bandeira C (Charlie).");
+        }
+      },
+      12: {
+        title: "Nível 12: Socorro por Bandeiras (Grupo NC)",
+        desc: "Reconheça e transmita o sinal de socorro clássico marítimo do CIS (Grupo NC).",
+        instructions: `O N.M. ALBATROZ iça o grupo oficial de socorro: <strong>NC</strong> (<em>"Estou em perigo e necessito assistência imediata"</em>).
+          <br><br><strong>Passo 1:</strong> Acuse a recepção do sinal de socorro dele colocando seu <strong>AP em mastro cheio (Close-up)</strong>.
+          <br><strong>Passo 2:</strong> O outro navio arria. Agora é você quem precisa retransmitir o sinal de socorro. Monte <strong>N</strong> -> <strong>C</strong> e ice.`,
+        citation: `📜 <strong>Fundamentação Oficial: CIS Seção Geral & RIPEAM Anexo IV (Distress Signals)</strong>
+          <br><em>"NC = I am in distress and require immediate assistance."</em>
+          <br><br>👉 <strong>Sinal Internacional de Perigo:</strong> É um dos sinais visuais universais previstos no RIPEAM Anexo IV §1(h) para comunicação imediata de emergência no mar.`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist(['N', 'C']);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 12 (Fonte: CIS Seção Geral - Sinal de Socorro NC).");
+          addLog("Outro Navio", "Içou o sinal de SOCORRO: [ N ] [ C ] (Perigo e assistência imediata!).");
+          addLog("Dica", "Primeiro coloque seu AP no topo (Close-up) para responder.");
+        }
+      },
+      13: {
+        title: "Nível 13: Leitura de Grupo Temático (KF - Rebocador)",
+        desc: "Interprete e acuse a recepção de grupos de duas letras de serviços de praticagem e apoio marítimo.",
+        instructions: `O N.M. ALBATROZ está realizando manobra no porto e iça o grupo <strong>KF</strong> (<em>"Necessito um rebocador"</em>).
+          <br><br><strong>Ação:</strong> Para sinalizar que você compreendeu a solicitação de rebocador feita pelo outro navio, coloque seu <strong>AP em mastro cheio (Close-up)</strong>.`,
+        citation: `📜 <strong>Fundamentação Oficial: CIS Seção Geral de Manobra & Praticagem</strong>
+          <br><em>"KF = I require a tug."</em>
+          <br><br>👉 <strong>Uso Prático em Porto:</strong> Códigos de 2 letras iniciados por 'K' cobrem comunicações com rebocadores e estações de praticagem em manobras de atracação.`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist(['K', 'F']);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 13 (Fonte: CIS Seção Geral - Códigos de Serviços Náuticos).");
+          addLog("Outro Navio", "Içou o grupo: [ K ] [ F ] (Necessito um rebocador).");
+          addLog("Dica", "Coloque seu AP no topo (Close-up) para confirmar a leitura.");
+        }
+      }
+    };
+
+    // Tocar sons de navegação simulados usando Web Audio API
+    function playSound(type) {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (type === 'bell') {
+          const osc1 = ctx.createOscillator();
+          const osc2 = ctx.createOscillator();
+          const gain = ctx.createGain();
+          
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(880, ctx.currentTime);
+          osc2.type = 'sine';
+          osc2.frequency.setValueAtTime(1200, ctx.currentTime);
+          
+          gain.gain.setValueAtTime(0.3, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
+          
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(ctx.destination);
+          
+          osc1.start();
+          osc2.start();
+          osc1.stop(ctx.currentTime + 1.5);
+          osc2.stop(ctx.currentTime + 1.5);
+        } else if (type === 'hoist') {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(80, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.3);
+          
+          gain.gain.setValueAtTime(0.1, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+          
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + 0.3);
+        }
+      } catch(e) {
+        console.log('AudioContext blocked or unsupported');
+      }
+    }
+
+    // Adicionar registros ao log do rádio (Sky Radio Overlay)
+    function addLog(sender, message) {
+      const logs = document.getElementById('radio-logs');
+      if (!logs) return;
+      
+      const entry = document.createElement('div');
+      entry.className = 'sky-log-entry';
+      
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const senderKey = sender.toLowerCase().replace(/\s+/g, '');
+      
+      let badgeClass = 'badge-sistema';
+      if (senderKey.includes('jogador')) badgeClass = 'badge-jogador';
+      else if (senderKey.includes('outronavio')) badgeClass = 'badge-outronavio';
+      else if (senderKey.includes('dica')) badgeClass = 'badge-dica';
+      
+      entry.innerHTML = `
+        <span class="sky-log-time">[${time}]</span>
+        <span class="sky-log-badge ${badgeClass}">${sender}</span>
+        <span class="sky-log-text">${message}</span>
+      `;
+      logs.appendChild(entry);
+      logs.scrollTop = logs.scrollHeight;
+    }
+
+    // Controle de legendas do armário de bandeiras (Modo Treino)
+    let showInventoryLabels = true;
+    function toggleInventoryLabels() {
+      showInventoryLabels = !showInventoryLabels;
+      const grid = document.getElementById('flag-inventory');
+      const btn = document.getElementById('toggle-labels-btn');
+      if (showInventoryLabels) {
+        grid.classList.remove('hide-labels');
+        btn.innerHTML = '🙈 Ocultar Legendas (Modo Treino)';
+        btn.style.background = '';
+      } else {
+        grid.classList.add('hide-labels');
+        btn.innerHTML = '👁️ Mostrar Legendas';
+        btn.style.background = 'rgba(255, 204, 0, 0.15)';
+      }
+    }
+
+    // Inicializa o inventário de bandeiras
+    function initInventory() {
+      const grid = document.getElementById('flag-inventory');
+      grid.innerHTML = '';
+      
+      Object.keys(FLAG_SVGS).forEach(key => {
+        if (key === 'tackline') {
+          // Renderiza o botão de Tackline no inventário (sempre disponível)
+          const btn = document.createElement('button');
+          btn.className = 'flag-selector-btn';
+          btn.title = 'Tackline: Cabo extensor de 2 metros para separar grupos de sinais';
+          btn.onclick = () => addFlagToPlayerHoist('tackline');
+          
+          btn.innerHTML = `
+            <div style="width: 6px; height: 28px; background: #9CA3AF; border-radius: 3px; box-sizing: border-box;"></div>
+            <span class="flag-selector-label">Tackline</span>
+          `;
+          grid.appendChild(btn);
+          return;
+        }
+        
+        const btn = document.createElement('button');
+        const isPennant = ['0','1','2','3','4','5','6','7','8','9','AP','Sub1','Sub2','Sub3'].includes(key);
+        
+        // Verifica se a bandeira já está em uso na adriça (rascunho)
+        const isUsed = playerHoist.includes(key);
+        btn.className = `flag-selector-btn ${isPennant ? 'pennant' : ''} ${isUsed ? 'used' : ''}`;
+        btn.title = SIGNAL_MEANINGS[key].name + ': ' + SIGNAL_MEANINGS[key].desc;
+        if (!isUsed) {
+          btn.onclick = () => addFlagToPlayerHoist(key);
+        }
+        
+        btn.innerHTML = `
+          <svg viewBox="0 0 500 500" width="100%" height="100%">${FLAG_SVGS[key]}</svg>
+          <span class="flag-selector-label">${key}</span>
+        `;
+        grid.appendChild(btn);
+      });
+    }
+
+    // Gerencia o mastro visual do jogador (Previsão de rascunho)
+    function renderPlayerHoistPreview() {
+      const preview = document.getElementById('player-hoist-preview');
+      preview.innerHTML = '';
+      
+      if (playerHoist.length === 0) {
+        preview.innerHTML = `<span style="color: var(--color-text-muted); font-size: 0.9rem;">Selecione bandeiras abaixo para montar seu sinal...</span>`;
+      } else {
+        playerHoist.forEach((flag, index) => {
+          const wrapper = document.createElement('div');
+          const isPennant = ['0','1','2','3','4','5','6','7','8','9','AP','Sub1','Sub2','Sub3'].includes(flag);
+          wrapper.className = `hoisted-flag-wrapper ${isPennant ? 'pennant' : ''}`;
+          
+          if (flag === 'tackline') {
+            wrapper.innerHTML = `
+              <div style="width: 4px; height: 24px; background: #9CA3AF; border-radius: 2px; box-sizing: border-box; margin: 0 auto;"></div>
+              <span class="flag-selector-label">Tackline</span>
+              <button class="hoisted-flag-remove" onclick="removeFlagFromPlayerHoist(${index})">×</button>
+            `;
+          } else {
+            wrapper.innerHTML = `
+              <svg viewBox="0 0 500 500">${FLAG_SVGS[flag]}</svg>
+              <span class="flag-selector-label">${flag}</span>
+              <button class="hoisted-flag-remove" onclick="removeFlagFromPlayerHoist(${index})">×</button>
+            `;
+          }
+          preview.appendChild(wrapper);
+        });
+      }
+    }
+
+    // ===== Sistema de içar/arriar ANIMADO das adriças =====
+    const HAL_PENNANTS = ['0','1','2','3','4','5','6','7','8','9','AP','Sub1','Sub2','Sub3'];
+    function flagSvgHtml(flag) {
+      return `<svg viewBox="0 0 500 500" style="width: 100%; height: 100%;">${FLAG_SVGS[flag]}</svg>`;
+    }
+    // Monta a lista ordenada de itens da adriça (chave estável p/ diff)
+    function buildHalyardItems(flags, apState, pfx) {
+      const items = [];
+      flags.forEach((flag, i) => {
+        if (flag === 'tackline') items.push({ key: pfx + i + 'tack', tackline: true });
+        else items.push({ key: pfx + i + flag, html: flagSvgHtml(flag), pennant: HAL_PENNANTS.includes(flag) });
+      });
+      if (apState && apState !== 'none') {
+        items.push({ key: pfx + 'ap', html: flagSvgHtml('AP'), pennant: true, ap: true, dip: apState === 'dip' });
+      }
+      return items;
+    }
+    function makeHalyardEl(item) {
+      const el = document.createElement('div');
+      el.className = 'halyard-flag' + (item.pennant ? ' pennant' : '') + (item.ap ? ' ap-flag' : '') + (item.tackline ? ' tackline-flag' : '') + (item.dip ? ' ap-dip' : '');
+      el.dataset.key = item.key;
+      const inner = document.createElement('div');
+      inner.className = 'fw';
+      inner.innerHTML = item.tackline ? '<div class="tk-bar"></div>' : item.html;
+      el.appendChild(inner);
+      el.style.opacity = '0';                 // começa junto ao convés, invisível
+      el.style.transform = 'translateY(240px)';
+      el._rest = item.dip ? 78 : 0;           // repouso: 0 = tope (close-up); 78 = meio-mastro (dip)
+      return el;
+    }
+    // Diff-render: bandeiras novas SOBEM, removidas DESCEM, e o AP desliza dip<->close-up
+    function paintHalyard(halyard, items) {
+      if (!halyard) return;
+      const cur = {};
+      Array.from(halyard.children).forEach(c => { if (c.dataset.key) cur[c.dataset.key] = c; });
+      const want = new Set(items.map(i => i.key));
+      Object.keys(cur).forEach(k => {                 // arriar (descer + sumir)
+        if (!want.has(k)) {
+          const el = cur[k];
+          el.dataset.key = '';
+          el.style.pointerEvents = 'none';
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(240px)';
+          setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 820);
+        }
+      });
+      items.forEach(item => {
+        let el = cur[item.key];
+        if (!el) {                                     // içar (subir do convés)
+          el = makeHalyardEl(item);
+          halyard.appendChild(el);
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(' + el._rest + 'px)';
+          }));
+        } else {                                       // já existe: mover dip<->close-up se mudou
+          const rest = item.dip ? 78 : 0;
+          if (el._rest !== rest) {
+            el._rest = rest;
+            el.classList.toggle('ap-dip', !!item.dip);
+            el.style.transform = 'translateY(' + rest + 'px)';
+          }
+        }
+      });
+    }
+
+    // Renderiza o mastro ativo do jogador
+    function renderPlayerMast() {
+      paintHalyard(document.getElementById('player-halyard'),
+                   buildHalyardItems(playerHoistedOnMast, playerAPState, 'p'));
+    }
+
+    // Configura o mastro do Computador (Outro Navio)
+    function setOtherHoist(flags) {
+      otherHoist = flags;
+      renderOtherHalyard();
+    }
+
+    // Controle de Período (Dia ☀️ vs Noite 🌙) e Marcas RIPEAM
+    let currentIsNight = false;
+    let currentMarksConfig = { day: [], night: [] };
+
+    function setOtherMarksConfig(config = { day: [], night: [] }) {
+      currentMarksConfig = config;
+      renderCurrentMarks();
+    }
+
+    function renderCurrentMarks() {
+      const activeList = currentIsNight ? (currentMarksConfig.night || []) : (currentMarksConfig.day || []);
+      setOtherMarks(activeList);
+    }
+
+    function setDayNightMode(isNight) {
+      currentIsNight = isNight;
+      const gameScene = document.querySelector('.game-scene');
+      const toggleBtn = document.getElementById('day-night-toggle-btn');
+      
+      if (gameScene) {
+        if (isNight) {
+          gameScene.classList.remove('daytime');
+          gameScene.classList.add('nighttime');
+          if (toggleBtn) toggleBtn.innerHTML = '🌙 NOITE';
+        } else {
+          gameScene.classList.remove('nighttime');
+          gameScene.classList.add('daytime');
+          if (toggleBtn) toggleBtn.innerHTML = '☀️ DIA';
+        }
+      }
+      renderCurrentMarks();
+    }
+
+    function toggleDayNightMode() {
+      setDayNightMode(!currentIsNight);
+      addLog("Sistema", `Condição visual alterada para: ${currentIsNight ? 'NOITE 🌙 (Exibindo luzes noturnas de navegação)' : 'DIA ☀️ (Exibindo marcas diurnas)'}`);
+    }
+
+    // Configura marcas e luzes RIPEAM no mastro do Computador (Cilindros, Esferas, Luzes Encarnadas)
+    function setOtherMarks(marksList = []) {
+      const container = document.getElementById('other-ship-marks');
+      if (!container) return;
+      container.innerHTML = '';
+      
+      marksList.forEach(mark => {
+        const el = document.createElement('div');
+        if (mark === 'cylinder') {
+          el.className = 'ripeam-cylinder';
+          el.title = 'Marca Diurna RIPEAM R.28: Cilindro Preto (Restrito pelo Calado)';
+        } else if (mark === 'red-light') {
+          el.className = 'ripeam-red-light';
+          el.title = 'Luz Noturna RIPEAM R.28: Luz Encarnada Circular (Restrito pelo Calado)';
+        } else if (mark === 'sphere') {
+          el.className = 'ripeam-sphere';
+          el.title = 'Marca Diurna RIPEAM R.27(a): Esfera Preta (Sem Governo / NUC)';
+        }
+        container.appendChild(el);
+      });
+    }
+
+    // Configura o AP do Computador
+    function setOtherAP(state) {
+      otherAPState = state; 
+      renderOtherHalyard();
+    }
+
+    function renderOtherHalyard() {
+      paintHalyard(document.getElementById('other-halyard'),
+                   buildHalyardItems(otherHoist, otherAPState, 'o'));
+    }
+
+    // Confirmação fiel ao CIS: arria a mensagem e sobe o galhardete de resposta SOZINHO
+    function acknowledgeOther() {
+      setOtherHoist([]);                              // arria a pergunta/mensagem (desce)
+      setTimeout(() => setOtherAP('closeup'), 700);   // galhardete sobe sozinho, no tope
+    }
+
+    // Funções de Ação do Jogador
+    function addFlagToPlayerHoist(flag) {
+      if (playerHoist.length >= 8) {
+        addLog("Sistema", "A adriça está cheia! Máximo de 8 bandeiras.");
+        return;
+      }
+      playerHoist.push(flag);
+      playSound('hoist');
+      renderPlayerHoistPreview();
+      initInventory();
+    }
+
+    function removeFlagFromPlayerHoist(index) {
+      playerHoist.splice(index, 1);
+      renderPlayerHoistPreview();
+      initInventory();
+    }
+
+    function clearPlayerHoist() {
+      playerHoist = [];
+      playerHoistedOnMast = [];
+      playerAPState = 'none';
+      renderPlayerHoistPreview();
+      renderPlayerMast();
+      initInventory();
+      addLog("Sistema", "Sua adriça foi limpa (todas as bandeiras foram arriadas).");
+      checkRules();
+    }
+
+    function setPlayerAP(state) {
+      playerAPState = state;
+      playSound('hoist');
+      renderPlayerMast();
+      addLog("Jogador", `Içou a Bandeira de Resposta (AP) em: ${state === 'dip' ? 'Meio Mastro (Dip)' : 'Mastro Cheio (Close-up)'}.`);
+      checkRules();
+    }
+
+    function submitPlayerHoist() {
+      if (playerHoist.length === 0) {
+        addLog("Sistema", "Você não pode içar uma adriça vazia!");
+        return;
+      }
+      playerHoistedOnMast = [...playerHoist]; 
+      renderPlayerMast();
+      playSound('hoist');
+      addLog("Jogador", `Içou o sinal [ ${playerHoist.filter(f => f!=='tackline').join(' ')} ] no mastro.`);
+      checkRules();
+    }
+
+    // ==========================================
+    // QUESTÕES REAIS DE PROVAS DA DPC (MODAL)
+    // ==========================================
+    const EXAM_QUESTIONS = {
+      3: {
+        badge: "🏆 JÁ CAIU EM PROVA DE PRÁTICO (DPC 2006)",
+        title: "Prova de Prático de Navios 2006 — Questão 2",
+        question: "Bandeira retangular nas cores preto, amarelo, azul e encarnado em quatro triângulos, formados pelas diagonais, sendo preto o triângulo junto à tralha, amarelo o superior, azul o da extremidade e encarnado o inferior, de acordo com o Código Internacional de Sinais (CIS), significa:",
+        options: [
+          { letter: "a", text: "Embarcação se dirigindo para um perigo." },
+          { letter: "b", text: "Embarcação deve suspender a execução do que está fazendo e observar os sinais a serem mostrados." },
+          { letter: "c", text: "Embarcação deve parar imediatamente." },
+          { letter: "d", text: "Embarcação solicitando rebocador." },
+          { letter: "e", text: "Embarcação solicitando assistência médica." }
+        ],
+        correct: "d",
+        explanations: {
+          d: "✅ GABARITO CORRETO: A bandeira descrita é a Z (Zulu) = 'Preciso de rebocador'. (Cores: preto na tralha/esquerda, amarelo no topo, azul na extremidade/direita e encarnado na base).",
+          a: "❌ INCORRETA: Significado do sinal de uma letra U (Uniform - 'Você está correndo perigo').",
+          b: "❌ INCORRETA: Significado do sinal de uma letra X (X-ray - 'Pare o que faz e atente aos meus sinais').",
+          c: "❌ INCORRETA: Significado do sinal de uma letra L (Lima - 'Pare o seu navio imediatamente').",
+          e: "❌ INCORRETA: Significado do sinal de uma letra W (Whiskey - 'Preciso de assistência médica')."
+        },
+        source: "Fonte: CIS Cap. XI & DPC 2006"
+      },
+      4: {
+        badge: "🏆 JÁ CAIU EM PROVA DE PRÁTICO (DPC 2008)",
+        title: "Prova de Prático de Navios 2008 — Questão 57",
+        question: "O prático Gomes assessora o comandante na condução de um NM de 250 m pelo canal de acesso a um porto, exibindo no mastro, em adriças distintas, a marca constituída por um cilindro preto, a bandeira HOTEL e a bandeira DELTA. Uma lancha de cerca de 10 m navega em rumo aproximadamente perpendicular ao do NM, indicando visualmente que vai cruzar a sua proa de BE para BB, em situação facilmente avaliada como de risco de abalroamento. O experiente Gomes, em cumprimento ao COLREG, sugere corretamente ao comandante:",
+        options: [
+          { letter: "a", text: "que faça soar cinco apitos curtos e guine para BE." },
+          { letter: "b", text: "que faça soar três apitos sucessivos, o primeiro longo e os dois seguintes curtos, e reduza a velocidade." },
+          { letter: "c", text: "que faça soar cinco apitos curtos e rápidos e guine para BE." },
+          { letter: "d", text: "que faça soar seis apitos curtos e rápidos e reduza a velocidade." },
+          { letter: "e", text: "que faça soar um apito longo e reduza a velocidade." }
+        ],
+        correct: "d",
+        explanations: {
+          d: "✅ GABARITO CORRETO: Em dúvida/risco de abalroamento, a Regra 34(d) do COLREG/RIPEAM exige emitir PELO MENOS cinco apitos curtos e rápidos ('seis' cumpre a exigência). Reduzir velocidade é a manobra prudente para um navio de 250m restrito pelo calado (Cilindro) e manobrando com dificuldade (Delta).",
+          a: "❌ INCORRETA: Guinar para BE no canal de acesso com navio de 250m restrito pelo calado pode causar encalhe.",
+          b: "❌ INCORRETA: O padrão 1 longo + 2 curtos aplica-se a navio com capacidade de manobra restrita em cerração (Regra 35), não ao sinal de dúvida (Regra 34(d)).",
+          c: "❌ INCORRETA: Guinar para BE é inadequado no contexto de canal restrito.",
+          e: "❌ INCORRETA: Um apito longo é sinal de curva cega (Regra 34(e)) ou navio em movimento na cerração (Regra 35(a))."
+        },
+        source: "Fonte: RIPEAM R.34(d) + CIS Cap. V & DPC 2008"
+      },
+      6: {
+        badge: "🏆 JÁ CAIU EM PROVA DE PRÁTICO (DPC 2012)",
+        title: "Prova de Prático de Navios 2012 — Questão 12",
+        question: "De acordo com o COLREG e com o CIS, assinale a opção que preenche corretamente: 'Uma embarcação exibindo duas esferas pretas dispostas em linha vertical e a bandeira ______ é uma embarcação ______.'",
+        options: [
+          { letter: "a", text: "DELTA / à matroca" },
+          { letter: "b", text: "HOTEL / restrita devido a seu calado, com prático a bordo" },
+          { letter: "c", text: "MIKE / sem governo, parada e sem seguimento" },
+          { letter: "d", text: "OSCAR / com capacidade de manobra restrita, devido a 'homem ao mar'" },
+          { letter: "e", text: "WHISKEY / sem governo, requerendo rebocador" }
+        ],
+        correct: "c",
+        explanations: {
+          c: "✅ GABARITO CORRETO: Duas esferas pretas verticais = SEM GOVERNO (NUC - RIPEAM Regra 27). A bandeira MIKE (M) no CIS = 'Meu navio está parado e sem seguimento'.",
+          a: "❌ INCORRETA: Delta é 'manobro com dificuldade', não 'à matroca'.",
+          b: "❌ INCORRETA: Calado restrito é marcado por cilindro (ou 3 luzes encarnadas), e Hotel é 'prático a bordo'.",
+          d: "❌ INCORRETA: Oscar é 'homem ao mar', não capacidade de manobra restrita.",
+          e: "❌ INCORRETA: Whiskey é 'preciso de assistência médica'."
+        },
+        source: "Fonte: RIPEAM R.27 + CIS Cap. XI & DPC 2012"
+      },
+      7: {
+        badge: "📖 ESTUDO DE CASO — DPC 2011 (Questão 51)",
+        title: "Prova de Prático de Navios 2011 — Questão 51 (Estudo de Caso)",
+        question: "Na sinalização por bandeiras do CIS (Cap. V §6), ao transmitir códigos numéricos contendo algarismos repetidos (como a posição ou rumo '1100'), as substitutas (repetidores) devem obedecer à regra das classes de caracteres. Assinale a afirmativa correta sobre a mecânica de repetição por bandeiras:",
+        options: [
+          { letter: "a", text: "A 1ª substituta repete sempre a primeira bandeira da adriça, independente de ser letra ou numeral." },
+          { letter: "b", text: "O grupo '1100' é montado como: 1, 1ª Substituto (repete o 1), 0, e 3ª Substituto (repete o 0 da classe numeral)." },
+          { letter: "c", text: "Numerais não podem usar substitutas; devem ser repetidos com flâmulas sobressalentes." },
+          { letter: "d", text: "A 2ª substituta no grupo '1100' repetiria o numeral 0 por ser a segunda flâmula." },
+          { letter: "e", text: "As substitutas só funcionam para grupos alfabéticos de 2 ou 3 letras." }
+        ],
+        correct: "b",
+        explanations: {
+          b: "✅ GABARITO (Mecânica Regulamentar): A 1ª substituta repete a 1ª bandeira da classe numeral ('1'), e a 3ª substituta repete a 3ª bandeira da classe numeral ('0').",
+          a: "❌ INCORRETA: A substituta só repete bandeiras da mesma classe de caracteres que a antecedem.",
+          c: "❌ INCORRETA: Numerais usam substitutas normalmente de acordo com o Cap. V §6.",
+          d: "❌ INCORRETA: A 2ª substituta repetiria o 2º numeral, não o 3º.",
+          e: "❌ INCORRETA: Substitutas aplicam-se a grupos numéricos e alfabéticos."
+        },
+        source: "Fonte: CIS Cap. V §6 & DPC 2011 (Gabarito a confirmar em fonte oficial)"
+      }
+    };
+
+    function onLevelCompleted(levelNum) {
+      if (EXAM_QUESTIONS[levelNum]) {
+        openExamModal(levelNum);
+      } else {
+        nextLevel();
+      }
+    }
+
+    function openExamModal(levelNum) {
+      const data = EXAM_QUESTIONS[levelNum];
+      if (!data) {
+        nextLevel();
+        return;
+      }
+      
+      document.getElementById('modal-badge').textContent = data.badge;
+      document.getElementById('modal-title').textContent = data.title;
+      document.getElementById('modal-question-text').textContent = data.question;
+      document.getElementById('modal-source-text').textContent = data.source;
+      
+      const optionsList = document.getElementById('modal-options-list');
+      optionsList.innerHTML = '';
+      
+      const feedbackBox = document.getElementById('modal-feedback-box');
+      feedbackBox.style.display = 'none';
+      feedbackBox.innerHTML = '';
+      
+      const continueBtn = document.getElementById('modal-continue-btn');
+      continueBtn.disabled = true;
+
+      data.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'exam-option-btn';
+        btn.innerHTML = `<span class="exam-option-letter">(${opt.letter})</span> <span>${opt.text}</span>`;
+        btn.onclick = () => selectExamOption(opt.letter, data);
+        optionsList.appendChild(btn);
+      });
+
+      document.getElementById('exam-modal').classList.add('active');
+    }
+
+    function selectExamOption(letter, data) {
+      const isCorrect = letter === data.correct;
+      const optionsList = document.getElementById('modal-options-list');
+      const buttons = optionsList.querySelectorAll('.exam-option-btn');
+      
+      buttons.forEach((btn, idx) => {
+        const optLetter = data.options[idx].letter;
+        btn.classList.remove('selected-correct', 'selected-wrong');
+        if (optLetter === letter) {
+          btn.classList.add(isCorrect ? 'selected-correct' : 'selected-wrong');
+        }
+      });
+
+      const feedbackBox = document.getElementById('modal-feedback-box');
+      feedbackBox.style.display = 'block';
+      
+      let html = `<div style="font-weight: 700; margin-bottom: 0.6rem; color: ${isCorrect ? '#86efac' : '#fca5a5'}; font-size: 0.9rem;">
+        ${isCorrect ? '🎉 Resposta Correta!' : '⚠️ Resposta Incorreta — Veja a análise da banca:'}
+      </div>`;
+      
+      html += `<div style="margin-bottom: 0.8rem; color: #F8FAFC; background: rgba(255,255,255,0.05); padding: 0.6rem; border-radius: 8px;">${data.explanations[letter]}</div>`;
+      
+      feedbackBox.innerHTML = html;
+      
+      const continueBtn = document.getElementById('modal-continue-btn');
+      if (continueBtn) continueBtn.disabled = false;
+      if (isCorrect) playSound('bell');
+    }
+
+    // Motor de Validação de Regras do Jogo
+    function checkRules() {
+      switch (currentLevel) {
+        case 1:
+          // Nível 1
+          if (levelStep === 1 && playerAPState === 'dip') {
+            addLog("Sistema", "AP a meio mastro visto pelo outro navio!");
+            addLog("Outro Navio", "Aguardando confirmação de compreensão (Close-up).");
+            levelStep = 2;
+          } else if (levelStep === 2 && playerAPState === 'closeup') {
+            addLog("Sistema", "Você sinalizou compreensão completa!");
+            addLog("Outro Navio", "Entendido. Iniciando recolhimento da bandeira O.");
+            playSound('bell');
+            setTimeout(() => {
+              setOtherHoist([]);
+              addLog("Outro Navio", "Arriou o sinal [ O ].");
+              addLog("Dica", "O outro navio abaixou o sinal. Retorne seu AP a meio mastro (Dip).");
+              levelStep = 3;
+            }, 2000);
+          } else if (levelStep === 3 && playerAPState === 'dip') {
+            addLog("Sistema", "AP retornado ao Dip.");
+            levelStep = 4;
+            setTimeout(() => {
+              setOtherHoist(['AP']);
+              addLog("Outro Navio", "Içou a Bandeira de Resposta (AP) sozinha (Fim de Mensagem).");
+              addLog("Dica", "Içe seu AP para mastro cheio (Close-up) para reconhecer o fim da transmissão.");
+            }, 1500);
+          } else if (levelStep === 4 && playerAPState === 'closeup') {
+            addLog("Sistema", "Sinalização concluída com perfeição!");
+            playSound('bell');
+            addLog("Sistema", "Nível 1 concluído com sucesso!");
+            showLevelCompleteButton(1);
+          }
+          break;
+
+        case 2:
+          // Nível 2
+          if (levelStep === 1 && playerAPState === 'dip') {
+            addLog("Outro Navio", "Aguardando compreensão do sinal D.");
+            levelStep = 2;
+          } else if (levelStep === 2 && playerAPState === 'closeup') {
+            addLog("Outro Navio", "D lido. Transmitindo próximo sinal...");
+            setTimeout(() => {
+              setOtherHoist([]);
+              addLog("Outro Navio", "Arriou o sinal [ D ].");
+              addLog("Dica", "Retorne seu AP a meio mastro (Dip) enquanto aguarda o próximo sinal.");
+              levelStep = 3;
+            }, 2000);
+          } else if (levelStep === 3 && playerAPState === 'dip') {
+            setTimeout(() => {
+              setOtherHoist(['S', 'Q']);
+              addLog("Outro Navio", "Içou o grupo: [ S ] [ Q ] (SQ = 'Você deve parar ou capear / heave to').");
+              addLog("Dica", "Suba seu AP para mastro cheio (Close-up) quando entender a mensagem.");
+              levelStep = 4;
+            }, 1500);
+          } else if (levelStep === 4 && playerAPState === 'closeup') {
+            addLog("Outro Navio", "SQ lido. Encerrando transmissão...");
+            setTimeout(() => {
+              setOtherHoist([]);
+              addLog("Outro Navio", "Arriou o sinal [ S ] [ Q ].");
+              addLog("Dica", "Retorne seu AP para Dip.");
+              levelStep = 5;
+            }, 2000);
+          } else if (levelStep === 5 && playerAPState === 'dip') {
+            setTimeout(() => {
+              setOtherHoist(['AP']);
+              addLog("Outro Navio", "Içou o AP isolado (Fim de Mensagem).");
+              addLog("Dica", "Içe seu AP para mastro cheio (Close-up) para confirmar.");
+              levelStep = 6;
+            }, 1500);
+          } else if (levelStep === 6 && playerAPState === 'closeup') {
+            addLog("Sistema", "Sequência completada com total precisão!");
+            playSound('bell');
+            addLog("Sistema", "Nível 2 concluído com sucesso!");
+            showLevelCompleteButton(2);
+          }
+          break;
+
+        case 3:
+          // Nível 3 (Z)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const correctZ = playerHoistedOnMast.join('') === 'Z';
+            if (correctZ) {
+              addLog("Outro Navio", "Solicitação de rebocador avistada (Sinal Z). AP no topo (Close-up) — Rebocador a caminho!");
+              setOtherAP('closeup');
+              levelStep = 2;
+              playSound('bell');
+              addLog("Sistema", "Nível 3 concluído com sucesso!");
+              showLevelCompleteButton(3);
+            } else {
+              addLog("Outro Navio", "Seu sinal não está correto. Lembre-se: rebocador = Z.");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          }
+          break;
+
+        case 4:
+          // Nível 4 (Cilindro + DH)
+          if (levelStep === 1 && playerAPState === 'closeup') {
+            levelStep = 2;
+            addLog("Outro Navio", "AP no topo (Close-up) avistado! Confirmação de recepção do sinal [ D H ] e marcas de calado R.28 transmitida.");
+            setOtherAP('closeup');
+            playSound('bell');
+            addLog("Sistema", "Nível 4 concluído com sucesso!");
+            showLevelCompleteButton(4);
+          }
+          break;
+
+        case 5:
+          // Nível 5 (ZL)
+          if (levelStep === 1 && playerAPState === 'dip') {
+            addLog("Sistema", "AP a meio mastro (Dip) avistado pelo outro navio.");
+            addLog("Outro Navio", "Aguardando melhora de visibilidade...");
+            levelStep = 2;
+            setTimeout(() => {
+              const cloud = document.getElementById('cloud');
+              if (cloud) cloud.classList.remove('active');
+              setOtherHoist(['X', 'F', '9']);
+              addLog("Sistema", "O vento dissipou a névoa! O sinal revelado é [ X F 9 ].");
+              addLog("Dica", "O sinal [ X F 9 ] não existe no dicionário. Monte e iça o sinal ZL no seu mastro.");
+            }, 2500);
+          } else if (levelStep === 2) {
+            if (playerHoistedOnMast.length === 0) return;
+            const isZL = playerHoistedOnMast.join('') === 'ZL';
+            if (isZL) {
+              addLog("Outro Navio", "Recebido seu sinal ZL ('Sinal recebido, mas não compreendido').");
+              setOtherAP('closeup');
+              levelStep = 3;
+              setTimeout(() => {
+                setOtherAP('none');
+                setOtherHoist(['K']);
+                addLog("Outro Navio", "Corrigido! Arriou [ X F 9 ] e içou o sinal correto: [ K ] ('Desejo me comunicar com você').");
+                addLog("Dica", "Agora que você entendeu o sinal, mude o seu AP para mastro cheio (Close-up).");
+              }, 2500);
+            } else {
+              addLog("Outro Navio", "Seu sinal de retorno está incorreto. Use ZL para sinalizar que não entendeu.");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          } else if (levelStep === 3 && playerAPState === 'closeup') {
+            addLog("Sistema", "Comunicação restabelecida com sucesso!");
+            playSound('bell');
+            addLog("Sistema", "Nível 5 concluído com sucesso!");
+            showLevelCompleteButton(5);
+          }
+          break;
+
+        case 6:
+          // Nível 6 (M + 2 esferas)
+          if (levelStep === 1 && playerAPState === 'closeup') {
+            levelStep = 2;
+            addLog("Outro Navio", "AP no topo (Close-up) avistado! Confirmação de sinal M (Mike) e marca NUC (Sem Governo) transmitida.");
+            setOtherAP('closeup');
+            playSound('bell');
+            addLog("Sistema", "Nível 6 concluído com sucesso!");
+            showLevelCompleteButton(6);
+          }
+          break;
+
+        case 7:
+          // Nível 7 (Substitutas)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const correctSequence = playerHoistedOnMast.join('') === '1Sub10Sub3';
+            if (correctSequence) {
+              addLog("Outro Navio", "Sinal [ 1100 ] recebido perfeitamente!");
+              setOtherAP('closeup');
+              levelStep = 2;
+              addLog("Dica", "Agora arrie as bandeiras de sinal e coloque seu AP no topo (Close-up) para terminar a comunicação.");
+            } else {
+              addLog("Outro Navio", "Sinal incorreto. Use substitutas para '1100'.");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          } else if (levelStep === 2 && playerAPState === 'closeup' && playerHoistedOnMast.length === 0) {
+            addLog("Outro Navio", "Recebido o sinal de fim de transmissão.");
+            playSound('bell');
+            addLog("Sistema", "Nível 7 concluído com sucesso!");
+            showLevelCompleteButton(7);
+          }
+          break;
+
+        case 8:
+          // Nível 8 (Soletrar YZ)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const correctSpell = playerHoistedOnMast.join('') === 'YZtacklineRIO';
+            if (correctSpell) {
+              addLog("Outro Navio", "Sinal de soletração YZ RIO recebido com perfeição!");
+              setOtherAP('closeup');
+              levelStep = 2;
+              playSound('bell');
+              addLog("Sistema", "Nível 8 concluído com sucesso!");
+              showLevelCompleteButton(8);
+            } else {
+              addLog("Outro Navio", "Soletração incorreta. Certifique-se de usar YZ + Tackline + R + I + O.");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          }
+          break;
+
+        case 9:
+          // Nível 9 (Tackline RY UM)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const correctTackline = playerHoistedOnMast.join('') === 'RYtacklineUM';
+            if (correctTackline) {
+              addLog("Outro Navio", "Sinal duplo [ RY ] e [ UM ] separados por Tackline recebido perfeitamente!");
+              setOtherAP('closeup');
+              levelStep = 2;
+              playSound('bell');
+              addLog("Sistema", "Nível 9 concluído com sucesso!");
+              showLevelCompleteButton(9);
+            } else {
+              addLog("Outro Navio", "Adriça incorreta. Lembre-se: R, Y, Tackline, U, M na mesma adriça.");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          }
+          break;
+
+        case 10:
+          // Nível 10 (Substituta de classe)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const correctClassSub = playerHoistedOnMast.join('') === 'L23Sub20';
+            if (correctClassSub) {
+              addLog("Outro Navio", "Sinal [ L2330 ] com a 2ª substituta da classe numeral recebido com precisão!");
+              setOtherAP('closeup');
+              levelStep = 2;
+              playSound('bell');
+              addLog("Sistema", "Nível 10 concluído com sucesso!");
+              showLevelCompleteButton(10);
+            } else {
+              addLog("Outro Navio", "Sinal incorreto. Lembre-se: a classe que precede o número repetido (o 2º '3') é a numeral, logo usa-se a Sub2!");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          }
+          break;
+
+        case 11:
+          // Nível 11 (C, N, RQ)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const isForbiddenSingleLetterRQ = playerHoistedOnMast.includes('tackline') || playerHoistedOnMast.length > 1;
+            const isC = playerHoistedOnMast.join('') === 'C';
+            
+            if (isC) {
+              addLog("Outro Navio", "Resposta afirmativa C (Charlie) recebida! Arriando a pergunta e confirmando com o galhardete de resposta.");
+              acknowledgeOther();
+              levelStep = 2;
+              playSound('bell');
+              addLog("Sistema", "Nível 11 concluído com sucesso!");
+              showLevelCompleteButton(11);
+            } else if (isForbiddenSingleLetterRQ) {
+              addLog("Sistema", "ALERTA REGULAMENTAR (CIS Cap. X pág. 25): C, N e RQ NÃO podem ser anexados a sinais de uma única letra!");
+              addLog("Outro Navio", "Sinal rejeitado por erro de sintaxe no CIS.");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            } else {
+              addLog("Outro Navio", "Resposta incorreta. Para responder SIM à pergunta, iça a bandeira C (Charlie).");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          }
+          break;
+
+        case 12:
+          // Nível 12 (NC)
+          if (levelStep === 1 && playerAPState === 'closeup') {
+            addLog("Outro Navio", "Sinal de socorro NC reconhecido. Assistência a caminho.");
+            levelStep = 2;
+            setTimeout(() => {
+              setOtherHoist([]);
+              addLog("Sistema", "Agora é você quem precisa retransmitir o sinal de socorro oficial NC (November Charlie).");
+              addLog("Dica", "Monte [ N ] [ C ] e clique em 'Içar Sinal'.");
+            }, 2000);
+          } else if (levelStep === 2) {
+            if (playerHoistedOnMast.length === 0) return;
+            const isNC = playerHoistedOnMast.join('') === 'NC';
+            if (isNC) {
+              addLog("Outro Navio", "Sinal de Socorro NC recebido por toda a frota!");
+              setOtherAP('closeup');
+              levelStep = 3;
+              playSound('bell');
+              addLog("Sistema", "Nível 12 concluído com sucesso!");
+              showLevelCompleteButton(12);
+            }
+          }
+          break;
+
+        case 13:
+          // Nível 13 (KF)
+          if (levelStep === 1 && playerAPState === 'closeup') {
+            addLog("Outro Navio", "Solicitação de rebocador (KF) confirmada com sucesso!");
+            playSound('bell');
+            addLog("Sistema", "Nível 13 concluído com sucesso!");
+            showLevelCompleteButton(13);
+          }
+          break;
+      }
+    }
+
+    function showLevelCompleteButton(levelNum) {
+      const container = document.getElementById('level-complete-action-container');
+      const btn = document.getElementById('level-complete-action-btn');
+      if (!container || !btn) return;
+      
+      const hasQuestion = [3, 4, 6].includes(levelNum);
+      
+      if (hasQuestion) {
+        btn.innerHTML = '📝 Responder Questão do Concurso';
+        btn.className = 'level-action-btn';
+        btn.onclick = () => {
+          container.classList.remove('active');
+          onLevelCompleted(levelNum);
+        };
+      } else {
+        btn.innerHTML = (levelNum === 13) ? '🏆 Concluir Jornada' : '⏭️ Próximo Nível';
+        btn.className = 'level-action-btn green-btn';
+        btn.onclick = () => {
+          container.classList.remove('active');
+          if (levelNum === 13) {
+            addLog("Sistema", "JORNADA SUPREMA CONCLUÍDA!");
+            alert("PARABÉNS! Você concluiu com êxito todas as 13 missões do Tutor do CIS, 100% alinhado com o código oficial da IMO 2005 e o banco de provas do PSCPP/DPC!");
+            loadLevel(1);
+          } else {
+            nextLevel();
+          }
+        };
+      }
+      container.classList.add('active');
+    }
+
+    function closeExamModalAndAdvance() {
+      document.getElementById('exam-modal').classList.remove('active');
+      nextLevel();
+    }
+
+    function nextLevel() {
+      currentLevel++;
+      if (LEVELS[currentLevel]) {
+        loadLevel(currentLevel);
+      } else {
+        addLog("Sistema", "Parabéns! Você completou toda a jornada do tutor!");
+      }
+    }
+
+    function renderTutorProgress() {
+      const track = document.getElementById('tutor-progress-track');
+      track.innerHTML = '';
+      
+      const numLevels = Object.keys(LEVELS).length;
+      for (let i = 1; i <= numLevels; i++) {
+        const dot = document.createElement('div');
+        dot.className = `tutor-dot ${i === currentLevel ? 'active' : ''} ${i < currentLevel ? 'completed' : ''}`;
+        dot.textContent = i < currentLevel ? '✓' : i;
+        dot.onclick = () => loadLevel(i);
+        dot.title = LEVELS[i].title;
+        track.appendChild(dot);
+      }
+    }
+
+    function loadLevel(levelNum) {
+      currentLevel = levelNum;
+      const level = LEVELS[levelNum];
+      
+      document.getElementById('level-title').textContent = level.title;
+      document.getElementById('level-desc').textContent = level.desc;
+      document.getElementById('instruction-text').innerHTML = level.instructions;
+      
+      const citationEl = document.getElementById('manual-citation');
+      if (citationEl) {
+        citationEl.innerHTML = level.citation || '';
+      }
+      
+      const actionContainer = document.getElementById('level-complete-action-container');
+      if (actionContainer) actionContainer.classList.remove('active');
+      
+      // Limpa marcas RIPEAM anteriores e define modo padrão de dia
+      setOtherMarksConfig({ day: [], night: [] });
+      setDayNightMode(false);
+      
+      clearPlayerHoist();
+      const radioLogs = document.getElementById('radio-logs');
+      if (radioLogs) radioLogs.innerHTML = '';
+      level.setup();
+      renderTutorProgress();
+    }
+
+    // Inicialização segura da página
+    function initApp() {
+      initDictionary();
+      initInventory();
+      loadLevel(1);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+  </script>
+
+</body>
+</html>
