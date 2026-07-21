@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simulador e Tradutor do Código Internacional de Sinais</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.0">
   <link rel="stylesheet" href="dist/font-bandeiras.css">
 </head>
 <body>
@@ -59,14 +59,8 @@
           <!-- PAINEL DE LOGS FLUTUANTE NO CÉU (SKY OVERLAY) -->
           <div class="sky-radio-panel" id="sky-radio-panel">
             <div class="sky-radio-header">
-              <div style="display: flex; align-items: center; gap: 0.5rem;">
-                <span style="font-size:0.75rem; font-weight:700;">📻 Rádio VHF (C.16)</span>
-                <button id="day-night-toggle-btn" class="day-night-btn" onclick="toggleDayNightMode()">☀️ DIA</button>
-              </div>
-              <div style="display: flex; align-items: center; gap: 0.4rem;">
-                <span style="font-size: 0.60rem; color: #94a3b8;">REALTIME</span>
-                <button class="collapse-btn" onclick="toggleCollapse('sky-radio-panel')" title="Minimizar/Maximizar" style="background:none; border:none; color:#fff; cursor:pointer; font-size:0.85rem; padding:0 4px;">➖</button>
-              </div>
+              <span style="font-size:0.75rem; font-weight:700;">📝 Histórico (Logs)</span>
+              <button class="collapse-btn" onclick="toggleCollapse('sky-radio-panel')" title="Minimizar/Maximizar" style="background:none; border:none; color:#fff; cursor:pointer; font-size:0.85rem; padding:0 4px;">➖</button>
             </div>
             <div class="sky-radio-logs" id="radio-logs">
               <!-- Logs color-coded com horário aparecem aqui -->
@@ -75,7 +69,10 @@
 
           <!-- Controles rápidos de AP + nível, logo ABAIXO da transmissão (só mobile) -->
           <div class="mobile-simulator-footer" id="mobile-simulator-footer">
-            <span id="mobile-level-text">Nível: 1/13</span>
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+              <span id="mobile-level-text">Nível: 1/13</span>
+              <button id="day-night-toggle-btn" class="day-night-btn" onclick="toggleDayNightMode()">☀️ DIA</button>
+            </div>
             <div class="mobile-ap-quick-controls">
               <button class="btn btn-secondary btn-xs" onclick="setPlayerAP('dip')">AP a Meio</button>
               <button class="btn btn-secondary btn-xs" onclick="setPlayerAP('closeup')">AP no Topo</button>
