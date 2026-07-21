@@ -1045,6 +1045,7 @@
       playSound('hoist');
       renderPlayerMast();
       addLog("Jogador", `Içou a Bandeira de Resposta (AP) em: ${state === 'dip' ? 'Meio Mastro (Dip)' : 'Mastro Cheio (Close-up)'}.`);
+      if (window.innerWidth <= 850) setMobileTab('center');
       checkRules();
     }
 
@@ -1057,6 +1058,7 @@
       renderPlayerMast();
       playSound('hoist');
       addLog("Jogador", `Içou o sinal [ ${playerHoist.filter(f => f!=='tackline').join(' ')} ] no mastro.`);
+      if (window.innerWidth <= 850) setMobileTab('center');
       checkRules();
     }
 
@@ -1614,11 +1616,48 @@
       renderTutorProgress();
     }
 
+    // Controle de abas exclusivas para Mobile
+    let currentMobileTab = 'left';
+
+    function setMobileTab(tabName) {
+      currentMobileTab = tabName;
+      
+      const navItems = document.querySelectorAll('.mobile-nav-item');
+      navItems.forEach(item => item.classList.remove('active'));
+      
+      let index = 0;
+      if (tabName === 'center') index = 1;
+      if (tabName === 'right') index = 2;
+      if (navItems[index]) navItems[index].classList.add('active');
+      
+      const colLeft = document.querySelector('.col-left');
+      const colCenter = document.querySelector('.col-center');
+      const colRight = document.querySelector('.col-right');
+      
+      if (colLeft) colLeft.classList.toggle('mobile-visible', tabName === 'left');
+      if (colCenter) colCenter.classList.toggle('mobile-visible', tabName === 'center');
+      if (colRight) colRight.classList.toggle('mobile-visible', tabName === 'right');
+    }
+
     // Inicialização segura da página
     function initApp() {
       initDictionary();
       initInventory();
       loadLevel(1);
+      
+      if (window.innerWidth <= 850) {
+        setMobileTab('left');
+      }
+      
+      window.addEventListener('resize', () => {
+        if (window.innerWidth <= 850) {
+          setMobileTab(currentMobileTab);
+        } else {
+          document.querySelector('.col-left').classList.remove('mobile-visible');
+          document.querySelector('.col-center').classList.remove('mobile-visible');
+          document.querySelector('.col-right').classList.remove('mobile-visible');
+        }
+      });
     }
 
     if (document.readyState === 'loading') {
@@ -1627,6 +1666,22 @@
       initApp();
     }
   </script>
+
+  <!-- BARRA DE NAVEGAÇÃO BOTTOM EXCLUSIVA PARA DISPOSITIVOS MÓVEIS (MOBILE APP FEEL) -->
+  <div class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <button class="mobile-nav-item active" onclick="setMobileTab('left')">
+      <span class="nav-icon">📖</span>
+      <span class="nav-text">Manual</span>
+    </button>
+    <button class="mobile-nav-item" onclick="setMobileTab('center')">
+      <span class="nav-icon">⛵</span>
+      <span class="nav-text">Simulador</span>
+    </button>
+    <button class="mobile-nav-item" onclick="setMobileTab('right')">
+      <span class="nav-icon">🎏</span>
+      <span class="nav-text">Painel</span>
+    </button>
+  </div>
 
 </body>
 </html>

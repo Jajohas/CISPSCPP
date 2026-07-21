@@ -1342,42 +1342,223 @@ html, body {
   font-style: italic;
 }
 
-/* Responsividade: colapsar para 1 coluna apenas abaixo de 850px */
+/* Estilo Base da Barra Bottom Mobile (Invisível no Desktop) */
+.mobile-bottom-nav {
+  display: none;
+}
+
+/* Responsividade: Ativar modo App/Jogo Mobile abaixo de 850px */
 @media (max-width: 850px) {
   html, body {
-    height: auto;
-    overflow-y: auto;
+    height: 100vh !important;
+    height: -webkit-fill-available;
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
   
   .container-slim {
-    height: auto;
+    display: flex;
+    flex-direction: column;
+    height: 100vh !important;
+    height: -webkit-fill-available;
+    overflow: hidden;
+    padding: 0.5rem;
+    box-sizing: border-box;
   }
 
   .header-slim {
-    height: auto;
-    flex-direction: column;
-    padding: 0.6rem;
+    height: auto !important;
+    flex-shrink: 0;
+    margin-bottom: 0.35rem;
+    padding: 0.4rem;
   }
 
   .header-slim-brand {
     flex-wrap: wrap;
     justify-content: center;
+    gap: 0.4rem;
+  }
+  
+  .brand-title {
+    font-size: 1.1rem !important;
   }
 
   .game-view-container, .tab-content.active.game-view-container {
+    flex: 1;
     display: flex !important;
-    flex-direction: column !important;
+    flex-direction: row !important;
+    position: relative;
+    overflow: hidden !important;
     height: auto !important;
-    overflow: visible !important;
+    margin-bottom: 65px; /* Deixa espaço para barra bottom */
+    padding: 0 !important;
   }
 
+  /* Oculte as colunas por padrão no mobile */
   .col-left, .col-right, .col-center {
-    height: auto;
-    overflow: visible;
+    display: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    flex-shrink: 0;
+    overflow-y: auto !important;
+    padding: 0 0.25rem !important;
+    box-sizing: border-box;
+  }
+
+  /* Exibe apenas a coluna ativa no mobile */
+  .col-left.mobile-visible {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .col-center.mobile-visible {
+    display: flex !important;
+    flex-direction: column;
+  }
+  .col-right.mobile-visible {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.8rem;
   }
 
   .game-scene {
-    height: 280px;
+    height: 235px !important;
+    border-radius: 16px;
+    margin-bottom: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  /* Estilização Rádio Sky no Mobile */
+  .sky-radio-panel {
+    height: 105px !important;
+    top: 6px !important;
+    left: 8px !important;
+    right: 8px !important;
+    padding: 0.3rem 0.5rem !important;
+  }
+  
+  .sky-radio-header {
+    margin-bottom: 0.2rem !important;
+    padding-bottom: 0.15rem !important;
+  }
+  
+  .sky-radio-logs {
+    font-size: 0.68rem !important;
+    gap: 0.25rem !important;
+  }
+
+  /* Reposicionamento e Redimensionamento dos navios no Mobile (Impede Overlapping) */
+  .ship-left {
+    left: 4% !important;
+    width: 160px !important;
+    height: 90px !important;
+    bottom: 5px !important;
+  }
+  
+  .ship-right {
+    right: 4% !important;
+    width: 160px !important;
+    height: 90px !important;
+    bottom: 5px !important;
+  }
+
+  .ship-mast {
+    height: 125px !important;
+  }
+
+  /* Ajuste do AP em meio mastro para mastro menor */
+  .halyard-flag.ap-flag.ap-dip {
+    transform: translateY(48px) !important;
+  }
+
+  .ship-name {
+    font-size: 0.6rem !important;
+    bottom: -13px !important;
+  }
+  
+  .cloud-obstruct {
+    width: 150px !important;
+    height: 65px !important;
+    bottom: 60px !important;
+    right: 5% !important;
+  }
+
+  .level-complete-action-container {
+    top: 145px !important;
+  }
+  
+  .level-action-btn {
+    font-size: 0.72rem !important;
+    padding: 0.45rem 1rem !important;
+    border-radius: 8px !important;
+  }
+
+  /* Organização do Armário de Bandeiras no Mobile */
+  .flag-selector-grid {
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: 5px !important;
+    padding: 0.2rem !important;
+  }
+
+  .flag-selector-btn {
+    height: 38px !important;
+    padding: 2px !important;
+    border-radius: 6px !important;
+  }
+
+  .flag-selector-label {
+    font-size: 0.52rem !important;
+  }
+
+  /* Barra de Navegação Bottom Mobile */
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #09132b;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 99;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+    padding: 0 0.5rem;
+  }
+
+  .mobile-nav-item {
+    background: none;
+    border: none;
+    outline: none;
+    color: #94a3b8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    flex: 1;
+    height: 100%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-nav-item.active {
+    color: var(--color-primary);
+  }
+
+  .mobile-nav-item .nav-icon {
+    font-size: 1.15rem;
+  }
+
+  .mobile-nav-item .nav-text {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 }
 
