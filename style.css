@@ -1370,10 +1370,7 @@ html, body {
   }
 
   .header-slim {
-    height: auto !important;
-    flex-shrink: 0;
-    margin-bottom: 0.35rem;
-    padding: 0.4rem;
+    display: none !important;
   }
 
   .header-slim-brand {
