@@ -1437,7 +1437,7 @@ html, body {
 
   /* Estilização Rádio Sky no Mobile */
   .sky-radio-panel {
-    height: 196px !important;
+    height: 110px !important;
     top: 6px !important;
     left: 8px !important;
     right: 8px !important;
@@ -1626,7 +1626,7 @@ html, body {
   /* Armário (carrossel) + içar/arriar sobrepostos na cena, logo abaixo do rádio */
   #mobile-sim-controls {
     position: absolute;
-    top: 212px;
+    top: 126px;
     left: 8px;
     right: 8px;
     z-index: 16;

@@ -39,11 +39,11 @@
         </div>
 
         <div class="card-panel manual-card">
-          <h5>📖 Manual do Marinheiro</h5>
-          <div id="instruction-text" class="manual-content">
+          <h5 style="margin:0; font-size:0.85rem; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.05em;">📖 Estudo & Gabarito</h5>
+          <div id="instruction-text" class="manual-content" style="margin-top: 0.5rem; font-size: 0.8rem; line-height: 1.4;">
             O navio adversário fará um sinal. Siga os passos indicados.
           </div>
-          <div class="manual-citation" id="manual-citation">
+          <div class="manual-citation" id="manual-citation" style="margin-top: 0.6rem;">
             <!-- Citação oficial da DPC / IMO 2005 renderizada via JS -->
           </div>
         </div>
@@ -56,14 +56,15 @@
           <div class="sea-waves"></div>
           <div class="cloud-obstruct" id="cloud"></div>
           
-          <!-- PAINEL DE LOGS FLUTUANTE NO CÉU (SKY OVERLAY) -->
+          <!-- PAINEL DE MISSÃO FLUTUANTE NO CÉU (SKY OVERLAY) -->
           <div class="sky-radio-panel" id="sky-radio-panel">
             <div class="sky-radio-header">
-              <span style="font-size:0.75rem; font-weight:700;">📝 Histórico (Logs)</span>
+              <span style="font-size:0.75rem; font-weight:700;">📋 Instruções da Missão</span>
               <button class="collapse-btn" onclick="toggleCollapse('sky-radio-panel')" title="Minimizar/Maximizar" style="background:none; border:none; color:#fff; cursor:pointer; font-size:0.85rem; padding:0 4px;">➖</button>
             </div>
-            <div class="sky-radio-logs" id="radio-logs">
-              <!-- Logs color-coded com horário aparecem aqui -->
+            <div class="sky-radio-logs" id="mission-logs" style="font-size: 0.78rem; color: #f8fafc; line-height: 1.45; overflow-y: auto; display: flex; flex-direction: column; gap: 0.4rem;">
+              <div><strong>Cenário:</strong> <span id="mission-scenario" style="color: #cbd5e1;">Carregando...</span></div>
+              <div><strong>Sua Missão:</strong> <span id="mission-goal" style="color: var(--color-primary); font-weight: 700;">Carregando...</span></div>
             </div>
           </div>
 
@@ -367,7 +368,7 @@
           if (el.classList.contains('collapsed')) {
             controls.style.top = '48px'; // Sobe os controles para logo abaixo do header colapsado
           } else {
-            controls.style.top = '212px'; // Volta para a posição normal
+            controls.style.top = '126px'; // Volta para a posição normal (após redução da altura)
           }
         }
       }
@@ -454,19 +455,22 @@
     let playerHoistedOnMast = [];   // Bandeiras de fato içadas no mastro do navio
     let playerAPState = 'none';     // 'none', 'dip', 'closeup'
     let otherHoist = [];            // Bandeiras na adriça do computador
-    let otherAPState = 'none';      // 'none', 'dip', 'closeup'
-    let levelStep = 0;              // Passo corrente dentro do nível
-    
     // Definição dos 13 níveis do Tutor de CIS, alinhados estritamente às normas da DPC/IMO 2005
     const LEVELS = {
       1: {
         title: "Nível 1: O Sinal de Resposta (Básico)",
         desc: "Aprenda a responder a um sinal simples recebido utilizando o Answering Pendant (AP) de acordo com o CIS Cap. V.",
-        instructions: `O <strong>N.M. ALBATROZ</strong> iça a bandeira <strong>O (Oscar)</strong> (Homem ao Mar).
-          <br><br><strong>Passo 1:</strong> Ao ver a bandeira subir, ice seu <strong>AP a meio mastro (Dip)</strong>.
-          <br><strong>Passo 2:</strong> Ao compreender o sinal, suba o AP para <strong>mastro cheio (Close-up)</strong>.
-          <br><strong>Passo 3:</strong> Quando ele arriar a bandeira, retorne seu AP para <strong>Dip</strong>.
-          <br><strong>Passo 4:</strong> Ele iça o AP isolado (Fim). Ice seu AP para <strong>Close-up</strong>.`,
+        scenario: "O N.M. ALBATROZ está chamando e içou a bandeira O (Oscar) que significa 'Homem ao Mar'.",
+        mission: "Sinalize o avistamento e a compreensão do sinal utilizando a sua adriça de resposta (Bandeira AP) de forma regulamentar.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>Ao ver a bandeira subir, ice seu <strong>AP a meio mastro (Dip)</strong>.</li>
+            <li>Ao compreender o sinal, suba o AP para <strong>mastro cheio (Close-up)</strong>.</li>
+            <li>Quando ele arriar a bandeira, retorne seu AP para <strong>Dip</strong>.</li>
+            <li>Ele iça o AP isolado (Fim). Ice seu AP para <strong>Close-up</strong> para encerrar.</li>
+          </ol>
+        `,
         citation: `📜 <strong>Fundamentação Regulamentar: CIS (IMO 2005) Cap. V §1</strong>
           <br><em>"The Answering Pendant should be hoisted at the dip by the vessel receiving a signal as soon as it is seen, and hoisted close-up when the signal is understood."</em>
           <br><br>👉 <strong>Regra da DPC:</strong> O AP a meio mastro sinaliza <em>avistamento do sinal</em>; no topo sinaliza <em>compreensão completa</em>.`,
@@ -483,13 +487,20 @@
       2: {
         title: "Nível 2: Mensagem Sequencial com SQ",
         desc: "Pratique a coordenação do seu AP ao responder a mensagens sequenciais com grupos regulamentares do CIS Cap. X.",
-        instructions: `Você receberá dois sinais em sequência:
-          <br>1. Primeiro o grupo <strong>D (Delta)</strong> (Afastar-se / Dificuldade de manobra).
-          <br>2. Depois o grupo <strong>SQ (Sierra Quebec)</strong> (<em>"Você deve parar ou capear / heave to"</em>).
-          <br><br>Coorde seu AP entre <strong>Dip</strong> (ao ver subir/arriar) e <strong>Close-up</strong> (ao compreender).`,
+        scenario: "O navio transmissor enviará dois grupos distintos de bandeiras em sequência.",
+        mission: "Coorde seu AP entre Dip e Close-up a cada alteração de sinal do outro navio para sinalizar a leitura sequencial.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>O outro navio iça <strong>D (Delta)</strong>. Coloque seu AP a meio mastro (<strong>Dip</strong>).</li>
+            <li>Ao compreender Delta, suba para mastro cheio (<strong>Close-up</strong>).</li>
+            <li>O outro navio arria Delta e iça <strong>SQ (Sierra Quebec)</strong>. Retorne seu AP imediatamente para <strong>Dip</strong>.</li>
+            <li>Ao compreender SQ, suba o AP de volta para <strong>Close-up</strong>.</li>
+          </ol>
+        `,
         citation: `📜 <strong>Fundamentação Regulamentar: CIS Cap. V §2 & Cap. X</strong>
           <br><em>"SQ = You should stop or heave to immediately."</em>
-          <br><br>👉 <strong>Regra da DPC:</strong> Quando a estação emissora transmite vários grupos em sequência, a estação receptora retorna o AP para o <em>Dip</em> entre cada grupo para indicar avistamento da nova combinação antes do <em>Close-up</em>.`,
+          <br><br>👉 <strong>Regra da DPC:</strong> Quando a estação emissora transmite vários grupos em sequência, a estação receptora retorna o AP para o <em>Dip</em> entre cada grupo para indicar avistamento da nova combinação antes de voltar a mantê-lo em <em>Close-up</em>.`,
         setup: () => {
           levelStep = 1;
           setOtherHoist(['D']);
@@ -502,10 +513,17 @@
       },
       3: {
         title: "Nível 3: Cores e Formas (Concurso DPC 2006)",
-        desc: "Solicite assistência de um rebocador identificando a bandeira pelas especificações formais de cores e geometria da DPC.",
-        instructions: `Seu navio (<strong>N.M. BRASIL</strong>) aproxima-se da bacia de evolução e precisa solicitar apoio de um rebocador para manobra de atracação.
-          <br><br><strong>Passo 1:</strong> Identifique no armário a bandeira descrita na Questão 2 da prova DPC-2006: <em>4 triângulos partindo do centro: preto (tralha/esquerda), amarelo (topo), azul (extremidade/direita) e vermelho (base)</em>.
-          <br><strong>Passo 2:</strong> Selecione a bandeira <strong>Z (Zulu)</strong>, adicione à sua adriça e clique em <strong>'Içar Sinal'</strong>.`,
+        desc: "Solicite assistência de um rebocador identificando a bandeira pelas especificações de cores e geometria da DPC.",
+        scenario: "Seu navio (N.M. BRASIL) está entrando no porto e precisa solicitar um rebocador para apoiar a atracação.",
+        mission: "Identifique no seu armário de bandeiras o sinal de uma única letra que solicita rebocador, monte na sua adriça e ice.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>No armário, encontre a bandeira que corresponde à Questão 2 da prova DPC-2006 (triângulos cruzados: preto, amarelo, azul e vermelho).</li>
+            <li>Trata-se da bandeira <strong>Z (Zulu)</strong> que significa <em>"Solicito rebocador"</em>.</li>
+            <li>Adicione <strong>Z</strong> na sua adriça e clique em <strong>'Içar Sinal'</strong>.</li>
+          </ol>
+        `,
         citation: `📜 <strong>Fundamentação Oficial: DPC PSCPP 2006 Q2 & CIS Cap. XI</strong>
           <br><em>"Z (Zulu) = Solicito rebocador."</em>
           <br><br>👉 <strong>Cobrado em Prova:</strong> A banca exige memorização exata da geometria das tralhas e triângulos: Preto (tralha/esquerda), Amarelo (superior), Azul (extremidade/direita) e Encarnado (base/inferior).`,
@@ -522,11 +540,16 @@
       4: {
         title: "Nível 4: CIS + COLREG (Concurso DPC 2008)",
         desc: "Interprete a combinação de marcas/luzes RIPEAM Regra 28 e bandeiras de sinalização do CIS em um navio restrito.",
-        instructions: `O <strong>N.M. ALBATROZ</strong> é um navio restrito pelo seu calado.
-          <br>De dia, exibe a marca diurna de <strong>1 Cilindro Preto</strong>. À noite, exibe <strong>3 luzes encarnadas circulares em linha vertical</strong> (RIPEAM Regra 28).
-          <br>Junto ao sinal RIPEAM, iça as bandeiras <strong>D (Delta)</strong> e <strong>H (Hotel)</strong>: <em>"Tenho PRÁTICO a bordo (H) e manobro com dificuldade (D)."</em>
-          <br><br>👉 <em>Use o botão <strong>☀️ DIA / 🌙 NOITE</strong> no cabeçalho do rádio para alternar a iluminação visual!</em>
-          <br><br><strong>Ação:</strong> Coloque seu <strong>AP em mastro cheio (Close-up)</strong> para confirmar compreensão.`,
+        scenario: "O N.M. ALBATROZ está exibindo cilindros ou luzes vermelhas verticais e içou as bandeiras D e H.",
+        mission: "Interprete o significado de suas marcas RIPEAM e bandeiras (use o botão DIA/NOITE) e acuse a leitura com seu AP.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>Identifique o status RIPEAM: cilindro preto de dia ou 3 luzes vermelhas de noite representam <strong>Restrito por seu Calado (RIPEAM Regra 28)</strong>.</li>
+            <li>Identifique os códigos do CIS: <strong>D (Delta)</strong> (manobro com dificuldade) e <strong>H (Hotel)</strong> (prático a bordo).</li>
+            <li>O sinal completo é entendido. Suba seu AP para o topo (<strong>Close-up</strong>) para acusar a leitura.</li>
+          </ol>
+        `,
         citation: `📜 <strong>Fundamentação Oficial: DPC PSCPP 2008 Q57 & RIPEAM Regra 28 / Regra 34(d)</strong>
           <br><em>"Regra 28 RIPEAM: Toda embarcação de propulsão mecânica restrita por seu calado poderá exibir no lugar mais visível: de dia, um CILINDRO PRETO; à noite, TRÊS LUZES ENCARNADAS circulares em linha vertical."</em>
           <br><br>👉 <strong>Sinais do CIS anexados:</strong> Hotel (H) = Tenho prático a bordo. Delta (D) = Mantenha-se afastado; manobro com dificuldade.`,
@@ -545,10 +568,16 @@
       5: {
         title: "Nível 5: Falha na Comunicação e Dúvida (ZL)",
         desc: "Aprenda a sinalizar quando o sinal avistado não puder ser compreendido (Código ZL).",
-        instructions: `Uma nuvem encobriu o mastro do outro navio.
-          <br><br><strong>Passo 1:</strong> Coloque seu <strong>AP a meio mastro (Dip)</strong>.
-          <br><strong>Passo 2:</strong> A nuvem abre mostrando o sinal inválido <strong>XF9</strong>. Içe o grupo <strong>ZL</strong> (<em>"Sinal recebido, mas não compreendido"</em>).
-          <br><strong>Passo 3:</strong> O adversário arria e iça <strong>K</strong> (Desejo comunicar-me). Suba seu <strong>AP para Close-up</strong>.`,
+        scenario: "Uma nuvem encobriu o mastro do outro navio impedindo a leitura inicial, e depois ele iça um código inexistente.",
+        mission: "Use o protocolo de erro do CIS (AP a meio mastro e o grupo de código ZL) para gerenciar falhas de comunicação.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>O outro mastro está coberto. Coloque seu AP a meio mastro (<strong>Dip</strong>).</li>
+            <li>A nuvem se afasta revelando um código inválido/corrompido. Mantenha seu AP em Dip e ice o código de dúvida: adicione <strong>Z</strong> e <strong>L</strong> na adriça e clique em <strong>'Içar Sinal'</strong>.</li>
+            <li>O outro navio entende, arria o sinal inválido e iça <strong>K</strong> (Desejo comunicar-me). Arrie seu ZL e suba seu AP para <strong>Close-up</strong>.</li>
+          </ol>
+        `,
         citation: `📜 <strong>Fundamentação Regulamentar: CIS Cap. V §4 (Unanswered Signals)</strong>
           <br><em>"If the receiving vessel cannot distinguish the signal made to her, she should keep the Answering Pendant at the dip. If the signal is seen but not understood, she should hoist ZL."</em>
           <br><br>👉 <strong>Regra da DPC:</strong> ZL é a resposta padrão regulamentar quando um sinal é visualizado com clareza, mas seu código não consta na tabela ou não faz sentido no contexto.`,
@@ -569,11 +598,16 @@
       6: {
         title: "Nível 6: Marca Diurna + Semântica (Concurso DPC 2011/2012)",
         desc: "Diferencie o status de governo (RIPEAM) do status de propulsão (CIS Bandeira M).",
-        instructions: `O N.M. ALBATROZ exibe o status de <strong>Sem Governo (NUC - RIPEAM Regra 27)</strong>.
-          <br>De dia exibe <strong>2 esferas pretas</strong>; à noite exibe <strong>2 luzes encarnadas em linha vertical</strong>.
-          <br>No mastro iça a bandeira <strong>M (Mike)</strong>: <em>"Meu navio está parado e sem seguimento"</em> (Mike).
-          <br><br>👉 <em>Use o botão <strong>☀️ DIA / 🌙 NOITE</strong> no cabeçalho do rádio para alternar a iluminação visual!</em>
-          <br><br><strong>Ação:</strong> Coloque seu <strong>AP em mastro cheio (Close-up)</strong>.`,
+        scenario: "O N.M. ALBATROZ exibe duas esferas pretas (ou luzes vermelhas verticais) e içou a bandeira M.",
+        mission: "Identifique o status de governo do navio no RIPEAM e da máquina no CIS, e acuse com seu AP.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>As duas esferas pretas (dia) ou duas luzes vermelhas (noite) indicam <strong>Sem Governo (NUC - RIPEAM Regra 27)</strong>.</li>
+            <li>A bandeira <strong>M (Mike)</strong> indica <em>"Meu navio está parado e sem seguimento"</em>.</li>
+            <li>Ao ler e compreender ambos os status, suba seu AP para <strong>Close-up</strong>.</li>
+          </ol>
+        `,
         citation: `📜 <strong>Fundamentação Oficial: DPC PSCPP 2012 Q12 & RIPEAM R.27(a)</strong>
           <br><em>"Regra 27(a) RIPEAM: Embarcação sem governo (NUC) exibe de dia DUAS ESFERAS PRETAS em linha vertical; à noite, DUAS LUZES ENCARNADAS circulares em linha vertical."</em>
           <br><br>👉 <strong>Aparato de Prova:</strong> A banca exige distinguir NUC (incapacidade de manobrar por avaria) da situação de máquina parada sem seguimento na água (Mike).`,
@@ -592,11 +626,16 @@
       7: {
         title: "Nível 7: O Desafio dos Substitutos (Concurso DPC 2011)",
         desc: "Transmita coordenadas numéricas complexas com algarismos repetidos ('1100') usando repetidores.",
-        instructions: `Transmita o grupo <strong>1100</strong> usando Substitutos:
-          <br>- O 1º substituto repete o 1º numeral (o 1).
-          <br>- O 3º substituto repete o 3º numeral (o 0).
-          <br><br><strong>Passo 1:</strong> Monte a adriça: <strong>1</strong> -> <strong>Sub1</strong> -> <strong>0</strong> -> <strong>Sub3</strong> e ice.
-          <br><strong>Passo 2:</strong> O adversário iça o AP dele. Arrie suas bandeiras e ice seu <strong>AP isolado</strong> (Close-up).`,
+        scenario: "Você precisa sinalizar a coordenada ou número 1100 ao outro navio.",
+        mission: "Monte e ice o sinal 1100 usando os Substitutos para repetir numerais, e depois responda ao AP do navio receptor.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>Monte a adriça respeitando a ordem: <strong>1</strong> -> <strong>Sub1</strong> (repete o primeiro 1) -> <strong>0</strong> -> <strong>Sub3</strong> (repete o 0 na terceira posição).</li>
+            <li>Adicione os quatro elementos na adriça e clique em <strong>'Içar Sinal'</strong>.</li>
+            <li>O outro navio vai acusar içando o AP dele. Arrie suas bandeiras e ice o seu <strong>AP isolado</strong> (Close-up) para finalizar.</li>
+          </ol>
+        `,
         citation: `📜 <strong>Fundamentação Oficial: DPC PSCPP 2011 Q51 & CIS Cap. V §6</strong>
           <br><em>"Substitutes allow the repetition of the same signal flag or numeral pennant without duplicating physical flags in the locker."</em>
           <br><br>👉 <strong>Regra de Substituição:</strong> Cada substituto se refere exclusivamente à classe de caracteres da mesma categoria (numeral ou letra) em posição relativa no grupo. Em 1100: 1, Sub1 (1º numeral), 0, Sub3 (3º numeral).`,
@@ -612,9 +651,17 @@
       8: {
         title: "Nível 8: Soletrar em Linguagem Clara (Concurso DPC 2011)",
         desc: "Utilize o prefixo YZ e o Tackline para soletrar nomes comuns de acordo com o CIS.",
-        instructions: `Você precisa soletrar o porto de destino: <strong>RIO</strong>.
-          <br>O prefixo de soletração é <strong>YZ</strong>. Separe o grupo de controle da palavra com o <strong>Tackline</strong>.
-          <br><br><strong>Ação:</strong> Monte a adriça: <strong>Y</strong> -> <strong>Z</strong> -> <strong>Tackline</strong> -> <strong>R</strong> -> <strong>I</strong> -> <strong>O</strong> e ice.`,
+        scenario: "Seu porto de destino é RIO, e você deve transmitir esse nome próprio em linguagem clara.",
+        mission: "Soletrar RIO utilizando o prefixo internacional de soletração e a adriça correta.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>Adicione o prefixo de soletração <strong>Y</strong> e <strong>Z</strong>.</li>
+            <li>Adicione a bandeira especial de separação <strong>Tackline (Tack)</strong>.</li>
+            <li>Adicione as letras do nome: <strong>R</strong> -> <strong>I</strong> -> <strong>O</strong>.</li>
+            <li>Com a sequência <strong>Y -> Z -> Tack -> R -> I -> O</strong> montada, clique em <strong>'Içar Sinal'</strong>.</li>
+          </ol>
+        `,
         citation: `📜 <strong>Fundamentação Oficial: CIS Cap. V §5 & Cap. X (Prefix YZ)</strong>
           <br><em>"When words or names are to be spelled out, the signal YZ is to be used as a prefix, followed by a tackline before the letters of the word."</em>
           <br><br>👉 <strong>Regra do Concurso:</strong> Não se iça palavras em linguagem clara diretamente sem anteceder o grupo indicador YZ seguido do tirador de separação (Tackline).`,
@@ -630,11 +677,17 @@
       9: {
         title: "Nível 9: Tackline (Separar Grupos na Mesma Adriça)",
         desc: "Transmita múltiplos grupos distintos na mesma adriça utilizando o cabo divisor Tackline (CIS Cap. II & V).",
-        instructions: `Transmita os grupos <strong>RY</strong> e <strong>UM</strong> juntos na mesma adriça:
-          <br>- <strong>RY</strong>: <em>"Passe a baixa velocidade ao passar por mim."</em>
-          <br>- <strong>UM</strong>: <em>"O porto está fechado ao tráfego."</em>
-          <br><br><strong>Regra do CIS:</strong> Quando mais de um grupo é exibido na mesma adriça, eles DEVEM ser separados por um <strong>Tackline</strong>.
-          <br><br><strong>Ação:</strong> Monte a adriça: <strong>R</strong> -> <strong>Y</strong> -> <strong>Tackline</strong> -> <strong>U</strong> -> <strong>M</strong> e ice.`,
+        scenario: "Você quer emitir dois avisos separados: RY ('reduza a velocidade') e UM ('porto fechado') juntos na mesma adriça.",
+        mission: "Monte a adriça contendo os dois grupos e o separador regulamentar do CIS para evitar que sejam lidos como um único sinal.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>Adicione o primeiro grupo de 2 letras: <strong>R</strong> e <strong>Y</strong>.</li>
+            <li>Adicione a bandeira de espaçamento <strong>Tackline (Tack)</strong>.</li>
+            <li>Adicione o segundo grupo: <strong>U</strong> e <strong>M</strong>.</li>
+            <li>Com a sequência <strong>R -> Y -> Tack -> U -> M</strong> montada, clique em <strong>'Içar Sinal'</strong>.</li>
+          </ol>
+        `,
         citation: `📜 <strong>Fundamentação Regulamentar: CIS Cap. II (Definições) & Cap. V §3</strong>
           <br><em>"Tackline is a length of halyard about 2 metres long, used to separate each group of flags on the same halyard."</em>
           <br><br>👉 <strong>Propósito Prático:</strong> O Tackline de ~2 metros impede a fusão semântica acidental de dois grupos independentes (como RY e UM) em um único grupo de 4 letras.`,
@@ -650,11 +703,18 @@
       10: {
         title: "Nível 10: Substitutas da Mesma Classe (Regra Completa)",
         desc: "Domine a regra de repetição por classe de caracteres (letras vs numerais) segundo o CIS Cap. V §6.",
-        instructions: `Transmita o código <strong>L2330</strong>.
-          <br><br><strong>Regra de Classe:</strong> A substituta repete apenas caracteres DA MESMA CLASSE (alfabética ou numeral) que a antecedem no grupo.
-          <br>- No grupo L2330, os numerais formam a classe ativa '2330'. O número a repetir é o segundo '3' (2º numeral da classe).
-          <br>- Portanto, deve-se usar a <strong>2ª Substituto (Sub2)</strong>, pois ela repete a 2ª bandeira da classe numeral!
-          <br><br><strong>Ação:</strong> Monte a adriça: <strong>L</strong> -> <strong>2</strong> -> <strong>3</strong> -> <strong>Sub2</strong> -> <strong>0</strong> e ice.`,
+        scenario: "Sua missão é transmitir o código misto L2330.",
+        mission: "Monte a adriça com L2330 aplicando o repetidor correto correspondente apenas à classe ativa dos numerais.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>Adicione a letra <strong>L</strong>.</li>
+            <li>Adicione os numerais <strong>2</strong> e <strong>3</strong>.</li>
+            <li>Para repetir o numeral '3' (que é a 2ª bandeira da classe dos numerais na adriça), use a <strong>2ª Substituta (Sub2)</strong>.</li>
+            <li>Adicione o numeral <strong>0</strong>.</li>
+            <li>Com a sequência <strong>L -> 2 -> 3 -> Sub2 -> 0</strong> montada, clique em <strong>'Içar Sinal'</strong>.</li>
+          </ol>
+        `,
         citation: `📜 <strong>Fundamentação Regulamentar: CIS Cap. V §6 (Class Rules for Substitutes)</strong>
           <br><em>"Substitutes repeat only flags of the SAME CLASS (either letters or numerals) preceding them in the hoist."</em>
           <br><br>👉 <strong>Pegadinha de Concurso:</strong> A letra 'L' abre o grupo, mas a sequência de repetidores é contada dentro do bloco numeral. Por ser o segundo numeral a repetir, usa-se obrigatoriamente a 2ª Substituta (Sub2).`,
@@ -670,10 +730,16 @@
       11: {
         title: "Nível 11: Interrogativo / Afirmativo / Negativo (C, N, RQ)",
         desc: "Compreenda a regra de modificadores de sinal e aprenda que C, N e RQ NÃO podem ser usados com sinais de 1 letra.",
-        instructions: `O N.M. ALBATROZ iça o grupo: <strong>CB</strong> + <strong>Tackline</strong> + <strong>RQ</strong>.
-          <br>(<em>CB = "Necessito assistência imediata"</em>; <em>RQ = Interrogativo</em> ➔ <em>"Você necessita de assistência imediata?"</em>).
-          <br><br><strong>Regra-Pegadinha DPC (Cap. X pág. 25):</strong> Os modificadores <strong>C</strong> (Sim), <strong>N</strong> (Não) e <strong>RQ</strong> (Pergunta) NÃO podem ser anexados a sinais de UMA única letra!
-          <br><br><strong>Ação:</strong> Responda afirmando que SIM, você necessita: ice a bandeira <strong>C (Charlie)</strong> no seu mastro.`,
+        scenario: "O outro navio iça CB (Necessito assistência imediata) e anexa a bandeira modificadora RQ (Interrogativo).",
+        mission: "Interprete a pergunta do outro navio e iça a resposta afirmativa isolada correta segundo o CIS.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>O sinal dele significa: <em>"Você necessita de assistência imediata?"</em>.</li>
+            <li>Para responder afirmativamente ('Sim'), você deve usar a bandeira isolada <strong>C (Charlie)</strong>.</li>
+            <li>Adicione <strong>C</strong> à sua adriça e clique em <strong>'Içar Sinal'</strong>.</li>
+          </ol>
+        `,
         citation: `📜 <strong>Fundamentação Oficial: CIS Cap. X pág. 25 (Modifying Signals)</strong>
           <br><em>"The signals C, N and RQ must NOT be used in conjunction with single-letter signals."</em>
           <br><br>👉 <strong>Pegadinha de Exame:</strong> Para grupos de 2 ou mais letras (como CB), anexar RQ transforma a declaração em pergunta. Para responder 'Sim', iça-se a bandeira C (Charlie) isoladamente.`,
@@ -690,9 +756,15 @@
       12: {
         title: "Nível 12: Socorro por Bandeiras (Grupo NC)",
         desc: "Reconheça e transmita o sinal de socorro clássico marítimo do CIS (Grupo NC).",
-        instructions: `O N.M. ALBATROZ iça o grupo oficial de socorro: <strong>NC</strong> (<em>"Estou em perigo e necessito assistência imediata"</em>).
-          <br><br><strong>Passo 1:</strong> Acuse a recepção do sinal de socorro dele colocando seu <strong>AP em mastro cheio (Close-up)</strong>.
-          <br><strong>Passo 2:</strong> O outro navio arria. Agora é você quem precisa retransmitir o sinal de socorro. Monte <strong>N</strong> -> <strong>C</strong> e ice.`,
+        scenario: "O N.M. ALBATROZ iça o grupo oficial de perigo e socorro NC e depois arria.",
+        mission: "Acuse a leitura do socorro dele no AP e depois transmita o seu próprio sinal de socorro no mastro.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>O outro navio iça NC. Coloque seu AP em mastro cheio (<strong>Close-up</strong>) para confirmar a recepção.</li>
+            <li>O outro navio arria o sinal. Agora monte o seu próprio sinal de socorro: adicione <strong>N</strong> e <strong>C</strong> na adriça e clique em <strong>'Içar Sinal'</strong>.</li>
+          </ol>
+        `,
         citation: `📜 <strong>Fundamentação Oficial: CIS Seção Geral & RIPEAM Anexo IV (Distress Signals)</strong>
           <br><em>"NC = I am in distress and require immediate assistance."</em>
           <br><br>👉 <strong>Sinal Internacional de Perigo:</strong> É um dos sinais visuais universais previstos no RIPEAM Anexo IV §1(h) para comunicação imediata de emergência no mar.`,
@@ -709,8 +781,15 @@
       13: {
         title: "Nível 13: Leitura de Grupo Temático (KF - Rebocador)",
         desc: "Interprete e acuse a recepção de grupos de duas letras de serviços de praticagem e apoio marítimo.",
-        instructions: `O N.M. ALBATROZ está realizando manobra no porto e iça o grupo <strong>KF</strong> (<em>"Necessito um rebocador"</em>).
-          <br><br><strong>Ação:</strong> Para sinalizar que você compreendeu a solicitação de rebocador feita pelo outro navio, coloque seu <strong>AP em mastro cheio (Close-up)</strong>.`,
+        scenario: "O N.M. ALBATROZ está operando no terminal e iça o grupo KF (Solicito rebocador).",
+        mission: "Interprete a solicitação dele e acuse a compreensão correta utilizando o seu AP.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>O outro navio içou KF, solicitando apoio de rebocador.</li>
+            <li>Suba o seu AP para o topo (<strong>Close-up</strong>) para acusar a leitura e compreensão do pedido.</li>
+          </ol>
+        `,
         citation: `📜 <strong>Fundamentação Oficial: CIS Seção Geral de Manobra & Praticagem</strong>
           <br><em>"KF = I require a tug."</em>
           <br><br>👉 <strong>Uso Prático em Porto:</strong> Códigos de 2 letras iniciados por 'K' cobrem comunicações com rebocadores e estações de praticagem em manobras de atracação.`,
@@ -1623,7 +1702,13 @@
       
       document.getElementById('level-title').textContent = level.title;
       document.getElementById('level-desc').textContent = level.desc;
-      document.getElementById('instruction-text').innerHTML = level.instructions;
+      document.getElementById('instruction-text').innerHTML = level.studyGuide;
+      
+      const scenarioEl = document.getElementById('mission-scenario');
+      if (scenarioEl) scenarioEl.textContent = level.scenario;
+      
+      const goalEl = document.getElementById('mission-goal');
+      if (goalEl) goalEl.textContent = level.mission;
       
       const citationEl = document.getElementById('manual-citation');
       if (citationEl) {
