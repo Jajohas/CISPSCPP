@@ -455,6 +455,9 @@
     let playerHoistedOnMast = [];   // Bandeiras de fato içadas no mastro do navio
     let playerAPState = 'none';     // 'none', 'dip', 'closeup'
     let otherHoist = [];            // Bandeiras na adriça do computador
+    let otherAPState = 'none';      // 'none', 'dip', 'closeup'
+    let levelStep = 0;              // Passo corrente dentro do nível
+    
     // Definição dos 13 níveis do Tutor de CIS, alinhados estritamente às normas da DPC/IMO 2005
     const LEVELS = {
       1: {
