@@ -18,7 +18,8 @@
         <h1 class="brand-title">Font das Bandeiras</h1>
         <div class="header-tabs">
           <button class="tab-btn active" id="btn-tab-game" onclick="switchTab('game')">🎮 Simulador</button>
-          <button class="tab-btn" id="btn-tab-translator" onclick="switchTab('translator')">🔄 Tradutor & Dicionário</button>
+          <button class="tab-btn" id="btn-tab-translator" onclick="switchTab('translator')">🔄 Tradutor</button>
+          <button class="tab-btn" id="btn-tab-tutorial" onclick="startTutorial()" style="background: rgba(255, 204, 0, 0.15); color: #ffcc00; border-color: rgba(255, 204, 0, 0.4); margin-left: 0.5rem; font-weight: 700;">💡 Tutorial</button>
         </div>
       </div>
       
@@ -39,7 +40,7 @@
         </div>
 
         <div class="card-panel manual-card">
-          <h5 style="margin:0; font-size:0.85rem; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.05em;">📖 Estudo & Gabarito</h5>
+          <h5 style="margin:0; font-size:0.85rem; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.05em;">❓ Não sabe o que fazer?</h5>
           <div id="instruction-text" class="manual-content" style="margin-top: 0.5rem; font-size: 0.8rem; line-height: 1.4;">
             O navio adversário fará um sinal. Siga os passos indicados.
           </div>
@@ -372,6 +373,129 @@
           }
         }
       }
+    }
+
+    // ==========================================
+    // SISTEMA DE TUTORIAL INTERATIVO (TOUR GUIADO)
+    // ==========================================
+    let tutorialCurrentStep = 0;
+    const tutorialSteps = [
+      {
+        elementId: 'sky-radio-panel',
+        title: "📋 Instruções da Missão",
+        text: "Aqui fica o cenário (o que o outro navio está fazendo) e o objetivo da sua missão (o que você deve fazer). Leia com atenção!"
+      },
+      {
+        elementId: 'inventory-card',
+        title: "🎏 Painel de Sinais",
+        text: "Este é o seu centro de comando unificado! Aqui você escolhe as bandeiras no carrossel, visualiza sua adriça e controla o hasteamento."
+      },
+      {
+        elementId: 'flag-inventory',
+        title: "🎠 Carrossel de Bandeiras",
+        text: "Toque nas bandeiras nesta linha horizontal para adicioná-las ao seu rascunho de adriça. Role para o lado para ver todas!"
+      },
+      {
+        elementId: 'player-hoist-preview',
+        title: "⛵ Rascunho da Sua Adriça",
+        text: "Aqui você vê a pré-visualização das bandeiras que selecionou antes de içá-las ao mastro."
+      },
+      {
+        elementId: 'mobile-simulator-footer',
+        title: "⚡ Controles do Simulador",
+        text: "Controle o modo Dia/Noite (para ver as luzes do outro navio) e controle o seu AP (Resposta) a Meio (Dip) ou no Topo (Close-up)."
+      },
+      {
+        elementId: 'mobile-bottom-nav',
+        title: "❓ Não sabe o que fazer?",
+        text: "Se travar em qualquer nível, clique aqui para abrir o guia de estudos com a resposta passo a passo e referências literárias do CIS!"
+      },
+      {
+        elementId: 'mobile-bottom-nav',
+        title: "🔄 Tradutor",
+        text: "Use a aba Tradutor para decodificar sinais isolados ou converter qualquer palavra em bandeiras livremente!"
+      }
+    ];
+
+    function startTutorial() {
+      // Se for mobile, garante que vá para o simulador ('center')
+      if (window.innerWidth <= 850) {
+        setMobileTab('center');
+      } else {
+        switchTab('game');
+      }
+      
+      tutorialCurrentStep = 0;
+      const overlay = document.getElementById('tutorial-overlay');
+      if (overlay) overlay.style.display = 'block';
+      setTimeout(() => showTutorialStep(0), 100);
+    }
+
+    function showTutorialStep(stepIndex) {
+      if (stepIndex >= tutorialSteps.length) {
+        finishTutorial();
+        return;
+      }
+      
+      tutorialCurrentStep = stepIndex;
+      const step = tutorialSteps[stepIndex];
+      const target = document.getElementById(step.elementId) || document.querySelector('.' + step.elementId);
+      
+      if (!target) {
+        nextTutorialStep();
+        return;
+      }
+      
+      const rect = target.getBoundingClientRect();
+      const scrollY = window.scrollY || window.pageYOffset;
+      const scrollX = window.scrollX || window.pageXOffset;
+      
+      const highlighter = document.getElementById('tutorial-highlighter');
+      if (highlighter) {
+        highlighter.style.top = `${rect.top + scrollY - 5}px`;
+        highlighter.style.left = `${rect.left + scrollX - 5}px`;
+        highlighter.style.width = `${rect.width + 10}px`;
+        highlighter.style.height = `${rect.height + 10}px`;
+      }
+      
+      document.getElementById('tutorial-step-title').textContent = step.title;
+      document.getElementById('tutorial-step-text').innerHTML = step.text;
+      
+      const tooltip = document.getElementById('tutorial-tooltip');
+      if (tooltip) {
+        let tooltipTop = rect.bottom + scrollY + 15;
+        let tooltipLeft = rect.left + scrollX + (rect.width / 2) - 130;
+        
+        if (tooltipLeft < 10) tooltipLeft = 10;
+        if (tooltipLeft + 270 > window.innerWidth) tooltipLeft = window.innerWidth - 275;
+        
+        if (tooltipTop + 160 > window.innerHeight + scrollY) {
+          tooltipTop = rect.top + scrollY - 170;
+        }
+        if (tooltipTop < 10) tooltipTop = 10;
+        
+        tooltip.style.top = `${tooltipTop}px`;
+        tooltip.style.left = `${tooltipLeft}px`;
+      }
+      
+      const nextBtn = document.getElementById('tutorial-next-btn');
+      if (nextBtn) {
+        nextBtn.textContent = stepIndex === tutorialSteps.length - 1 ? 'Concluir 🎉' : 'Próximo ➔';
+      }
+    }
+
+    function nextTutorialStep() {
+      showTutorialStep(tutorialCurrentStep + 1);
+    }
+
+    function skipTutorial() {
+      finishTutorial();
+    }
+
+    function finishTutorial() {
+      const overlay = document.getElementById('tutorial-overlay');
+      if (overlay) overlay.style.display = 'none';
+      localStorage.setItem('tutorial_completed', 'true');
     }
 
     // ==========================================
@@ -1806,6 +1930,9 @@
         setMobileTab('center');
       }
 
+      // Inicia automaticamente o tutorial guiado ao carregar a página
+      setTimeout(startTutorial, 1200);
+
       window.addEventListener('resize', () => {
         arrangeMobileLayout();
         if (window.innerWidth <= 850) {
@@ -1828,8 +1955,8 @@
   <!-- BARRA DE NAVEGAÇÃO BOTTOM EXCLUSIVA PARA DISPOSITIVOS MÓVEIS (MOBILE APP FEEL) -->
   <div class="mobile-bottom-nav" id="mobile-bottom-nav">
     <button class="mobile-nav-item active" onclick="setMobileTab('left')">
-      <span class="nav-icon">📖</span>
-      <span class="nav-text">Manual</span>
+      <span class="nav-icon">❓</span>
+      <span class="nav-text">Não sabe o que fazer?</span>
     </button>
     <button class="mobile-nav-item" onclick="setMobileTab('center')">
       <span class="nav-icon">⛵</span>
@@ -1839,6 +1966,25 @@
       <span class="nav-icon">🔄</span>
       <span class="nav-text">Tradutor</span>
     </button>
+    <button class="mobile-nav-item" onclick="startTutorial()">
+      <span class="nav-icon">💡</span>
+      <span class="nav-text">Tutorial</span>
+    </button>
+  </div>
+
+  <!-- OVERLAY DO TUTORIAL INTERATIVO -->
+  <div id="tutorial-overlay" class="tutorial-overlay" style="display:none;">
+    <div id="tutorial-highlighter" class="tutorial-highlighter"></div>
+    <div id="tutorial-tooltip" class="tutorial-tooltip">
+      <div class="tutorial-tooltip-body">
+        <h6 id="tutorial-step-title">Passo do Tutorial</h6>
+        <p id="tutorial-step-text">Explicação...</p>
+        <div class="tutorial-buttons">
+          <button class="btn btn-secondary btn-xs" onclick="skipTutorial()" style="background: #334155; border: none; color: #fff;">Pular</button>
+          <button class="btn btn-primary btn-xs" id="tutorial-next-btn" onclick="nextTutorialStep()" style="background: #ffcc00; border: none; color: #000; font-weight: 700;">Próximo ➔</button>
+        </div>
+      </div>
+    </div>
   </div>
 
 </body>

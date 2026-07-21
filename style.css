@@ -1758,3 +1758,113 @@ html, body {
   max-height: 34px !important;
 }
 
+/* Barra flutuante absoluta de AP e nível para Desktop e Mobile (Global) */
+.mobile-simulator-footer {
+  display: flex !important;
+  position: absolute !important;
+  bottom: 8px !important;
+  left: 8px !important;
+  right: 8px !important;
+  z-index: 25 !important;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.6rem !important;
+  background: rgba(15, 23, 42, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+  box-sizing: border-box;
+  margin-top: 0 !important;
+}
+
+#mobile-level-text {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.mobile-ap-quick-controls {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.mobile-ap-quick-controls .btn {
+  padding: 0.38rem 0.7rem !important;
+  font-size: 0.72rem !important;
+  border-radius: 8px !important;
+  min-height: 32px;
+  white-space: nowrap;
+}
+
+/* Tutorial Overlay & Elements */
+.tutorial-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(4, 12, 26, 0.4);
+  z-index: 9999;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+.tutorial-highlighter {
+  position: absolute;
+  border: 3px solid #ffcc00;
+  border-radius: 12px;
+  box-shadow: 0 0 0 9999px rgba(4, 12, 26, 0.75), 0 0 20px #ffcc00;
+  pointer-events: none;
+  z-index: 10000;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.tutorial-tooltip {
+  position: absolute;
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 0.8rem;
+  width: 260px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  z-index: 10001;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  color: #fff;
+}
+
+.tutorial-tooltip h6 {
+  margin: 0 0 0.4rem 0;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #ffcc00;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tutorial-tooltip p {
+  margin: 0 0 0.8rem 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #e2e8f0;
+}
+
+.tutorial-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.tutorial-buttons .btn {
+  padding: 0.3rem 0.6rem !important;
+  font-size: 0.7rem !important;
+  border-radius: 6px !important;
+  min-height: 24px !important;
+}
+
