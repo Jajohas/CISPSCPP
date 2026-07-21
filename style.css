@@ -1471,12 +1471,20 @@ html, body {
   }
 
   .ship-mast {
-    height: 125px !important;
+    height: 200px !important;
   }
 
-  /* Ajuste do AP em meio mastro para mastro menor */
+  .ship-halyard {
+    top: -155px !important;
+  }
+
+  .ship-marks {
+    top: -140px !important;
+  }
+
+  /* Ajuste do AP em meio mastro para o novo mastro de 200px */
   .halyard-flag.ap-flag.ap-dip {
-    transform: translateY(48px) !important;
+    transform: translateY(80px) !important;
   }
 
   .ship-name {
