@@ -57,24 +57,28 @@
           <div class="cloud-obstruct" id="cloud"></div>
           
           <!-- PAINEL DE LOGS FLUTUANTE NO CÉU (SKY OVERLAY) -->
-          <div class="sky-radio-panel">
+          <div class="sky-radio-panel" id="sky-radio-panel">
             <div class="sky-radio-header">
-              <div style="display: flex; align-items: center; gap: 0.6rem;">
-                <span>📻 Transmissão Rádio VHF & Sinais (Canal 16)</span>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span style="font-size:0.75rem; font-weight:700;">📻 Rádio VHF (C.16)</span>
                 <button id="day-night-toggle-btn" class="day-night-btn" onclick="toggleDayNightMode()">☀️ DIA</button>
               </div>
-              <span style="font-size: 0.65rem; color: #94a3b8;">TEMPO REAL</span>
+              <div style="display: flex; align-items: center; gap: 0.4rem;">
+                <span style="font-size: 0.60rem; color: #94a3b8;">REALTIME</span>
+                <button class="collapse-btn" onclick="toggleCollapse('sky-radio-panel')" title="Minimizar/Maximizar" style="background:none; border:none; color:#fff; cursor:pointer; font-size:0.85rem; padding:0 4px;">➖</button>
+              </div>
             </div>
             <div class="sky-radio-logs" id="radio-logs">
               <!-- Logs color-coded com horário aparecem aqui -->
             </div>
-            <!-- Controles rápidos de AP + nível, logo ABAIXO da transmissão (só mobile) -->
-            <div class="mobile-simulator-footer">
-              <span id="mobile-level-text">Nível: 1/13</span>
-              <div class="mobile-ap-quick-controls">
-                <button class="btn btn-secondary btn-xs" onclick="setPlayerAP('dip')">AP a Meio</button>
-                <button class="btn btn-secondary btn-xs" onclick="setPlayerAP('closeup')">AP no Topo</button>
-              </div>
+          </div>
+
+          <!-- Controles rápidos de AP + nível, logo ABAIXO da transmissão (só mobile) -->
+          <div class="mobile-simulator-footer" id="mobile-simulator-footer">
+            <span id="mobile-level-text">Nível: 1/13</span>
+            <div class="mobile-ap-quick-controls">
+              <button class="btn btn-secondary btn-xs" onclick="setPlayerAP('dip')">AP a Meio</button>
+              <button class="btn btn-secondary btn-xs" onclick="setPlayerAP('closeup')">AP no Topo</button>
             </div>
           </div>
 
@@ -128,8 +132,11 @@
       <!-- COLUNA 3: DIREITA (~340px) -->
       <div class="col-right">
         <!-- SUA ADRIÇA PREVIEW -->
-        <div class="card-panel hoist-card">
-          <h5>⛵ Sua Adriça (Preparação)</h5>
+        <div class="card-panel hoist-card" id="hoist-card">
+          <div class="inventory-header" style="margin-bottom: 0.4rem;">
+            <h5 style="margin:0; font-size:0.85rem; font-weight:700;">⛵ Sua Adriça</h5>
+            <button class="collapse-btn" onclick="toggleCollapse('hoist-card')" title="Minimizar/Maximizar" style="background:none; border:none; color:#fff; cursor:pointer; font-size:0.85rem; padding:0 4px;">➖</button>
+          </div>
           <div class="player-hoist-box">
             <div class="player-hoist-flags" id="player-hoist-preview">
               <span class="empty-hint">Selecione bandeiras para montar seu sinal...</span>
@@ -142,19 +149,18 @@
         </div>
 
         <!-- ADRIÇA DE RESPOSTA (AP) -->
-        <div class="card-panel ap-card">
-          <h5>🚩 Adriça de Resposta (AP)</h5>
-          <div class="ap-buttons">
-            <button class="btn btn-secondary btn-sm" onclick="setPlayerAP('dip')">AP a Meio (Dip)</button>
-            <button class="btn btn-secondary btn-sm" onclick="setPlayerAP('closeup')">AP no Topo (Close-up)</button>
-          </div>
+        <div class="card-panel ap-card" id="ap-card" style="display:none;">
+          <!-- Oculto pois agora temos os botões de AP na barra do simulador de forma fixa -->
         </div>
 
         <!-- ARMÁRIO DE BANDEIRAS (INVENTÁRIO) -->
-        <div class="card-panel inventory-card">
+        <div class="card-panel inventory-card" id="inventory-card">
           <div class="inventory-header">
-            <h5>🎏 Armário de Bandeiras</h5>
-            <button class="btn btn-secondary btn-xs" id="toggle-labels-btn" onclick="toggleInventoryLabels()">🙈 Legendas</button>
+            <h5 style="margin:0; font-size:0.85rem; font-weight:700;">🎏 Bandeiras</h5>
+            <div style="display:flex; align-items:center; gap:0.4rem;">
+              <button class="btn btn-secondary btn-xs" id="toggle-labels-btn" onclick="toggleInventoryLabels()" title="Mostrar/Ocultar Legendas" style="padding: 2px 5px; font-size: 0.8rem;">🙈</button>
+              <button class="collapse-btn" onclick="toggleCollapse('inventory-card')" title="Minimizar/Maximizar" style="background:none; border:none; color:#fff; cursor:pointer; font-size:0.85rem; padding:0 4px;">➖</button>
+            </div>
           </div>
           <div class="flag-selector-grid" id="flag-inventory">
             <!-- Grid com botões para selecionar as bandeiras -->
@@ -351,6 +357,17 @@
       } else {
         document.querySelector('button[onclick="switchTab(\'translator\')"]').classList.add('active');
         document.getElementById('tab-translator').classList.add('active');
+      }
+    }
+
+    // Retração de painéis (Maximizar/Minimizar)
+    function toggleCollapse(panelId) {
+      const el = document.getElementById(panelId);
+      if (!el) return;
+      el.classList.toggle('collapsed');
+      const btn = el.querySelector('.collapse-btn');
+      if (btn) {
+        btn.textContent = el.classList.contains('collapsed') ? '➕' : '➖';
       }
     }
 
@@ -785,11 +802,11 @@
       const btn = document.getElementById('toggle-labels-btn');
       if (showInventoryLabels) {
         grid.classList.remove('hide-labels');
-        btn.innerHTML = '🙈 Ocultar Legendas (Modo Treino)';
+        btn.innerHTML = '🙈';
         btn.style.background = '';
       } else {
         grid.classList.add('hide-labels');
-        btn.innerHTML = '👁️ Mostrar Legendas';
+        btn.innerHTML = '👁️';
         btn.style.background = 'rgba(255, 204, 0, 0.15)';
       }
     }

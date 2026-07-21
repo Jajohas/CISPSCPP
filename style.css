@@ -1111,12 +1111,15 @@ html, body {
 }
 
 .flag-selector-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
-  gap: 0.3rem;
+  display: flex !important;
+  flex-direction: row !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  flex-wrap: nowrap !important;
+  scroll-behavior: smooth;
+  gap: 0.4rem;
   flex: 1;
   min-height: 0;
-  overflow-y: auto;
   padding: 0.4rem;
   background: rgba(0, 0, 0, 0.3);
   border-radius: 8px;
@@ -1130,10 +1133,14 @@ html, body {
   padding: 0.35rem 0.2rem;
   cursor: pointer;
   transition: all 0.15s;
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
+  flex: 0 0 46px; /* Não encolhe e força largura de 46px */
+  width: 46px;
+  height: 52px;
+  box-sizing: border-box;
 }
 
 .flag-selector-btn:hover {
@@ -1147,9 +1154,9 @@ html, body {
   cursor: default;
 }
 
-.flag-selector-btn svg { width: 22px; height: 22px; }
-.flag-selector-btn.pennant svg { width: 28px; height: 14px; }
-.flag-selector-label { font-size: 0.65rem; font-family: var(--font-mono); color: var(--color-text-muted); font-weight: 700; }
+.flag-selector-btn svg { width: 26px; height: 26px; flex-shrink: 0; }
+.flag-selector-btn.pennant svg { width: 32px; height: 16px; flex-shrink: 0; }
+.flag-selector-label { font-size: 0.58rem; font-family: var(--font-mono); color: var(--color-text-muted); font-weight: 700; }
 .flag-selector-grid.hide-labels .flag-selector-label { opacity: 0; }
 
 /* Nuvem de obstrução (Nível 5 - Cobre as bandeiras do navio direito) */
@@ -1708,5 +1715,25 @@ html, body {
 @keyframes pulseActionButton {
   0% { transform: translate(0, 0) scale(1); }
   100% { transform: translate(0, -4px) scale(1.03); }
+}
+
+/* Classes para Controle de Colapso (Minimizar/Maximizar) */
+.collapsed .sky-radio-logs,
+.collapsed .player-hoist-box,
+.collapsed .action-buttons,
+.collapsed .flag-selector-grid {
+  display: none !important;
+}
+
+.collapsed {
+  height: auto !important;
+  max-height: 38px !important;
+  overflow: hidden !important;
+  transition: max-height 0.25s ease-out;
+}
+
+#sky-radio-panel.collapsed {
+  height: 34px !important;
+  max-height: 34px !important;
 }
 
