@@ -113,6 +113,15 @@
             <div class="ship-halyard" id="other-halyard"></div>
             <div class="ship-name" id="other-ship-name">N. M. ALBATROZ</div>
           </div>
+
+          <!-- BARRA DE CONTROLE AP E NÍVEL EXCLUSIVA DO SIMULADOR NO MOBILE -->
+          <div class="mobile-simulator-footer">
+            <span id="mobile-level-text">Nível: 1/13</span>
+            <div class="mobile-ap-quick-controls">
+              <button class="btn btn-secondary btn-xs" onclick="setPlayerAP('dip')">AP Dip</button>
+              <button class="btn btn-secondary btn-xs" onclick="setPlayerAP('closeup')">AP Topo</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1609,6 +1618,11 @@
       setOtherMarksConfig({ day: [], night: [] });
       setDayNightMode(false);
       
+      const mobileLevelText = document.getElementById('mobile-level-text');
+      if (mobileLevelText) {
+        mobileLevelText.textContent = `Nível: ${levelNum}/13`;
+      }
+      
       clearPlayerHoist();
       const radioLogs = document.getElementById('radio-logs');
       if (radioLogs) radioLogs.innerHTML = '';
@@ -1628,15 +1642,33 @@
       let index = 0;
       if (tabName === 'center') index = 1;
       if (tabName === 'right') index = 2;
+      if (tabName === 'translator') index = 3;
       if (navItems[index]) navItems[index].classList.add('active');
       
-      const colLeft = document.querySelector('.col-left');
-      const colCenter = document.querySelector('.col-center');
-      const colRight = document.querySelector('.col-right');
+      const tabGame = document.getElementById('tab-game');
+      const tabTranslator = document.getElementById('tab-translator');
       
-      if (colLeft) colLeft.classList.toggle('mobile-visible', tabName === 'left');
-      if (colCenter) colCenter.classList.toggle('mobile-visible', tabName === 'center');
-      if (colRight) colRight.classList.toggle('mobile-visible', tabName === 'right');
+      if (tabName === 'translator') {
+        if (tabGame) tabGame.classList.remove('active');
+        if (tabTranslator) {
+          tabTranslator.classList.add('active');
+          tabTranslator.style.display = 'block';
+        }
+      } else {
+        if (tabGame) tabGame.classList.add('active');
+        if (tabTranslator) {
+          tabTranslator.classList.remove('active');
+          tabTranslator.style.display = '';
+        }
+        
+        const colLeft = document.querySelector('.col-left');
+        const colCenter = document.querySelector('.col-center');
+        const colRight = document.querySelector('.col-right');
+        
+        if (colLeft) colLeft.classList.toggle('mobile-visible', tabName === 'left');
+        if (colCenter) colCenter.classList.toggle('mobile-visible', tabName === 'center');
+        if (colRight) colRight.classList.toggle('mobile-visible', tabName === 'right');
+      }
     }
 
     // Inicialização segura da página
@@ -1680,6 +1712,10 @@
     <button class="mobile-nav-item" onclick="setMobileTab('right')">
       <span class="nav-icon">🎏</span>
       <span class="nav-text">Painel</span>
+    </button>
+    <button class="mobile-nav-item" onclick="setMobileTab('translator')">
+      <span class="nav-icon">🔄</span>
+      <span class="nav-text">Tradutor</span>
     </button>
   </div>
 
