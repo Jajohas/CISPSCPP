@@ -366,6 +366,18 @@
       if (btn) {
         btn.textContent = el.classList.contains('collapsed') ? '➕' : '➖';
       }
+
+      // Se colapsar o rádio no mobile, reposiciona os controles para cima
+      if (panelId === 'sky-radio-panel') {
+        const controls = document.getElementById('mobile-sim-controls');
+        if (controls) {
+          if (el.classList.contains('collapsed')) {
+            controls.style.top = '48px'; // Sobe os controles para logo abaixo do header colapsado
+          } else {
+            controls.style.top = '212px'; // Volta para a posição normal
+          }
+        }
+      }
     }
 
     // ==========================================

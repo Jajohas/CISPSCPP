@@ -1567,17 +1567,26 @@ html, body {
   }
 
   /* Barra inferior com AP e indicador de nível no Mobile */
-  /* Agora embutido DENTRO do painel de rádio, logo abaixo do log */
+  /* Barra flutuante absoluta de AP e nível no rodapé da cena mobile */
   .mobile-simulator-footer {
     display: flex !important;
+    position: absolute !important;
+    bottom: 8px !important;
+    left: 8px !important;
+    right: 8px !important;
+    z-index: 25 !important;
     justify-content: space-between;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.3rem 0.1rem 0.05rem;
-    margin-top: 0.3rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.4rem 0.6rem !important;
+    background: rgba(15, 23, 42, 0.82) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
     box-sizing: border-box;
-    flex-shrink: 0;
+    margin-top: 0 !important;
   }
 
   #mobile-level-text {
@@ -1629,23 +1638,21 @@ html, body {
   #mobile-sim-controls .inventory-header { margin-bottom: 0.3rem; }
   #mobile-sim-controls .inventory-header h5 { font-size: 0.72rem; }
 
-  /* Carrossel: 2 linhas, rolagem horizontal para escolher a bandeira */
+  /* Carrossel: 1 linha, rolagem horizontal para escolher a bandeira */
   #mobile-sim-controls .flag-selector-grid {
-    display: grid !important;
-    grid-auto-flow: column !important;
-    grid-template-rows: repeat(2, 40px) !important;
-    grid-auto-columns: 44px !important;
-    gap: 6px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
-    padding: 0 0 4px 0 !important;
+    gap: 6px !important;
+    padding: 0.2rem 0.2rem 4px 0.2rem !important;
     -webkit-overflow-scrolling: touch;
-    scroll-snap-type: x proximity;
   }
   #mobile-sim-controls .flag-selector-btn {
-    width: 44px !important;
-    height: 40px !important;
-    scroll-snap-align: start;
+    flex: 0 0 46px !important;
+    width: 46px !important;
+    height: 48px !important;
   }
 
   /* Barra içar/arriar discreta */
