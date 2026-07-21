@@ -68,6 +68,14 @@
             <div class="sky-radio-logs" id="radio-logs">
               <!-- Logs color-coded com horário aparecem aqui -->
             </div>
+            <!-- Controles rápidos de AP + nível, logo ABAIXO da transmissão (só mobile) -->
+            <div class="mobile-simulator-footer">
+              <span id="mobile-level-text">Nível: 1/13</span>
+              <div class="mobile-ap-quick-controls">
+                <button class="btn btn-secondary btn-xs" onclick="setPlayerAP('dip')">AP a Meio</button>
+                <button class="btn btn-secondary btn-xs" onclick="setPlayerAP('closeup')">AP no Topo</button>
+              </div>
+            </div>
           </div>
 
           <!-- BOTÃO DE AÇÃO INTERATIVO DE FIM DE NÍVEL -->
@@ -114,14 +122,6 @@
             <div class="ship-name" id="other-ship-name">N. M. ALBATROZ</div>
           </div>
 
-          <!-- BARRA DE CONTROLE AP E NÍVEL EXCLUSIVA DO SIMULADOR NO MOBILE -->
-          <div class="mobile-simulator-footer">
-            <span id="mobile-level-text">Nível: 1/13</span>
-            <div class="mobile-ap-quick-controls">
-              <button class="btn btn-secondary btn-xs" onclick="setPlayerAP('dip')">AP Dip</button>
-              <button class="btn btn-secondary btn-xs" onclick="setPlayerAP('closeup')">AP Topo</button>
-            </div>
-          </div>
         </div>
       </div>
 
