@@ -95,8 +95,11 @@
                   <option value="19">Nível 19: AP como Decimal (2.5)</option>
                   <option value="20">Nível 20: Manobra Restrita (RU + RAM)</option>
                   <option value="21">Nível 21: Pesca / Arrasto (T)</option>
+                  <option value="22">Nível 22: Praticagem Impedida (HT)</option>
+                  <option value="23">Nível 23: Pedido de Médico (MAB)</option>
+                  <option value="24">Nível 24: Socorro RIPEAM & Rumo (A180)</option>
                 </select>
-                <span id="mobile-level-text" style="font-weight: 800; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;">Nível: 1/21 ▾</span>
+                <span id="mobile-level-text" style="font-weight: 800; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;">Nível: 1/24 ▾</span>
               </div>
               <button id="day-night-toggle-btn" class="day-night-btn" onclick="toggleDayNightMode()">☀️ DIA</button>
             </div>
@@ -1161,6 +1164,81 @@
           addLog("Sistema", "Iniciando Nível 21. Navio de pesca de arrasto.");
           addLog("Dica", "Coloque seu AP no topo (Close-up) para confirmar a leitura.");
         }
+      },
+      22: {
+        title: "Nível 22: Praticagem Impedida por Mau Tempo (HT)",
+        desc: "Aprenda a sinalização do CIS quando o prático está impossibilitado de embarcar no navio devido ao mau tempo na barra.",
+        scenario: "A lancha de praticagem se aproxima do N.M. BRASIL sob tempestade e mar encapelado. O prático não consegue efetuar o transbordo com segurança.",
+        mission: "Interprete o sinal de duas letras HT içado pela lancha do prático e acuse a recepção subindo seu AP para mastro cheio (Close-up).",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>A lancha do prático iça o código <strong>HT</strong> (<em>"O prático não pode vir a bordo devido ao mau tempo"</em>).</li>
+            <li>Observe a sinalização da lancha e suba seu galhardete de resposta <strong>AP</strong> para mastro cheio (<strong>Close-up</strong>).</li>
+            <li>Esta é uma das questões clássicas mais cobradas nas provas da DPC sobre restrições operacionais de praticagem.</li>
+          </ol>
+        `,
+        citation: `📜 <strong>Fundamentação Regulamentar: CIS Seção Geral Parte IV (Praticagem)</strong>
+          <br><em>"HT = Pilot cannot come on board owing to bad weather."</em>`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist(['H', 'T']);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 22. Mar encapelado na barra de entrada.");
+          addLog("Lancha de Prático", "Içou o sinal [ H T ] ('Prático impedido de embarcar devido ao mau tempo').");
+          addLog("Dica", "Suba seu AP para mastro cheio (Close-up) para confirmar a recepção.");
+        }
+      },
+      23: {
+        title: "Nível 23: Solicitação de Médico a Bordo (MAB)",
+        desc: "Domine os procedimentos da Seção Médica do CIS para solicitar a vinda de um médico a bordo.",
+        scenario: "Um tripulante a bordo do N.M. BRASIL sofreu traumatismo grave no tórax. A situação exige a presença física de um médico.",
+        mission: "Selecione no armário e ice o código de três letras MAB (Solicito envio de um médico) no seu mastro.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>No código da Seção Médica do CIS, os pedidos de assistência médica começam com a letra <strong>M</strong>.</li>
+            <li>O código de três letras para solicitar que um médico seja enviado é <strong>M -> A -> B</strong> (<em>"Solicito que seja enviado um médico"</em>).</li>
+            <li>Adicione <strong>M</strong>, <strong>A</strong> e <strong>B</strong> à sua adriça e clique em <strong>'Içar Sinal'</strong>.</li>
+          </ol>
+        `,
+        citation: `📜 <strong>Fundamentação Regulamentar: CIS Seção Médica Cap. I</strong>
+          <br><em>"MAB = I request that a doctor be sent (or doctor indicated be sent)."</em>`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist([]);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 23. Emergência médica grave a bordo.");
+          addLog("Dica", "Monte o sinal [ M ] [ A ] [ B ] e clique em 'Içar Sinal'.");
+        }
+      },
+      24: {
+        title: "Nível 24: Socorro RIPEAM (Marcas) & Rumo (A180)",
+        desc: "Compreenda marcas visuais de perigo do RIPEAM Anexo IV (Marca Quadrada + Esfera) e transmita o rumo do navio (Alfa 180°).",
+        scenario: "O navio transmissor exibe um retângulo/marca quadrada com uma esfera preta no mastro e solicita a transmissão do rumo verdadeiro.",
+        mission: "Transmita o rumo do seu navio (Alfa 180°) usando o código A180 com numerais em adriça.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>A bandeira <strong>A (Alfa)</strong> seguida por 3 dígitos numéricos indica <strong>Rumo Verdadeiro em Graus</strong> (<em>"Meu rumo é ... graus verdadeiro"</em>).</li>
+            <li>Monte a sequência <strong>A -> 1 -> 8 -> 0</strong> na sua adriça e clique em <strong>'Içar Sinal'</strong>.</li>
+            <li>O sinal visual de socorro do RIPEAM Anexo IV é composto por uma marca quadrada tendo uma esfera (ou algo semelhante) acima ou abaixo dela.</li>
+          </ol>
+        `,
+        citation: `📜 <strong>Fundamentação Regulamentar: RIPEAM Anexo IV & CIS Cap. XI</strong>
+          <br><em>"RIPEAM Anexo IV: A flag having above or below it a ball or anything resembling a ball."</em>
+          <br><em>"A (Alfa) + 3 dígitos = Rumo verdadeiro em graus (ex: A180 = Rumo 180°)."</em>`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist([]);
+          setOtherAP('none');
+          setOtherMarksConfig({ day: ['diamond', 'sphere'], night: ['red-light', 'red-light'] });
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 24. Sinalização de rumo e marcas RIPEAM.");
+          addLog("Dica", "Monte a sequência: [ A ] [ 1 ] [ 8 ] [ 0 ] e clique em 'Içar Sinal'.");
+        }
       }
     };
 
@@ -1734,6 +1812,27 @@
           e: "❌ INCORRETA: KF sozinho não indica que o navio está fazendo água ou necessita de assistência imediata."
         },
         source: "Fonte: Concurso DPC 2011 / CIS Cap. V"
+      },
+      22: {
+        badge: "🏆 JÁ CAIU EM PROVA DE PRÁTICO (DPC / CIS Seção Geral)",
+        title: "Prova de Prático de Navios — Operações de Praticagem",
+        question: "Quando a lancha de praticagem aproxima-se de um navio em condições de mar agitado e o prático está impossibilitado de embarcar devido ao mau tempo, qual o sinal de duas letras do CIS a lancha deve içar no mastro?",
+        options: [
+          { letter: "a", text: "G (Golf)" },
+          { letter: "b", text: "UF" },
+          { letter: "c", text: "HT" },
+          { letter: "d", text: "UA" },
+          { letter: "e", text: "RU" }
+        ],
+        correct: "c",
+        explanations: {
+          c: "✅ GABARITO CORRETO: HT significa 'O prático não pode vir a bordo devido ao mau tempo' (Pilot cannot come on board owing to bad weather).",
+          a: "❌ INCORRETA: G significa 'Preciso de prático'.",
+          b: "❌ INCORRETA: UF significa 'Siga a lancha do prático'.",
+          d: "❌ INCORRETA: UA significa 'Prático chegará à hora indicada'.",
+          e: "❌ INCORRETA: RU significa 'Mantenha-se afastado; manobro com dificuldade'."
+        },
+        source: "Fonte: CIS Seção Geral Parte IV (Praticagem) & Banco DPC"
       }
     };
 
@@ -2319,6 +2418,64 @@
             showLevelCompleteButton(21);
           }
           break;
+
+        case 22:
+          // Nível 22 (HT - Praticagem Impedida por Mau Tempo)
+          if (levelStep === 1 && playerAPState === 'closeup') {
+            addLog("Lancha de Prático", "Compreendido! Retornando à estação de praticagem. Aguarde na zona de fundeio.");
+            playSound('bell');
+            addLog("Sistema", "Nível 22 concluído com sucesso!");
+            showLevelCompleteButton(22);
+          }
+          break;
+
+        case 23:
+          // Nível 23 (MAB - Pedido de Médico a Bordo)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const isMAB = playerHoistedOnMast.join('') === 'MAB';
+            if (isMAB) {
+              addLog("Sistema", "Enviando sinal MAB (Seção Médica Cap. I)... Estação costeira processando...");
+              levelStep = 3; // Bloqueia reenvio temporariamente
+              setTimeout(() => {
+                addLog("Estação Costeira", "Sinal MAB recebido! Equipe médica despachada na lancha de resgate.");
+                setOtherAP('closeup');
+                levelStep = 2;
+                playSound('bell');
+                addLog("Sistema", "Nível 23 concluído com sucesso!");
+                showLevelCompleteButton(23);
+              }, 1800);
+            } else {
+              addLog("Sistema", "Sinal incorreto. Para solicitar o envio de um médico, iça a sequência MAB: [ M ] [ A ] [ B ].");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          }
+          break;
+
+        case 24:
+          // Nível 24 (A180 - Rumo verdadeiro & Socorro RIPEAM)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const isA180 = playerHoistedOnMast.join('') === 'A180';
+            if (isA180) {
+              addLog("Sistema", "Sinalizando rumo verdadeiro Alfa 180°... Navio receptor registrando...");
+              levelStep = 3; // Bloqueia reenvio temporariamente
+              setTimeout(() => {
+                addLog("Outro Navio", "Rumo de 180° recebido! Socorro prestado ao navio em perigo.");
+                setOtherAP('closeup');
+                levelStep = 2;
+                playSound('bell');
+                addLog("Sistema", "Nível 24 concluído com sucesso!");
+                showLevelCompleteButton(24);
+              }, 1800);
+            } else {
+              addLog("Sistema", "Sinal incorreto. Para transmitir o rumo de 180°, iça: [ A ] [ 1 ] [ 8 ] [ 0 ].");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          }
+          break;
       }
     }
 
@@ -2327,7 +2484,7 @@
       const btn = document.getElementById('level-complete-action-btn');
       if (!container || !btn) return;
       
-      const hasQuestion = [3, 4, 6, 7, 14, 18].includes(levelNum);
+      const hasQuestion = [3, 4, 6, 7, 14, 18, 22].includes(levelNum);
       
       if (hasQuestion) {
         btn.innerHTML = '📝 Responder Questão do Concurso';
@@ -2337,13 +2494,13 @@
           onLevelCompleted(levelNum);
         };
       } else {
-        btn.innerHTML = (levelNum === 21) ? '🏆 Concluir Jornada' : '⏭️ Próximo Nível';
+        btn.innerHTML = (levelNum === 24) ? '🏆 Concluir Jornada' : '⏭️ Próximo Nível';
         btn.className = 'level-action-btn green-btn';
         btn.onclick = () => {
           container.classList.remove('active');
-          if (levelNum === 21) {
+          if (levelNum === 24) {
             addLog("Sistema", "JORNADA SUPREMA CONCLUÍDA!");
-            alert("PARABÉNS! Você concluiu com êxito todas as 21 missões do Tutor do CIS, 100% alinhado com o código oficial da IMO 2005 e o banco de provas do PSCPP/DPC!");
+            alert("PARABÉNS! Você concluiu com êxito todas as 24 missões do Tutor do CIS, 100% alinhado com o código oficial da IMO 2005 e o banco de provas do PSCPP/DPC!");
             loadLevel(1);
           } else {
             nextLevel();
@@ -2411,7 +2568,7 @@
       
       const mobileLevelText = document.getElementById('mobile-level-text');
       if (mobileLevelText) {
-        mobileLevelText.textContent = `Nível: ${levelNum}/21 ▾`;
+        mobileLevelText.textContent = `Nível: ${levelNum}/24 ▾`;
       }
       
       const dropdown = document.getElementById('level-select-dropdown');
