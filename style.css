@@ -885,15 +885,15 @@ footer {
 
 /* Elevação dos Navios, Nomes e Água no Desktop (Impede sobreposição com a barra de controles) */
 @media (min-width: 851px) {
-  .ship {
-    bottom: 55px !important;
+  .ship, .ship-left, .ship-right {
+    bottom: 85px !important;
   }
   .sea-waves {
-    height: 130px !important;
+    height: 160px !important;
     bottom: 0 !important;
   }
   .ship-name {
-    bottom: -22px !important;
+    bottom: -24px !important;
     font-size: 0.88rem !important;
   }
 }
