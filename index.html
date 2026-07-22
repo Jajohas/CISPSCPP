@@ -876,7 +876,6 @@
         
         item.innerHTML = `
           <div class="alphabet-flag">${flagSvg}</div>
-          <div class="alphabet-letter">${letter}</div>
           <div class="alphabet-meaning">${name}</div>
         `;
         item.title = desc;
@@ -3186,7 +3185,7 @@
           { letter: "c", text: "Preciso de assistência médica urgente." },
           { letter: "d", text: "Navio fundeado aguardando livre prática." }
         ],
-        explanation: "✅ GABARITO: HT (CIS Seção Geral Parte IV) significa 'Pilot cannot come on board owing to bad weather'."
+        explanation: "✅ GABARITO: HT (CIS Seção Geral Parte IV) means 'Pilot cannot come on board owing to bad weather'."
       },
       {
         flags: ['M', 'A', 'B'],
@@ -3234,16 +3233,59 @@
       }
     ];
 
-    let reverseCurrentIndex = 0;
+    // Gerador dinâmico de perguntas com 1 única bandeira/flâmula
+    function generateSingleFlagChallenges() {
+      const keys = Object.keys(FLAG_SVGS).filter(k => k !== 'tackline');
+      const singleChallenges = [];
+
+      keys.forEach(key => {
+        const info = SIGNAL_MEANINGS[key];
+        if (!info) return;
+
+        const otherKeys = keys.filter(k => k !== key && SIGNAL_MEANINGS[k]);
+        const shuffledOthers = [...otherKeys].sort(() => 0.5 - Math.random()).slice(0, 3);
+
+        const correctText = `${info.name} — ${info.desc}`;
+        const options = [
+          { letter: "a", text: correctText, correct: true }
+        ];
+
+        const letters = ['b', 'c', 'd'];
+        shuffledOthers.forEach((dk, idx) => {
+          const dInfo = SIGNAL_MEANINGS[dk];
+          options.push({
+            letter: letters[idx],
+            text: `${dInfo.name} — ${dInfo.desc}`
+          });
+        });
+
+        options.sort(() => 0.5 - Math.random());
+        options.forEach((opt, idx) => {
+          opt.letter = ['a', 'b', 'c', 'd'][idx];
+        });
+
+        singleChallenges.push({
+          flags: [key],
+          question: `Qual a identificação e o significado oficial da bandeira isolada no mastro?`,
+          options: options,
+          explanation: `✅ GABARITO: A bandeira exibida é "${info.name}". Significado oficial no CIS: ${info.desc}`
+        });
+      });
+
+      return singleChallenges;
+    }
+
+    let allReverseChallengesPool = [];
     let reverseScore = 0;
 
     function initNextReverseChallenge() {
-      reverseCurrentIndex = Math.floor(Math.random() * REVERSE_CHALLENGES.length);
-      renderReverseChallenge();
+      allReverseChallengesPool = [...REVERSE_CHALLENGES, ...generateSingleFlagChallenges()];
+      const randomIndex = Math.floor(Math.random() * allReverseChallengesPool.length);
+      const data = allReverseChallengesPool[randomIndex];
+      renderReverseChallenge(data);
     }
 
-    function renderReverseChallenge() {
-      const data = REVERSE_CHALLENGES[reverseCurrentIndex];
+    function renderReverseChallenge(data) {
       if (!data) return;
 
       const scoreEl = document.getElementById('reverse-score');

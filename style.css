@@ -347,18 +347,14 @@ header p {
   display: block;
 }
 
-.alphabet-letter {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: white;
-  margin-bottom: 0.2rem;
-}
-
 .alphabet-meaning {
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #F8FAFC;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  margin-top: 0.2rem;
+  line-height: 1.25;
 }
 
 /* Rodapé */
