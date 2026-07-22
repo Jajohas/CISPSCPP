@@ -618,6 +618,21 @@ footer {
   100% { box-shadow: 0 0 18px 6px rgba(255, 34, 51, 1); }
 }
 
+/* Luz Verde Noturna (RIPEAM Regra 26 - Pesca de Arrasto) */
+.ripeam-green-light {
+  width: 12px;
+  height: 12px;
+  background: #00ff66;
+  border-radius: 50%;
+  box-shadow: 0 0 14px 4px rgba(0, 255, 102, 0.95), 0 0 2px #fff;
+  animation: pulseRipeamGreen 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulseRipeamGreen {
+  0% { box-shadow: 0 0 8px 3px rgba(0, 255, 102, 0.8); }
+  100% { box-shadow: 0 0 18px 6px rgba(0, 255, 102, 1); }
+}
+
 /* Losango Preto Diurno (RIPEAM Regra 27 - Capacidade de Manobra Restrita) */
 .ripeam-diamond {
   width: 14px;

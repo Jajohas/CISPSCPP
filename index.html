@@ -965,7 +965,7 @@
           <ol>
             <li>O sinal de uma letra correspondente para solicitar prático é a bandeira <strong>G (Golf)</strong>.</li>
             <li>Adicione <strong>G</strong> à sua adriça e clique em <strong>'Içar Sinal'</strong>.</li>
-            <li>O outro navio (ou lancha) responderá de volta confirmando a recepção.</li>
+            <li>A lancha do prático responderá içando <strong>UA</strong>. Confirme a leitura subindo seu AP para mastro cheio (<strong>Close-up</strong>).</li>
           </ol>
         `,
         citation: `📜 <strong>Fundamentação Regulamentar: CIS Seção Praticagem & Cap. XI</strong>
@@ -989,7 +989,7 @@
           <strong>Resolução Passo a Passo:</strong>
           <ol>
             <li>Adicione a bandeira <strong>H (Hotel)</strong> (prático a bordo) à sua adriça e clique em <strong>'Içar Sinal'</strong>.</li>
-            <li>A lancha de praticagem iça o código <strong>UF</strong> (Siga a lancha do prático).</li>
+            <li>Aguarde a lancha de praticagem preparar a resposta e içar o código <strong>UF</strong> (Siga a lancha do prático).</li>
             <li>Como você leu e compreendeu a instrução, suba seu AP para mastro cheio (<strong>Close-up</strong>) para confirmar.</li>
           </ol>
         `,
@@ -1025,7 +1025,7 @@
           levelStep = 1;
           setOtherHoist([]);
           setOtherAP('none');
-          setOtherMarksConfig({ day: ['sphere'], night: ['white-light'] });
+          setPlayerMarksConfig({ day: ['sphere'], night: ['white-light'] });
           document.getElementById('cloud').classList.remove('active');
           addLog("Sistema", "Iniciando Nível 16. Navio fundeado aguardando liberação.");
           addLog("Dica", "Monte a bandeira Q e clique em 'Içar Sinal'.");
@@ -1078,7 +1078,7 @@
           levelStep = 1;
           setOtherHoist([]);
           setOtherAP('none');
-          setOtherMarksConfig({ day: ['sphere', 'sphere', 'sphere'], night: ['red-light', 'red-light', 'red-light'] });
+          setPlayerMarksConfig({ day: ['sphere', 'sphere', 'sphere'], night: ['red-light', 'red-light', 'red-light'] });
           document.getElementById('cloud').classList.remove('active');
           addLog("Sistema", "Iniciando Nível 18. Navio encalhado (3 esferas no mastro).");
           addLog("Dica", "Monte a sequência: [ C ] [ B ] [ Tackline ] [ K ] [ F ] e clique em 'Içar Sinal'.");
@@ -1137,25 +1137,26 @@
       },
       21: {
         title: "Nível 21: Pesca / Arrasto (COLREG Regra 26)",
-        desc: "Compreenda marcas diurnas de pesca de arrasto em dupla (Regra 26) e sinalize aproximação.",
-        scenario: "O navio transmissor exibe dois cones unidos pelos vértices e iça a bandeira T.",
+        desc: "Compreenda as marcas diurnas e luzes de pesca de arrasto em dupla (Regra 26) e sinalize aproximação.",
+        scenario: "O navio transmissor exibe dois cones unidos pelos vértices de dia (ou luz verde sobre branca de noite) e iça a bandeira T.",
         mission: "Interprete a sinalização RIPEAM e o sinal Tango no mastro e acuse a leitura com seu AP.",
         studyGuide: `
           <strong>Resolução Passo a Passo:</strong>
           <ol>
-            <li>As marcas diurnas de **dois cones unidos pelos vértices** representam **Pesca de Arrasto (RIPEAM Regra 26(b))**.</li>
+            <li>As marcas diurnas de **dois cones com as pontas unidas (pelos vértices)** representam **Pesca (RIPEAM Regra 26)**.</li>
+            <li>À noite, a sinalização de **Pesca de Arrasto (Trawling)** é composta por luz **Verde sobre Branca** (a luz encarnada sobre branca seria para pesca comum).</li>
             <li>A bandeira **T (Tango)** no mastro significa *\"Mantenha-se afastado; estou engajado em pesca de arrasto em dupla\"*.</li>
             <li>Acuse a compreensão correta subindo seu AP para o topo (**Close-up**).</li>
           </ol>
         `,
         citation: `📜 <strong>Fundamentação Regulamentar: RIPEAM Regra 26(b) & CIS Seção Geral (T)</strong>
-          <br><em>"Regra 26 RIPEAM: Embarcações de pesca de arrasto devem exibir: de dia, uma marca composta de dois cones com as pontas unidas..."</em>
+          <br><em>"Regra 26 RIPEAM: Embarcações de pesca de arrasto devem exibir: de dia, uma marca composta de dois cones com as pontas unidas; à noite, duas luzes circulares em linha vertical, sendo a superior verde e a inferior branca..."</em>
           <br><em>"T (Tango) = Keep clear of me; I am engaged in pair trawling."</em>`,
         setup: () => {
           levelStep = 1;
           setOtherHoist(['T']);
           setOtherAP('none');
-          setOtherMarksConfig({ day: ['cone-up', 'cone-down'], night: ['red-light', 'white-light'] });
+          setOtherMarksConfig({ day: ['cone-down', 'cone-up'], night: ['green-light', 'white-light'] });
           document.getElementById('cloud').classList.remove('active');
           addLog("Sistema", "Iniciando Nível 21. Navio de pesca de arrasto.");
           addLog("Dica", "Coloque seu AP no topo (Close-up) para confirmar a leitura.");
@@ -1255,24 +1256,41 @@
       const grid = document.getElementById('flag-inventory');
       grid.innerHTML = '';
       
-      Object.keys(FLAG_SVGS).forEach(key => {
+      // 1. Renderiza primeiro o Tackline e o AP (Sinais especiais) para fácil acesso
+      const specialKeys = ['tackline', 'AP'];
+      specialKeys.forEach(key => {
         if (key === 'tackline') {
-          // Renderiza o botão de Tackline no inventário (sempre disponível)
           const btn = document.createElement('button');
           btn.className = 'flag-selector-btn';
           btn.title = 'Tackline: Cabo extensor de 2 metros para separar grupos de sinais';
           btn.onclick = () => addFlagToPlayerHoist('tackline');
-          
           btn.innerHTML = `
-            <div style="width: 6px; height: 28px; background: #9CA3AF; border-radius: 3px; box-sizing: border-box;"></div>
+            <div style="width: 6px; height: 28px; background: #9CA3AF; border-radius: 3px; box-sizing: border-box; margin: 0 auto 2px auto;"></div>
             <span class="flag-selector-label">Tackline</span>
           `;
           grid.appendChild(btn);
-          return;
+        } else if (key === 'AP') {
+          const isUsed = playerHoist.includes('AP');
+          const btn = document.createElement('button');
+          btn.className = `flag-selector-btn pennant ${isUsed ? 'used' : ''}`;
+          btn.title = 'Answering Pendant: Sinal de Resposta e ponto decimal.';
+          if (!isUsed) {
+            btn.onclick = () => addFlagToPlayerHoist('AP');
+          }
+          btn.innerHTML = `
+            <svg viewBox="0 0 500 500" width="100%" height="100%">${FLAG_SVGS['AP']}</svg>
+            <span class="flag-selector-label">AP</span>
+          `;
+          grid.appendChild(btn);
         }
+      });
+
+      // 2. Renderiza as demais letras e numerais
+      Object.keys(FLAG_SVGS).forEach(key => {
+        if (key === 'tackline' || key === 'AP') return; // Já renderizados no início
         
         const btn = document.createElement('button');
-        const isPennant = ['0','1','2','3','4','5','6','7','8','9','AP','Sub1','Sub2','Sub3'].includes(key);
+        const isPennant = ['0','1','2','3','4','5','6','7','8','9','Sub1','Sub2','Sub3'].includes(key);
         
         // Verifica se a bandeira já está em uso na adriça (rascunho)
         const isUsed = playerHoist.includes(key);
@@ -1402,15 +1420,24 @@
     // Controle de Período (Dia ☀️ vs Noite 🌙) e Marcas RIPEAM
     let currentIsNight = false;
     let currentMarksConfig = { day: [], night: [] };
+    let playerMarksConfig = { day: [], night: [] };
 
     function setOtherMarksConfig(config = { day: [], night: [] }) {
       currentMarksConfig = config;
       renderCurrentMarks();
     }
 
+    function setPlayerMarksConfig(config = { day: [], night: [] }) {
+      playerMarksConfig = config;
+      renderCurrentMarks();
+    }
+
     function renderCurrentMarks() {
       const activeList = currentIsNight ? (currentMarksConfig.night || []) : (currentMarksConfig.day || []);
       setOtherMarks(activeList);
+
+      const activePlayerList = currentIsNight ? (playerMarksConfig.night || []) : (playerMarksConfig.day || []);
+      setPlayerMarks(activePlayerList);
     }
 
     function setDayNightMode(isNight) {
@@ -1466,6 +1493,45 @@
         } else if (mark === 'cone-down') {
           el.className = 'ripeam-cone-down';
           el.title = 'Marca Diurna RIPEAM R.26: Cone Preto Ponta para Baixo';
+        } else if (mark === 'green-light') {
+          el.className = 'ripeam-green-light';
+          el.title = 'Luz Noturna RIPEAM R.26: Luz Verde Circular (Pesca de Arrasto)';
+        }
+        container.appendChild(el);
+      });
+    }
+
+    function setPlayerMarks(marksList = []) {
+      const container = document.getElementById('player-ship-marks');
+      if (!container) return;
+      container.innerHTML = '';
+      
+      marksList.forEach(mark => {
+        const el = document.createElement('div');
+        if (mark === 'cylinder') {
+          el.className = 'ripeam-cylinder';
+          el.title = 'Marca Diurna RIPEAM R.28: Cilindro Preto (Restrito pelo Calado)';
+        } else if (mark === 'red-light') {
+          el.className = 'ripeam-red-light';
+          el.title = 'Luz Noturna RIPEAM R.28: Luz Encarnada Circular (Restrito pelo Calado)';
+        } else if (mark === 'sphere') {
+          el.className = 'ripeam-sphere';
+          el.title = 'Marca Diurna RIPEAM R.27(a): Esfera Preta (Sem Governo / NUC)';
+        } else if (mark === 'diamond') {
+          el.className = 'ripeam-diamond';
+          el.title = 'Marca Diurna RIPEAM R.27(b): Losango Preto (Capacidade de Manobra Restrita / RAM)';
+        } else if (mark === 'white-light') {
+          el.className = 'ripeam-white-light';
+          el.title = 'Luz Noturna RIPEAM R.27/30: Luz Branca Circular';
+        } else if (mark === 'cone-up') {
+          el.className = 'ripeam-cone-up';
+          el.title = 'Marca Diurna RIPEAM R.26: Cone Preto Ponta para Cima';
+        } else if (mark === 'cone-down') {
+          el.className = 'ripeam-cone-down';
+          el.title = 'Marca Diurna RIPEAM R.26: Cone Preto Ponta para Baixo';
+        } else if (mark === 'green-light') {
+          el.className = 'ripeam-green-light';
+          el.title = 'Luz Noturna RIPEAM R.26: Luz Verde Circular (Pesca de Arrasto)';
         }
         container.appendChild(el);
       });
@@ -1825,12 +1891,16 @@
             if (playerHoistedOnMast.length === 0) return;
             const correctZ = playerHoistedOnMast.join('') === 'Z';
             if (correctZ) {
-              addLog("Outro Navio", "Solicitação de rebocador avistada (Sinal Z). AP no topo (Close-up) — Rebocador a caminho!");
-              setOtherAP('closeup');
-              levelStep = 2;
-              playSound('bell');
-              addLog("Sistema", "Nível 3 concluído com sucesso!");
-              showLevelCompleteButton(3);
+              addLog("Sistema", "Enviando sinal Z... Navio receptor analisando...");
+              levelStep = 3; // Bloqueia reenvio
+              setTimeout(() => {
+                addLog("Outro Navio", "Solicitação de rebocador avistada (Sinal Z). AP no topo (Close-up) — Rebocador a caminho!");
+                setOtherAP('closeup');
+                levelStep = 2;
+                playSound('bell');
+                addLog("Sistema", "Nível 3 concluído com sucesso!");
+                showLevelCompleteButton(3);
+              }, 1500);
             } else {
               addLog("Outro Navio", "Seu sinal não está correto. Lembre-se: rebocador = Z.");
               playerHoistedOnMast = [];
@@ -1908,10 +1978,14 @@
             if (playerHoistedOnMast.length === 0) return;
             const correctSequence = playerHoistedOnMast.join('') === '1Sub10Sub3';
             if (correctSequence) {
-              addLog("Outro Navio", "Sinal [ 1100 ] recebido perfeitamente!");
-              setOtherAP('closeup');
-              levelStep = 2;
-              addLog("Dica", "Agora arrie as bandeiras de sinal e coloque seu AP no topo (Close-up) para terminar a comunicação.");
+              addLog("Sistema", "Enviando sinal 1100... Navio receptor decodificando substitutas...");
+              levelStep = 3; // Bloqueia reenvio temporariamente
+              setTimeout(() => {
+                addLog("Outro Navio", "Sinal [ 1100 ] recebido perfeitamente!");
+                setOtherAP('closeup');
+                addLog("Dica", "Agora arrie as bandeiras de sinal e coloque seu AP no topo (Close-up) para terminar a comunicação.");
+                levelStep = 2;
+              }, 1800);
             } else {
               addLog("Outro Navio", "Sinal incorreto. Use substitutas para '1100'.");
               playerHoistedOnMast = [];
@@ -1931,12 +2005,16 @@
             if (playerHoistedOnMast.length === 0) return;
             const correctSpell = playerHoistedOnMast.join('') === 'YZtacklineRIO';
             if (correctSpell) {
-              addLog("Outro Navio", "Sinal de soletração YZ RIO recebido com perfeição!");
-              setOtherAP('closeup');
-              levelStep = 2;
-              playSound('bell');
-              addLog("Sistema", "Nível 8 concluído com sucesso!");
-              showLevelCompleteButton(8);
+              addLog("Sistema", "Transmitindo soletração de nome geográfico... Navio receptor anotando...");
+              levelStep = 3; // Bloqueia reenvio temporariamente
+              setTimeout(() => {
+                addLog("Outro Navio", "Sinal de soletração YZ RIO recebido com perfeição!");
+                setOtherAP('closeup');
+                levelStep = 2;
+                playSound('bell');
+                addLog("Sistema", "Nível 8 concluído com sucesso!");
+                showLevelCompleteButton(8);
+              }, 1800);
             } else {
               addLog("Outro Navio", "Soletração incorreta. Certifique-se de usar YZ + Tackline + R + I + O.");
               playerHoistedOnMast = [];
@@ -1951,12 +2029,16 @@
             if (playerHoistedOnMast.length === 0) return;
             const correctTackline = playerHoistedOnMast.join('') === 'RYtacklineUM';
             if (correctTackline) {
-              addLog("Outro Navio", "Sinal duplo [ RY ] e [ UM ] separados por Tackline recebido perfeitamente!");
-              setOtherAP('closeup');
-              levelStep = 2;
-              playSound('bell');
-              addLog("Sistema", "Nível 9 concluído com sucesso!");
-              showLevelCompleteButton(9);
+              addLog("Sistema", "Transmitindo sinais RY e UM com Tackline... Navio receptor analisando...");
+              levelStep = 3; // Bloqueia reenvio temporariamente
+              setTimeout(() => {
+                addLog("Outro Navio", "Sinal duplo [ RY ] e [ UM ] separados por Tackline recebido perfeitamente!");
+                setOtherAP('closeup');
+                levelStep = 2;
+                playSound('bell');
+                addLog("Sistema", "Nível 9 concluído com sucesso!");
+                showLevelCompleteButton(9);
+              }, 1800);
             } else {
               addLog("Outro Navio", "Adriça incorreta. Lembre-se: R, Y, Tackline, U, M na mesma adriça.");
               playerHoistedOnMast = [];
@@ -1971,12 +2053,16 @@
             if (playerHoistedOnMast.length === 0) return;
             const correctClassSub = playerHoistedOnMast.join('') === 'L23Sub20';
             if (correctClassSub) {
-              addLog("Outro Navio", "Sinal [ L2330 ] com a 2ª substituta da classe numeral recebido com precisão!");
-              setOtherAP('closeup');
-              levelStep = 2;
-              playSound('bell');
-              addLog("Sistema", "Nível 10 concluído com sucesso!");
-              showLevelCompleteButton(10);
+              addLog("Sistema", "Transmitindo sinal... Navio receptor analisando classe da substituta...");
+              levelStep = 3; // Bloqueia reenvio temporariamente
+              setTimeout(() => {
+                addLog("Outro Navio", "Sinal [ L2330 ] com a 2ª substituta da classe numeral recebido com precisão!");
+                setOtherAP('closeup');
+                levelStep = 2;
+                playSound('bell');
+                addLog("Sistema", "Nível 10 concluído com sucesso!");
+                showLevelCompleteButton(10);
+              }, 1800);
             } else {
               addLog("Outro Navio", "Sinal incorreto. Lembre-se: a classe que precede o número repetido (o 2º '3') é a numeral, logo usa-se a Sub2!");
               playerHoistedOnMast = [];
@@ -1993,12 +2079,16 @@
             const isC = playerHoistedOnMast.join('') === 'C';
             
             if (isC) {
-              addLog("Outro Navio", "Resposta afirmativa C (Charlie) recebida! Arriando a pergunta e confirmando com o galhardete de resposta.");
-              acknowledgeOther();
-              levelStep = 2;
-              playSound('bell');
-              addLog("Sistema", "Nível 11 concluído com sucesso!");
-              showLevelCompleteButton(11);
+              addLog("Sistema", "Respondendo afirmativamente com sinal C... Aguardando resposta do navio chamador...");
+              levelStep = 3; // Bloqueia reenvio temporariamente
+              setTimeout(() => {
+                addLog("Outro Navio", "Resposta afirmativa C (Charlie) recebida! Arriando a pergunta e confirmando com o galhardete de resposta.");
+                acknowledgeOther();
+                levelStep = 2;
+                playSound('bell');
+                addLog("Sistema", "Nível 11 concluído com sucesso!");
+                showLevelCompleteButton(11);
+              }, 1800);
             } else if (isForbiddenSingleLetterRQ) {
               addLog("Sistema", "ALERTA REGULAMENTAR (CIS Cap. X pág. 25): C, N e RQ NÃO podem ser anexados a sinais de uma única letra!");
               addLog("Outro Navio", "Sinal rejeitado por erro de sintaxe no CIS.");
@@ -2019,6 +2109,12 @@
             levelStep = 2;
             setTimeout(() => {
               setOtherHoist([]);
+              
+              // Atualização visual das instruções para guiar o usuário na retransmissão
+              document.getElementById('level-desc').textContent = "Você está em perigo e necessita de assistência imediata. Retransmita o sinal de socorro NC.";
+              const goalEl = document.getElementById('mission-goal');
+              if (goalEl) goalEl.textContent = "Monte e ice o sinal de socorro [ N ] [ C ] no seu mastro para pedir ajuda.";
+              
               addLog("Sistema", "Agora é você quem precisa retransmitir o sinal de socorro oficial NC (November Charlie).");
               addLog("Dica", "Monte [ N ] [ C ] e clique em 'Içar Sinal'.");
             }, 2000);
@@ -2052,17 +2148,31 @@
             if (playerHoistedOnMast.length === 0) return;
             const isG = playerHoistedOnMast.join('') === 'G';
             if (isG) {
-              addLog("Lancha de Prático", "Acusado recebimento! Enviando prático à sua posição.");
-              setOtherHoist(['U', 'A']);
-              levelStep = 2;
-              playSound('bell');
-              addLog("Sistema", "Nível 14 concluído com sucesso!");
-              showLevelCompleteButton(14);
+              addLog("Sistema", "Enviando sinal G... Lancha de praticagem preparando resposta...");
+              levelStep = 2; // Bloqueia repetições imediatas
+              
+              setTimeout(() => {
+                addLog("Lancha de Prático", "Acusado recebimento! Sinal [ UA ] içado ('Prático chegará à hora indicada').");
+                setOtherHoist(['U', 'A']);
+                
+                // Atualização visual do objetivo
+                document.getElementById('level-desc').textContent = "A lancha do prático respondeu UA. Confirme a leitura.";
+                const goalEl = document.getElementById('mission-goal');
+                if (goalEl) goalEl.textContent = "Acuse a recepção do sinal [ UA ] subindo seu AP para mastro cheio (Close-up).";
+                
+                addLog("Dica", "Suba seu AP para mastro cheio (Close-up) para finalizar a comunicação.");
+                levelStep = 3;
+              }, 1800);
             } else {
               addLog("Sistema", "Sinal incorreto. Para requerer prático, iça a bandeira Golf (G).");
               playerHoistedOnMast = [];
               renderPlayerMast();
             }
+          } else if (levelStep === 3 && playerAPState === 'closeup') {
+            addLog("Lancha de Prático", "Comunicação concluída. Prático a caminho.");
+            playSound('bell');
+            addLog("Sistema", "Nível 14 concluído com sucesso!");
+            showLevelCompleteButton(14);
           }
           break;
 
@@ -2072,16 +2182,21 @@
             if (playerHoistedOnMast.length === 0) return;
             const isH = playerHoistedOnMast.join('') === 'H';
             if (isH) {
-              addLog("Lancha de Prático", "Prático a bordo confirmado! Iniciando guiamento.");
-              setOtherHoist(['U', 'F']);
-              addLog("Dica", "Agora observe o sinal [ UF ] da lancha e suba seu AP para mastro cheio (Close-up).");
-              levelStep = 2;
+              addLog("Sistema", "Enviando sinal H... Lancha de praticagem processando...");
+              levelStep = 2; // Bloqueia envio duplicado imediato
+              
+              setTimeout(() => {
+                addLog("Lancha de Prático", "Prático a bordo confirmado! Sinalizado instruções [ UF ] ('Siga a lancha do prático').");
+                setOtherHoist(['U', 'F']);
+                addLog("Dica", "Agora observe as instruções [ UF ] da lancha e suba seu AP para mastro cheio (Close-up).");
+                levelStep = 3;
+              }, 1800);
             } else {
               addLog("Sistema", "Sinal incorreto. Para indicar prático a bordo, iça Hotel (H).");
               playerHoistedOnMast = [];
               renderPlayerMast();
             }
-          } else if (levelStep === 2 && playerAPState === 'closeup') {
+          } else if (levelStep === 3 && playerAPState === 'closeup') {
             addLog("Lancha de Prático", "Entendido, procedendo com a manobra no canal.");
             playSound('bell');
             addLog("Sistema", "Nível 15 concluído com sucesso!");
@@ -2095,12 +2210,16 @@
             if (playerHoistedOnMast.length === 0) return;
             const isQ = playerHoistedOnMast.join('') === 'Q';
             if (isQ) {
-              addLog("Autoridade Portuária", "Sanidade limpa confirmada. Livre prática concedida!");
-              setOtherAP('closeup');
-              levelStep = 2;
-              playSound('bell');
-              addLog("Sistema", "Nível 16 concluído com sucesso!");
-              showLevelCompleteButton(16);
+              addLog("Sistema", "Apresentando livre prática... Autoridade portuária analisando documentos sanitários...");
+              levelStep = 3; // Bloqueia reenvio temporariamente
+              setTimeout(() => {
+                addLog("Autoridade Portuária", "Sanidade limpa confirmada. Livre prática concedida!");
+                setOtherAP('closeup');
+                levelStep = 2;
+                playSound('bell');
+                addLog("Sistema", "Nível 16 concluído com sucesso!");
+                showLevelCompleteButton(16);
+              }, 1800);
             } else {
               addLog("Sistema", "Sinal incorreto. Para requerer livre prática sanitária, iça Quebec (Q).");
               playerHoistedOnMast = [];
@@ -2115,12 +2234,16 @@
             if (playerHoistedOnMast.length === 0) return;
             const isW = playerHoistedOnMast.join('') === 'W';
             if (isW) {
-              addLog("Outro Navio", "Solicitação médica recebida. Despachando lancha de resgate!");
-              setOtherAP('closeup');
-              levelStep = 2;
-              playSound('bell');
-              addLog("Sistema", "Nível 17 concluído com sucesso!");
-              showLevelCompleteButton(17);
+              addLog("Sistema", "Transmitindo pedido de socorro médico... Navios próximos recebendo...");
+              levelStep = 3; // Bloqueia reenvio temporariamente
+              setTimeout(() => {
+                addLog("Outro Navio", "Solicitação médica recebida. Despachando lancha de resgate!");
+                setOtherAP('closeup');
+                levelStep = 2;
+                playSound('bell');
+                addLog("Sistema", "Nível 17 concluído com sucesso!");
+                showLevelCompleteButton(17);
+              }, 1800);
             } else {
               addLog("Sistema", "Sinal incorreto. Para solicitar assistência médica, iça Whiskey (W).");
               playerHoistedOnMast = [];
@@ -2133,14 +2256,18 @@
           // Nível 18 (CB + Tack + KF)
           if (levelStep === 1) {
             if (playerHoistedOnMast.length === 0) return;
-            const isCorrectEmergency = playerHoistedOnMast.join('') === 'CBTacklineKF';
+            const isCorrectEmergency = playerHoistedOnMast.join('') === 'CBtacklineKF';
             if (isCorrectEmergency) {
-              addLog("Estação de Socorro", "Sinal de emergência compreendido: Necessita auxílio imediato (CB) e reboque (KF). Enviando equipes!");
-              setOtherAP('closeup');
-              levelStep = 2;
-              playSound('bell');
-              addLog("Sistema", "Nível 18 concluído com sucesso!");
-              showLevelCompleteButton(18);
+              addLog("Sistema", "Transmitindo sinais de emergência CB e KF... Estação de socorro costeira recebendo...");
+              levelStep = 3; // Bloqueia reenvio temporariamente
+              setTimeout(() => {
+                addLog("Estação de Socorro", "Sinal de emergência compreendido: Necessita auxílio imediato (CB) e reboque (KF). Enviando equipes!");
+                setOtherAP('closeup');
+                levelStep = 2;
+                playSound('bell');
+                addLog("Sistema", "Nível 18 concluído com sucesso!");
+                showLevelCompleteButton(18);
+              }, 2000);
             } else {
               addLog("Sistema", "Sinal incorreto. Monte a adriça unificada: [ C ] [ B ] [ Tackline ] [ K ] [ F ].");
               playerHoistedOnMast = [];
@@ -2155,12 +2282,16 @@
             if (playerHoistedOnMast.length === 0) return;
             const isCorrectDecimal = playerHoistedOnMast.join('') === '2AP5';
             if (isCorrectDecimal) {
-              addLog("Outro Navio", "Leitura de marcação/profundidade de 2.5 confirmada com sucesso!");
-              setOtherAP('closeup');
-              levelStep = 2;
-              playSound('bell');
-              addLog("Sistema", "Nível 19 concluído com sucesso!");
-              showLevelCompleteButton(19);
+              addLog("Sistema", "Sinalizando valor decimal de profundidade/marcação (2.5)... Navio receptor confirmando...");
+              levelStep = 3; // Bloqueia reenvio temporariamente
+              setTimeout(() => {
+                addLog("Outro Navio", "Leitura de marcação/profundidade de 2.5 confirmada com sucesso!");
+                setOtherAP('closeup');
+                levelStep = 2;
+                playSound('bell');
+                addLog("Sistema", "Nível 19 concluído com sucesso!");
+                showLevelCompleteButton(19);
+              }, 1800);
             } else {
               addLog("Sistema", "Sinal incorreto. Monte a adriça contendo: [ 2 ] [ AP ] [ 5 ].");
               playerHoistedOnMast = [];
@@ -2210,9 +2341,9 @@
         btn.className = 'level-action-btn green-btn';
         btn.onclick = () => {
           container.classList.remove('active');
-          if (levelNum === 13) {
+          if (levelNum === 21) {
             addLog("Sistema", "JORNADA SUPREMA CONCLUÍDA!");
-            alert("PARABÉNS! Você concluiu com êxito todas as 13 missões do Tutor do CIS, 100% alinhado com o código oficial da IMO 2005 e o banco de provas do PSCPP/DPC!");
+            alert("PARABÉNS! Você concluiu com êxito todas as 21 missões do Tutor do CIS, 100% alinhado com o código oficial da IMO 2005 e o banco de provas do PSCPP/DPC!");
             loadLevel(1);
           } else {
             nextLevel();
@@ -2275,6 +2406,7 @@
       
       // Limpa marcas RIPEAM anteriores e define modo padrão de dia
       setOtherMarksConfig({ day: [], night: [] });
+      setPlayerMarksConfig({ day: [], night: [] });
       setDayNightMode(false);
       
       const mobileLevelText = document.getElementById('mobile-level-text');
