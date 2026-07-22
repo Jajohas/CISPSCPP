@@ -87,8 +87,16 @@
                   <option value="11">Nível 11: Modificadores (C, N, RQ)</option>
                   <option value="12">Nível 12: Socorro (NC)</option>
                   <option value="13">Nível 13: Temático (KF)</option>
+                  <option value="14">Nível 14: Praticagem (G)</option>
+                  <option value="15">Nível 15: Instruções do Prático (H + UF)</option>
+                  <option value="16">Nível 16: Fundeado e Livre Prática (Q)</option>
+                  <option value="17">Nível 17: Assistência Médica (W)</option>
+                  <option value="18">Nível 18: Encalhe e Reboque (CB + KF)</option>
+                  <option value="19">Nível 19: AP como Decimal (2.5)</option>
+                  <option value="20">Nível 20: Manobra Restrita (RU + RAM)</option>
+                  <option value="21">Nível 21: Pesca / Arrasto (T)</option>
                 </select>
-                <span id="mobile-level-text" style="font-weight: 800; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;">Nível: 1/13 ▾</span>
+                <span id="mobile-level-text" style="font-weight: 800; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;">Nível: 1/21 ▾</span>
               </div>
               <button id="day-night-toggle-btn" class="day-night-btn" onclick="toggleDayNightMode()">☀️ DIA</button>
             </div>
@@ -946,6 +954,212 @@
           addLog("Outro Navio", "Içou o grupo: [ K ] [ F ] (Necessito um rebocador).");
           addLog("Dica", "Coloque seu AP no topo (Close-up) para confirmar a leitura.");
         }
+      },
+      14: {
+        title: "Nível 14: Preciso de Prático (G)",
+        desc: "Sinalize a necessidade de assistência de praticagem utilizando o código internacional de uma única letra.",
+        scenario: "O N.M. BRASIL está se aproximando do canal de acesso ao porto e precisa de apoio de praticagem.",
+        mission: "Selecione no armário e ice a bandeira isolada correta para solicitar prático ao porto.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>O sinal de uma letra correspondente para solicitar prático é a bandeira <strong>G (Golf)</strong>.</li>
+            <li>Adicione <strong>G</strong> à sua adriça e clique em <strong>'Içar Sinal'</strong>.</li>
+            <li>O outro navio (ou lancha) responderá de volta confirmando a recepção.</li>
+          </ol>
+        `,
+        citation: `📜 <strong>Fundamentação Regulamentar: CIS Seção Praticagem & Cap. XI</strong>
+          <br><em>"G (Golf) = I require a pilot."</em>
+          <br><br>👉 <strong>Importância no Exame:</strong> G é uma das bandeiras mais cobradas nas provas da DPC. Não confunda com H (Tenho prático a bordo).`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist([]);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 14. O navio aproxima-se da barra.");
+          addLog("Dica", "Monte a bandeira G e clique em 'Içar Sinal'.");
+        }
+      },
+      15: {
+        title: "Nível 15: Prático a bordo, siga a lancha (H + UF)",
+        desc: "Domine os procedimentos regulamentares do CIS após o embarque do prático na barra.",
+        scenario: "O prático acabou de embarcar a bordo do seu navio. A lancha do prático iça as instruções de navegação UF.",
+        mission: "Ice a bandeira que indica prático a bordo, interprete as instruções da lancha e confirme a leitura com seu AP.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>Adicione a bandeira <strong>H (Hotel)</strong> (prático a bordo) à sua adriça e clique em <strong>'Içar Sinal'</strong>.</li>
+            <li>A lancha de praticagem iça o código <strong>UF</strong> (Siga a lancha do prático).</li>
+            <li>Como você leu e compreendeu a instrução, suba seu AP para mastro cheio (<strong>Close-up</strong>) para confirmar.</li>
+          </ol>
+        `,
+        citation: `📜 <strong>Fundamentação Regulamentar: CIS Seção Praticagem & Cap. XI</strong>
+          <br><em>"H (Hotel) = I have a pilot on board."</em>
+          <br><em>"UF = You should follow the pilot boat."</em>`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist([]);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 15. O prático embarcou.");
+          addLog("Dica", "Monte a bandeira H e clique em 'Içar Sinal'.");
+        }
+      },
+      16: {
+        title: "Nível 16: Fundeado pedindo livre prática (Q)",
+        desc: "Identifique marcas diurnas de fundeio da Regra 30 do RIPEAM e solicite a liberação alfandegária (Livre Prática).",
+        scenario: "Seu navio está fundeado na baía (exibindo uma esfera preta no mastro) aguardando liberação sanitária/alfandegária.",
+        mission: "Mantenha a marca diurna de fundeio e iça a bandeira internacional para solicitar livre prática à autoridade portuária.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>Observe a marca de fundeio: <strong>1 Esfera Preta</strong> no mastro (RIPEAM Regra 30).</li>
+            <li>A bandeira para requerer livre prática (sanidade limpa) é a bandeira <strong>Q (Quebec)</strong>.</li>
+            <li>Adicione <strong>Q</strong> à sua adriça e clique em <strong>'Içar Sinal'</strong>.</li>
+          </ol>
+        `,
+        citation: `📜 <strong>Fundamentação Regulamentar: RIPEAM Regra 30 & CIS Seção Geral (Q)</strong>
+          <br><em>"Regra 30 RIPEAM: Uma embarcação fundeada deve exibir no local mais visível: na parte avante, uma esfera."</em>
+          <br><em>"Q (Quebec) = My vessel is 'healthy' and I request free pratique."</em>`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist([]);
+          setOtherAP('none');
+          setOtherMarksConfig({ day: ['sphere'], night: ['white-light'] });
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 16. Navio fundeado aguardando liberação.");
+          addLog("Dica", "Monte a bandeira Q e clique em 'Içar Sinal'.");
+        }
+      },
+      17: {
+        title: "Nível 17: Assistência Médica (W)",
+        desc: "Aprenda a sinalizar emergências de saúde a bordo usando a Seção Médica do CIS.",
+        scenario: "Um tripulante sofreu um acidente grave na casa de máquinas e você precisa de auxílio médico urgente.",
+        mission: "Identifique e iça a bandeira do CIS que solicita assistência médica emergencial.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>A bandeira de socorro médico de uma única letra é a bandeira <strong>W (Whiskey)</strong>.</li>
+            <li>Adicione <strong>W</strong> à sua adriça e clique em <strong>'Içar Sinal'</strong>.</li>
+            <li>O outro navio acusa a leitura com seu AP e inicia o envio de equipe de socorro.</li>
+          </ol>
+        `,
+        citation: `📜 <strong>Fundamentação Regulamentar: CIS Seção Médica & Cap. XI</strong>
+          <br><em>"W (Whiskey) = I require medical assistance."</em>
+          <br><br>👉 <strong>Cuidado:</strong> Não confunda com o sinal internacional de perigo geral (NC). W é específico para assistência médica.`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist([]);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 17. Emergência médica a bordo.");
+          addLog("Dica", "Monte a bandeira W e clique em 'Içar Sinal'.");
+        }
+      },
+      18: {
+        title: "Nível 18: Navio Encalhado pede Reboque",
+        desc: "Formule mensagens de emergência complexas compostas por múltiplos grupos separados por Tackline.",
+        scenario: "Seu navio encalhou na barra e necessita de assistência imediata (CB) e de um rebocador (KF).",
+        mission: "Transmita a mensagem complexa contendo os dois grupos separados por Tackline em uma única adriça.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>Esta questão reencena a famosa Questão 51 do concurso DPC 2011.</li>
+            <li>Adicione o grupo de assistência imediata: <strong>C</strong> -> <strong>B</strong>.</li>
+            <li>Adicione a bandeira de separação: <strong>Tackline (Tack)</strong>.</li>
+            <li>Adicione o grupo de rebocador: <strong>K</strong> -> <strong>F</strong>.</li>
+            <li>Com a sequência <strong>C -> B -> Tack -> K -> F</strong> montada, clique em <strong>'Içar Sinal'</strong>.</li>
+            <li>O outro navio responderá com o AP no topo para confirmar a recepção de todo o sinal.</li>
+          </ol>
+        `,
+        citation: `📜 <strong>Fundamentação Oficial: Concurso DPC PSCPP 2011 Q51 & CIS Cap. V</strong>
+          <br><em>"Sinalização unificada de socorro: CB (Necessito assistência imediata) e KF (Preciso de rebocador) separados por um Tackline na mesma adriça."</em>`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist([]);
+          setOtherAP('none');
+          setOtherMarksConfig({ day: ['sphere', 'sphere', 'sphere'], night: ['red-light', 'red-light', 'red-light'] });
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 18. Navio encalhado (3 esferas no mastro).");
+          addLog("Dica", "Monte a sequência: [ C ] [ B ] [ Tackline ] [ K ] [ F ] e clique em 'Içar Sinal'.");
+        }
+      },
+      19: {
+        title: "Nível 19: O AP como Vírgula Decimal",
+        desc: "Domine a utilização técnica do galhardete de resposta (AP) como ponto decimal na sinalização de dados numéricos.",
+        scenario: "Você precisa transmitir uma marcação exata ou profundidade de 2.5 metros ao navio de apoio.",
+        mission: "Monte a adriça com a numeração contendo o AP intercalado como ponto decimal e iça o sinal.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>Adicione o primeiro algarismo: <strong>2</strong>.</li>
+            <li>Adicione o galhardete de resposta <strong>AP (Answering Pendant)</strong> como ponto decimal.</li>
+            <li>Adicione o segundo algarismo: <strong>5</strong>.</li>
+            <li>Com a adriça contendo <strong>2 -> AP -> 5</strong>, clique em <strong>'Içar Sinal'</strong>.</li>
+          </ol>
+        `,
+        citation: `📜 <strong>Fundamentação Regulamentar: CIS Seção Geral - Instruções Numéricas</strong>
+          <br><em>"Answering Pendant (AP) is used as a decimal point when transmitting numbers or coordinates between ships."</em>`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist([]);
+          setOtherAP('none');
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 19. Transmissão de valores decimais.");
+          addLog("Dica", "Monte o sinal: [ 2 ] [ AP ] [ 5 ] e clique em 'Içar Sinal'.");
+        }
+      },
+      20: {
+        title: "Nível 20: Capacidade de Manobra Restrita (RAM)",
+        desc: "Interprete as marcas diurnas e luzes da Regra 27 do RIPEAM e coordene a sinalização do CIS.",
+        scenario: "O N.M. ALBATROZ exibe Esfera-Losango-Esfera no mastro de dia e iça o código RU.",
+        mission: "Identifique o status de governo (Manobra Restrita - RAM) e iça a resposta com seu AP.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>Observe as marcas diurnas do outro navio: **Esfera-Losango-Esfera** representa **Capacidade de Manobra Restrita (RAM) (RIPEAM Regra 27(b))**.</li>
+            <li>O sinal do CIS é **RU (Romeo Uniform)** (Mantenha-se afastado; manobro com dificuldade).</li>
+            <li>Como você leu e compreendeu a situação de perigo, suba seu AP para mastro cheio (**Close-up**).</li>
+          </ol>
+        `,
+        citation: `📜 <strong>Fundamentação Regulamentar: RIPEAM Regra 27(b) & CIS Seção Geral (RU)</strong>
+          <br><em>"Regra 27(b) RIPEAM: Embarcação com capacidade de manobra restrita deve exibir: de dia, em linha vertical, uma esfera, um losango e uma esfera..."</em>
+          <br><em>"RU = Keep clear of me; I am maneuvering with difficulty."</em>`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist(['R', 'U']);
+          setOtherAP('none');
+          setOtherMarksConfig({ day: ['sphere', 'diamond', 'sphere'], night: ['red-light', 'white-light', 'red-light'] });
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 20. Navio com capacidade de manobra restrita.");
+          addLog("Dica", "Coloque seu AP no topo (Close-up) para responder.");
+        }
+      },
+      21: {
+        title: "Nível 21: Pesca / Arrasto (COLREG Regra 26)",
+        desc: "Compreenda marcas diurnas de pesca de arrasto em dupla (Regra 26) e sinalize aproximação.",
+        scenario: "O navio transmissor exibe dois cones unidos pelos vértices e iça a bandeira T.",
+        mission: "Interprete a sinalização RIPEAM e o sinal Tango no mastro e acuse a leitura com seu AP.",
+        studyGuide: `
+          <strong>Resolução Passo a Passo:</strong>
+          <ol>
+            <li>As marcas diurnas de **dois cones unidos pelos vértices** representam **Pesca de Arrasto (RIPEAM Regra 26(b))**.</li>
+            <li>A bandeira **T (Tango)** no mastro significa *\"Mantenha-se afastado; estou engajado em pesca de arrasto em dupla\"*.</li>
+            <li>Acuse a compreensão correta subindo seu AP para o topo (**Close-up**).</li>
+          </ol>
+        `,
+        citation: `📜 <strong>Fundamentação Regulamentar: RIPEAM Regra 26(b) & CIS Seção Geral (T)</strong>
+          <br><em>"Regra 26 RIPEAM: Embarcações de pesca de arrasto devem exibir: de dia, uma marca composta de dois cones com as pontas unidas..."</em>
+          <br><em>"T (Tango) = Keep clear of me; I am engaged in pair trawling."</em>`,
+        setup: () => {
+          levelStep = 1;
+          setOtherHoist(['T']);
+          setOtherAP('none');
+          setOtherMarksConfig({ day: ['cone-up', 'cone-down'], night: ['red-light', 'white-light'] });
+          document.getElementById('cloud').classList.remove('active');
+          addLog("Sistema", "Iniciando Nível 21. Navio de pesca de arrasto.");
+          addLog("Dica", "Coloque seu AP no topo (Close-up) para confirmar a leitura.");
+        }
       }
     };
 
@@ -1240,6 +1454,18 @@
         } else if (mark === 'sphere') {
           el.className = 'ripeam-sphere';
           el.title = 'Marca Diurna RIPEAM R.27(a): Esfera Preta (Sem Governo / NUC)';
+        } else if (mark === 'diamond') {
+          el.className = 'ripeam-diamond';
+          el.title = 'Marca Diurna RIPEAM R.27(b): Losango Preto (Capacidade de Manobra Restrita / RAM)';
+        } else if (mark === 'white-light') {
+          el.className = 'ripeam-white-light';
+          el.title = 'Luz Noturna RIPEAM R.27/30: Luz Branca Circular';
+        } else if (mark === 'cone-up') {
+          el.className = 'ripeam-cone-up';
+          el.title = 'Marca Diurna RIPEAM R.26: Cone Preto Ponta para Cima';
+        } else if (mark === 'cone-down') {
+          el.className = 'ripeam-cone-down';
+          el.title = 'Marca Diurna RIPEAM R.26: Cone Preto Ponta para Baixo';
         }
         container.appendChild(el);
       });
@@ -1400,6 +1626,48 @@
           e: "❌ INCORRETA: Substitutas aplicam-se a grupos numéricos e alfabéticos."
         },
         source: "Fonte: CIS Cap. V §6 & DPC 2011 (Gabarito a confirmar em fonte oficial)"
+      },
+      14: {
+        badge: "🏆 JÁ CAIU EM PROVA DE PRÁTICO (DPC 2011)",
+        title: "Prova de Prático de Navios 2011 — Questão 51",
+        question: "De acordo com o Capítulo XI do Código Internacional de Sinais (CIS), a bandeira de uma única letra Golf (G) significa:",
+        options: [
+          { letter: "a", text: "Tenho prático a bordo." },
+          { letter: "b", text: "Preciso de prático." },
+          { letter: "c", text: "Estou arrastando redes." },
+          { letter: "d", text: "Minha embarcação está parada e sem seguimento." },
+          { letter: "e", text: "Desejo me comunicar com você." }
+        ],
+        correct: "b",
+        explanations: {
+          b: "✅ GABARITO CORRETO: G (Golf) isolada significa 'Preciso de prático' (I require a pilot).",
+          a: "❌ INCORRETA: 'Tenho prático a bordo' é representado por H (Hotel).",
+          c: "❌ INCORRETA: 'Estou arrastando redes' é parte do significado de T (Tango).",
+          d: "❌ INCORRETA: M (Mike) significa 'Minha embarcação está parada e sem seguimento'.",
+          e: "❌ INCORRETA: K (Kilo) significa 'Desejo me comunicar com você'."
+        },
+        source: "Fonte: CIS Cap. XI & DPC 2011"
+      },
+      18: {
+        badge: "🏆 JÁ CAIU EM PROVA DE PRÁTICO (DPC 2011)",
+        title: "Prova de Prático de Navios 2011 — Questão 51",
+        question: "Ao sinalizar que o navio está encalhado, fazendo água, necessitando de assistência imediata e requerendo um rebocador, qual a sinalização de emergência correta de acordo com as regras de adriça do CIS?",
+        options: [
+          { letter: "a", text: "Içar CB e KF em adriças diferentes, sem Tackline." },
+          { letter: "b", text: "Içar CB, seguido de um Tackline e depois o grupo KF, tudo na mesma adriça." },
+          { letter: "c", text: "Içar a flâmula de resposta (AP) no topo, seguida de CB e KF." },
+          { letter: "d", text: "Içar a bandeira Whiskey (W) seguida de CB e KF." },
+          { letter: "e", text: "Içar apenas KF, pois rebocador já subentende o estado de encalhe." }
+        ],
+        correct: "b",
+        explanations: {
+          b: "✅ GABARITO CORRETO: Grupos diferentes de sinais de emergência na mesma adriça devem ser separados por um Tackline (tirador de separação) para evitar confusão de leitura (CB = assistência imediata, KF = preciso de rebocador).",
+          a: "❌ INCORRETA: Içar em adriças separadas dispersa a mensagem unificada de socorro.",
+          c: "❌ INCORRETA: O AP no topo é usado para acusar recebimento, não para enviar a mensagem de emergência.",
+          d: "❌ INCORRETA: W significa especificamente socorro médico.",
+          e: "❌ INCORRETA: KF sozinho não indica que o navio está fazendo água ou necessita de assistência imediata."
+        },
+        source: "Fonte: Concurso DPC 2011 / CIS Cap. V"
       }
     };
 
@@ -1777,6 +2045,149 @@
             showLevelCompleteButton(13);
           }
           break;
+
+        case 14:
+          // Nível 14 (G)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const isG = playerHoistedOnMast.join('') === 'G';
+            if (isG) {
+              addLog("Lancha de Prático", "Acusado recebimento! Enviando prático à sua posição.");
+              setOtherHoist(['U', 'A']);
+              levelStep = 2;
+              playSound('bell');
+              addLog("Sistema", "Nível 14 concluído com sucesso!");
+              showLevelCompleteButton(14);
+            } else {
+              addLog("Sistema", "Sinal incorreto. Para requerer prático, iça a bandeira Golf (G).");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          }
+          break;
+
+        case 15:
+          // Nível 15 (H + UF)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const isH = playerHoistedOnMast.join('') === 'H';
+            if (isH) {
+              addLog("Lancha de Prático", "Prático a bordo confirmado! Iniciando guiamento.");
+              setOtherHoist(['U', 'F']);
+              addLog("Dica", "Agora observe o sinal [ UF ] da lancha e suba seu AP para mastro cheio (Close-up).");
+              levelStep = 2;
+            } else {
+              addLog("Sistema", "Sinal incorreto. Para indicar prático a bordo, iça Hotel (H).");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          } else if (levelStep === 2 && playerAPState === 'closeup') {
+            addLog("Lancha de Prático", "Entendido, procedendo com a manobra no canal.");
+            playSound('bell');
+            addLog("Sistema", "Nível 15 concluído com sucesso!");
+            showLevelCompleteButton(15);
+          }
+          break;
+
+        case 16:
+          // Nível 16 (Q)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const isQ = playerHoistedOnMast.join('') === 'Q';
+            if (isQ) {
+              addLog("Autoridade Portuária", "Sanidade limpa confirmada. Livre prática concedida!");
+              setOtherAP('closeup');
+              levelStep = 2;
+              playSound('bell');
+              addLog("Sistema", "Nível 16 concluído com sucesso!");
+              showLevelCompleteButton(16);
+            } else {
+              addLog("Sistema", "Sinal incorreto. Para requerer livre prática sanitária, iça Quebec (Q).");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          }
+          break;
+
+        case 17:
+          // Nível 17 (W)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const isW = playerHoistedOnMast.join('') === 'W';
+            if (isW) {
+              addLog("Outro Navio", "Solicitação médica recebida. Despachando lancha de resgate!");
+              setOtherAP('closeup');
+              levelStep = 2;
+              playSound('bell');
+              addLog("Sistema", "Nível 17 concluído com sucesso!");
+              showLevelCompleteButton(17);
+            } else {
+              addLog("Sistema", "Sinal incorreto. Para solicitar assistência médica, iça Whiskey (W).");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          }
+          break;
+
+        case 18:
+          // Nível 18 (CB + Tack + KF)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const isCorrectEmergency = playerHoistedOnMast.join('') === 'CBTacklineKF';
+            if (isCorrectEmergency) {
+              addLog("Estação de Socorro", "Sinal de emergência compreendido: Necessita auxílio imediato (CB) e reboque (KF). Enviando equipes!");
+              setOtherAP('closeup');
+              levelStep = 2;
+              playSound('bell');
+              addLog("Sistema", "Nível 18 concluído com sucesso!");
+              showLevelCompleteButton(18);
+            } else {
+              addLog("Sistema", "Sinal incorreto. Monte a adriça unificada: [ C ] [ B ] [ Tackline ] [ K ] [ F ].");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          }
+          break;
+
+        case 19:
+          // Nível 19 (2 + AP + 5)
+          if (levelStep === 1) {
+            if (playerHoistedOnMast.length === 0) return;
+            const isCorrectDecimal = playerHoistedOnMast.join('') === '2AP5';
+            if (isCorrectDecimal) {
+              addLog("Outro Navio", "Leitura de marcação/profundidade de 2.5 confirmada com sucesso!");
+              setOtherAP('closeup');
+              levelStep = 2;
+              playSound('bell');
+              addLog("Sistema", "Nível 19 concluído com sucesso!");
+              showLevelCompleteButton(19);
+            } else {
+              addLog("Sistema", "Sinal incorreto. Monte a adriça contendo: [ 2 ] [ AP ] [ 5 ].");
+              playerHoistedOnMast = [];
+              renderPlayerMast();
+            }
+          }
+          break;
+
+        case 20:
+          // Nível 20 (RU + RAM)
+          if (levelStep === 1 && playerAPState === 'closeup') {
+            addLog("Outro Navio", "Agradecido. Iniciando manobra cuidadosa de desvio.");
+            playSound('bell');
+            addLog("Sistema", "Nível 20 concluído com sucesso!");
+            showLevelCompleteButton(20);
+          }
+          break;
+
+        case 21:
+          // Nível 21 (T + Pesca)
+          if (levelStep === 1 && playerAPState === 'closeup') {
+            addLog("Outro Navio", "Entendido, alterando rumo para passar a vante das redes.");
+            playSound('bell');
+            addLog("Sistema", "Nível 21 concluído com sucesso!");
+            showLevelCompleteButton(21);
+          }
+          break;
       }
     }
 
@@ -1785,7 +2196,7 @@
       const btn = document.getElementById('level-complete-action-btn');
       if (!container || !btn) return;
       
-      const hasQuestion = [3, 4, 6].includes(levelNum);
+      const hasQuestion = [3, 4, 6, 7, 14, 18].includes(levelNum);
       
       if (hasQuestion) {
         btn.innerHTML = '📝 Responder Questão do Concurso';
@@ -1795,7 +2206,7 @@
           onLevelCompleted(levelNum);
         };
       } else {
-        btn.innerHTML = (levelNum === 13) ? '🏆 Concluir Jornada' : '⏭️ Próximo Nível';
+        btn.innerHTML = (levelNum === 21) ? '🏆 Concluir Jornada' : '⏭️ Próximo Nível';
         btn.className = 'level-action-btn green-btn';
         btn.onclick = () => {
           container.classList.remove('active');
@@ -1868,7 +2279,7 @@
       
       const mobileLevelText = document.getElementById('mobile-level-text');
       if (mobileLevelText) {
-        mobileLevelText.textContent = `Nível: ${levelNum}/13 ▾`;
+        mobileLevelText.textContent = `Nível: ${levelNum}/21 ▾`;
       }
       
       const dropdown = document.getElementById('level-select-dropdown');

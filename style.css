@@ -618,6 +618,54 @@ footer {
   100% { box-shadow: 0 0 18px 6px rgba(255, 34, 51, 1); }
 }
 
+/* Losango Preto Diurno (RIPEAM Regra 27 - Capacidade de Manobra Restrita) */
+.ripeam-diamond {
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #64748b, #090d16);
+  border: 1px solid rgba(255,255,255,0.25);
+  transform: rotate(45deg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+  margin: 3px 0;
+}
+
+/* Luz Branca Noturna (RIPEAM Regra 27 / Regra 30 - Luz de Fundeio ou de Navegação) */
+.ripeam-white-light {
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 14px 4px rgba(255, 255, 255, 0.95), 0 0 2px #fff;
+  animation: pulseRipeamWhite 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulseRipeamWhite {
+  0% { box-shadow: 0 0 8px 3px rgba(255, 255, 255, 0.8); }
+  100% { box-shadow: 0 0 18px 6px rgba(255, 255, 255, 1); }
+}
+
+/* Cone Diurno RIPEAM - Ponta para cima (Pesca/Arrasto - Regra 26) */
+.ripeam-cone-up {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 16px solid #090d16;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+  margin: 2px 0;
+}
+
+/* Cone Diurno RIPEAM - Ponta para baixo (Pesca/Arrasto - Regra 26) */
+.ripeam-cone-down {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 16px solid #090d16;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+  margin: 2px 0;
+}
+
 .ship-left .ship-halyard {
   left: 112px;
 }
