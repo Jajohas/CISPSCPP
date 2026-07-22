@@ -681,6 +681,208 @@ footer {
   margin: 2px 0;
 }
 
+/* ==========================================================================
+   NOVAS FUNCIONALIDADES: GAMIFICAÇÃO, FILTROS E JUICE
+   ========================================================================== */
+
+/* Badge de Pontuação de Estrelas no Header */
+.star-score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(255, 204, 0, 0.12);
+  border: 1px solid rgba(255, 204, 0, 0.4);
+  color: #FFCC00;
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-left: 0.6rem;
+  box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
+  user-select: none;
+}
+
+/* Filtros por Categoria do Armário de Bandeiras */
+.inventory-filters {
+  display: flex;
+  gap: 0.3rem;
+  margin-bottom: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: thin;
+}
+
+.inventory-filters::-webkit-scrollbar {
+  height: 3px;
+}
+
+.inventory-filters::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.filter-chip {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #9CA3AF;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.filter-chip:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.filter-chip.active {
+  background: var(--color-primary, #FFCC00);
+  color: #090d16;
+  font-weight: 800;
+  border-color: var(--color-primary, #FFCC00);
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
+}
+
+/* Efeito Shake de Erro Visual */
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.shake-error {
+  animation: shakeError 0.4s ease-in-out !important;
+  border-color: rgba(255, 51, 68, 0.8) !important;
+  box-shadow: 0 0 12px rgba(255, 51, 68, 0.6) !important;
+}
+
+/* Efeito Confete de Celebração */
+.confetti-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.confetti-particle {
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+  opacity: 1;
+  animation: confettiFall 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-20px) rotate(0deg);
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(350px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Dots com Indicador de Estrelas na Trilha */
+.tutor-dot.completed.stars-3 {
+  background: #FFCC00 !important;
+  color: #090d16 !important;
+  border-color: #FFCC00 !important;
+  box-shadow: 0 0 8px rgba(255, 204, 0, 0.6);
+}
+
+/* Tradutor Instantâneo - Preset Chips */
+.preset-chip {
+  background: rgba(255, 204, 0, 0.1);
+  border: 1px solid rgba(255, 204, 0, 0.3);
+  color: #FFCC00;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.preset-chip:hover {
+  background: rgba(255, 204, 0, 0.25);
+  border-color: #FFCC00;
+  transform: translateY(-1px);
+}
+
+/* Responsividade do Tradutor no Mobile */
+@media (max-width: 850px) {
+  .translator-results-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Box de Dica / Pegadinha da DPC nos Níveis */
+.dpc-tip-box {
+  margin-top: 0.8rem;
+  background: rgba(255, 204, 0, 0.12);
+  border-left: 4px solid #FFCC00;
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.8rem;
+  color: #FCD34D;
+  line-height: 1.45;
+}
+
+/* Modo Desafio Reverso */
+.reverse-card {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 204, 0, 0.3);
+  border-radius: 12px;
+  padding: 1.2rem;
+}
+
+.reverse-option-btn {
+  width: 100%;
+  text-align: left;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #F8FAFC;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.reverse-option-btn:hover {
+  background: rgba(255, 204, 0, 0.15);
+  border-color: #FFCC00;
+}
+
+.reverse-option-btn.selected-correct {
+  background: rgba(0, 255, 102, 0.2) !important;
+  border-color: #00FF66 !important;
+  color: #86EFAC !important;
+  font-weight: 700;
+}
+
+.reverse-option-btn.selected-wrong {
+  background: rgba(255, 51, 68, 0.2) !important;
+  border-color: #FF3344 !important;
+  color: #FCA5A5 !important;
+}
+
 .ship-left .ship-halyard {
   left: 112px;
 }

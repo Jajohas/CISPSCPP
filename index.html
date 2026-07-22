@@ -16,9 +16,13 @@
       <div class="header-slim-brand">
         <span class="brand-badge">⚓ CIS PSCPP</span>
         <h1 class="brand-title">Font das Bandeiras</h1>
+        <div class="star-score-badge" id="star-score-badge" title="Sua Pontuação Total de Estrelas na Jornada">
+          ⭐ <span id="total-stars-count">0</span> / 72 Estrelas
+        </div>
         <div class="header-tabs">
           <button class="tab-btn active" id="btn-tab-game" onclick="switchTab('game')">🎮 Simulador</button>
           <button class="tab-btn" id="btn-tab-translator" onclick="switchTab('translator')">🔄 Tradutor</button>
+          <button class="tab-btn" id="btn-tab-reverse" onclick="switchTab('reverse')">🎯 Desafio Reverso</button>
           <button class="tab-btn" id="btn-tab-tutorial" onclick="startTutorial()" style="background: rgba(255, 204, 0, 0.15); color: #ffcc00; border-color: rgba(255, 204, 0, 0.4); margin-left: 0.5rem; font-weight: 700;">💡 Tutorial</button>
         </div>
       </div>
@@ -168,7 +172,15 @@
             </div>
           </div>
           
-          <!-- 1. Seleção (Carrossel no Mobile / Grid no Desktop) -->
+          <!-- 1. Filtros Rápidos de Categoria -->
+          <div class="inventory-filters" id="inventory-filters">
+            <button class="filter-chip active" id="chip-all" onclick="setInventoryCategory('all')">Todas (40)</button>
+            <button class="filter-chip" id="chip-letters" onclick="setInventoryCategory('letters')">Letras A-Z</button>
+            <button class="filter-chip" id="chip-numbers" onclick="setInventoryCategory('numbers')">Numerais 0-9</button>
+            <button class="filter-chip" id="chip-specials" onclick="setInventoryCategory('specials')">Especiais & AP</button>
+          </div>
+
+          <!-- 2. Seleção (Carrossel no Mobile / Grid no Desktop) -->
           <div class="flag-selector-grid" id="flag-inventory">
             <!-- Grid com botões para selecionar as bandeiras -->
           </div>
@@ -191,29 +203,143 @@
     </div>
 
     <!-- ABA 2: TRADUTOR & DICIONÁRIO -->
-    <div id="tab-translator" class="tab-content" style="padding: 1.5rem; overflow-y: auto; max-height: calc(100vh - 50px);">
+    <div id="tab-translator" class="tab-content" style="padding: 1rem 1.5rem; overflow-y: auto; max-height: calc(100vh - 50px);">
       
-      <!-- Painel do Tradutor -->
-      <div class="translator-card">
-        <div class="input-group">
-          <label for="text-input">Digite o texto para tradução (A-Z, 0-9)</label>
-          <input type="text" id="text-input" placeholder="Digite algo aqui... Ex: NAVEGAR 10" value="NAVEGAR 10" autocomplete="off">
+      <!-- Painel do Tradutor Inteligente -->
+      <div class="translator-card" style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(255, 204, 0, 0.3); border-radius: 12px; padding: 1.2rem;">
+        <div class="translator-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+          <h2 style="font-size: 1.3rem; margin: 0; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+            🔄 Tradutor & Decodificador Instantâneo do CIS
+          </h2>
+          <span style="font-size: 0.75rem; background: rgba(255,204,0,0.15); color: var(--color-primary); padding: 3px 8px; border-radius: 10px; border: 1px solid rgba(255,204,0,0.3); font-weight: 700;">
+            IMO 2005 / PSCPP
+          </span>
         </div>
 
-        <div class="output-section">
-          <div class="output-title">Tradução Visual (Bandeiras Coloridas)</div>
-          <div class="flag-container" id="flag-output">
-            <!-- Gerado dinamicamente -->
+        <!-- Atalhos Rápidos para Provas do PSCPP -->
+        <div class="quick-code-presets" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: center;">
+          <span style="font-size: 0.75rem; color: #9CA3AF; font-weight: 700;">Atalhos PSCPP:</span>
+          <button class="preset-chip" onclick="setTranslatorPreset('NC')">NC (Socorro)</button>
+          <button class="preset-chip" onclick="setTranslatorPreset('HT')">HT (Prático Mau Tempo)</button>
+          <button class="preset-chip" onclick="setTranslatorPreset('MAB')">MAB (Médico a Bordo)</button>
+          <button class="preset-chip" onclick="setTranslatorPreset('A180')">A180 (Rumo 180°)</button>
+          <button class="preset-chip" onclick="setTranslatorPreset('CB-KF')">CB + KF (Encalhe)</button>
+          <button class="preset-chip" onclick="setTranslatorPreset('ZL')">ZL (Não Entendido)</button>
+          <button class="preset-chip" onclick="setTranslatorPreset('G')">G (Preciso Prático)</button>
+          <button class="preset-chip" onclick="setTranslatorPreset('H')">H (Prático a Bordo)</button>
+          <button class="preset-chip" onclick="setTranslatorPreset('2.5')">2.5 (Profundidade)</button>
+        </div>
+
+        <div class="input-group">
+          <label for="text-input" style="font-weight: 700; color: #E2E8F0; margin-bottom: 0.4rem; display: block; font-size: 0.85rem;">
+            Digite o Código CIS ou Texto para Decodificação:
+          </label>
+          <input type="text" id="text-input" placeholder="Ex: HT, NC, MAB, A180, CB-KF, G, H, 2.5..." value="HT" autocomplete="off" style="width: 100%; padding: 0.7rem 1rem; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 204, 0, 0.4); border-radius: 8px; color: #fff; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.05em; outline: none; box-sizing: border-box;">
+        </div>
+
+        <!-- Painel Duplo: Decodificação Regulamentar + Mastro Gráfico -->
+        <div class="translator-results-grid" style="display: grid; grid-template-columns: 1fr 220px; gap: 1.2rem; margin-top: 1.2rem;">
+          
+          <!-- Lado Esquerdo: Significado Oficial e Análise Regulamentar -->
+          <div class="code-meaning-panel" id="code-meaning-panel" style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 1rem;">
+            <!-- Preenchido via JS -->
+          </div>
+
+          <!-- Lado Direito: Mastro Gráfico com a Adriça Montada -->
+          <div class="mast-preview-panel" style="background: #090d16; border: 1px solid rgba(255,204,0,0.3); border-radius: 10px; padding: 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 240px; position: relative;">
+            <div style="font-size: 0.75rem; color: #9CA3AF; font-weight: 700; margin-bottom: 0.6rem; text-transform: uppercase; letter-spacing: 0.05em;">⛵ Mastro de Hasteamento</div>
+            <div class="translator-mast-line" style="position: relative; width: 6px; background: #9CA3AF; height: 180px; border-radius: 3px; display: flex; flex-direction: column; align-items: center; padding-top: 10px;">
+              <div id="translator-mast-flags" style="display: flex; flex-direction: column; gap: 4px; align-items: center; width: 100%;">
+                <!-- Bandeiras empilhadas na adriça -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Tabela / Dicionário de Sinais -->
+      <div class="dictionary-section" style="margin-top: 2rem;">
+        <div class="dictionary-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+          <h3 style="font-size: 1.3rem; margin: 0; font-weight: 700; color: #fff;">📚 Dicionário de Bandeiras & Sinais CIS</h3>
+          
+          <!-- Filtros de Busca e Categoria -->
+          <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center;">
+            <input type="text" id="dict-search-input" oninput="filterDictionary()" placeholder="🔍 Pesquisar código ou palavra-chave..." style="padding: 0.4rem 0.8rem; background: rgba(15,23,42,0.8); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; font-size: 0.82rem; outline: none; width: 220px;">
+            
+            <div class="dict-filter-chips" style="display: flex; gap: 0.3rem;">
+              <button class="filter-chip active" id="dict-chip-all" onclick="setDictCategory('all')">Todos (39)</button>
+              <button class="filter-chip" id="dict-chip-letters" onclick="setDictCategory('letters')">Letras A-Z</button>
+              <button class="filter-chip" id="dict-chip-numbers" onclick="setDictCategory('numbers')">Numerais</button>
+              <button class="filter-chip" id="dict-chip-subs" onclick="setDictCategory('subs')">Substitutas</button>
+            </div>
           </div>
         </div>
+
+        <div class="alphabet-grid" id="alphabet-dictionary">
+          <!-- Gerado via JS -->
+        </div>
       </div>
 
-      <!-- Tabela do Dicionário -->
-      <h2 style="font-size: 1.5rem; margin: 1.5rem 0; text-align: center; font-weight: 700;">Dicionário de Sinais (A - Z, 0 - 9, Substitutos)</h2>
-      <div class="alphabet-grid" id="alphabet-dictionary">
-        <!-- Gerado via JS -->
-      </div>
+    </div>
 
+    <!-- ABA 3: DESAFIO REVERSO (LEITURA DE MASTRO) -->
+    <div id="tab-reverse" class="tab-content" style="padding: 1rem 1.5rem; overflow-y: auto; max-height: calc(100vh - 50px);">
+      <div class="reverse-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.8rem;">
+          <div>
+            <h2 style="font-size: 1.3rem; margin: 0; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 0.5rem;">
+              🎯 Desafio Reverso — Leitura Visual de Mastro
+            </h2>
+            <p style="margin: 0.2rem 0 0 0; font-size: 0.82rem; color: #9CA3AF;">
+              Observe o mastro do navio transmissor e decodifique o significado oficial cobrado nas provas da DPC.
+            </p>
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="background: rgba(255, 204, 0, 0.15); border: 1px solid rgba(255, 204, 0, 0.4); border-radius: 10px; padding: 4px 12px; color: #FFCC00; font-weight: 800; font-size: 0.9rem;">
+              🏆 Pontos: <span id="reverse-score">0</span>
+            </div>
+            <button class="btn btn-secondary btn-xs" onclick="initNextReverseChallenge()" style="background: var(--color-primary); color: #000; font-weight: 700; border: none;">
+              🎲 Próximo Desafio ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- Palco do Desafio Reverso -->
+        <div style="display: grid; grid-template-columns: 240px 1fr; gap: 1.5rem; margin-top: 1rem;" class="translator-results-grid">
+          
+          <!-- Mastro Transmissor Animado -->
+          <div style="background: #090d16; border: 1px solid rgba(255,204,0,0.3); border-radius: 10px; padding: 1.2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 280px;">
+            <div style="font-size: 0.75rem; color: #9CA3AF; font-weight: 700; margin-bottom: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;">⛵ Navio Transmissor</div>
+            <div style="position: relative; width: 6px; background: #9CA3AF; height: 210px; border-radius: 3px; display: flex; flex-direction: column; align-items: center; padding-top: 10px;">
+              <div id="reverse-mast-flags" style="display: flex; flex-direction: column; gap: 4px; align-items: center; width: 100%;">
+                <!-- Bandeiras do desafio -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Questão e Alternativas -->
+          <div style="display: flex; flex-direction: column; justify-content: center;">
+            <div style="font-size: 0.75rem; background: rgba(255,204,0,0.15); color: #FFCC00; padding: 3px 8px; border-radius: 6px; font-weight: 700; width: fit-content; margin-bottom: 0.6rem;" id="reverse-question-badge">
+              DESAFIO DE LEITURA VISUAL
+            </div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: #F8FAFC; margin: 0 0 1rem 0; line-height: 1.45;" id="reverse-question-title">
+              Qual o significado regulamentar do sinal içado no mastro?
+            </h3>
+
+            <div style="display: flex; flex-direction: column; gap: 0.6rem;" id="reverse-options-container">
+              <!-- Renderizado via JS -->
+            </div>
+
+            <div id="reverse-feedback-box" style="margin-top: 1rem; display: none; padding: 0.8rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.45;">
+              <!-- Feedback via JS -->
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
 
   </div>
@@ -372,11 +498,21 @@
       document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
       
       if (tab === 'game') {
-        document.querySelector('button[onclick="switchTab(\'game\')"]').classList.add('active');
-        document.getElementById('tab-game').classList.add('active');
-      } else {
-        document.querySelector('button[onclick="switchTab(\'translator\')"]').classList.add('active');
-        document.getElementById('tab-translator').classList.add('active');
+        const btn = document.getElementById('btn-tab-game');
+        if (btn) btn.classList.add('active');
+        const content = document.getElementById('tab-game');
+        if (content) content.classList.add('active');
+      } else if (tab === 'translator') {
+        const btn = document.getElementById('btn-tab-translator');
+        if (btn) btn.classList.add('active');
+        const content = document.getElementById('tab-translator');
+        if (content) content.classList.add('active');
+      } else if (tab === 'reverse') {
+        const btn = document.getElementById('btn-tab-reverse');
+        if (btn) btn.classList.add('active');
+        const content = document.getElementById('tab-reverse');
+        if (content) content.classList.add('active');
+        initNextReverseChallenge();
       }
     }
 
@@ -527,10 +663,180 @@
     }
 
     // ==========================================
-    // DICIONÁRIO E TRADUTOR (ABA 2)
+    // DICIONÁRIO E TRADUTOR INTELIGENTE (ABA 2)
     // ==========================================
-    
-    // Renderizar Dicionário de A-Z, 0-9 e Repetidores
+
+    const CIS_CODES_DB = {
+      'NC': {
+        name: 'NC — Sinal de Socorro Geral',
+        category: 'Socorro & Emergência (CIS Cap. XII)',
+        meaning: 'Estou em perigo e necessito de assistência imediata (I am in distress and require immediate assistance).',
+        dpcTip: '⚠️ Pegadinha DPC: NC é um sinal de emergência primário que NUNCA é estendido com complementos ou numerais.'
+      },
+      'HT': {
+        name: 'HT — Praticagem Impedida por Mau Tempo',
+        category: 'Praticagem (CIS Seção Geral Parte IV)',
+        meaning: 'O prático não pode vir a bordo devido ao mau tempo (Pilot cannot come on board owing to bad weather).',
+        dpcTip: '⚠️ Pegadinha DPC: Não confunda HT com G (Preciso de prático) nem com H (Tenho prático a bordo).'
+      },
+      'MAB': {
+        name: 'MAB — Solicitação de Médico a Bordo',
+        category: 'Seção Médica (CIS Cap. I)',
+        meaning: 'Solicito envio de um médico a bordo (I desire a doctor).',
+        dpcTip: '💡 Seção Médica: Sinais iniciados com a letra M indicam solicitações e consultas médicas.'
+      },
+      'A180': {
+        name: 'A180 — Rumo Verdadeiro 180°',
+        category: 'Navegação & Rumo (CIS Cap. XI)',
+        meaning: 'Meu rumo verdadeiro é 180 graus (My true course is 180 degrees).',
+        dpcTip: '💡 A (Alfa) seguida por 3 numerais representa o rumo verdadeiro em graus.'
+      },
+      'CB': {
+        name: 'CB — Emergência / Assistência Imediata',
+        category: 'Socorro & Emergência (CIS Cap. V)',
+        meaning: 'Necessito de assistência imediata / Navio em perigo (I require immediate assistance).',
+        dpcTip: '⚠️ Adriça Dupla: Quando combinado com KF na mesma adriça, deve usar Tackline (CB + Tackline + KF).'
+      },
+      'CB-KF': {
+        name: 'CB + Tackline + KF — Navio Encalhado pede Rebocador',
+        category: 'Socorro & Emergência (CIS Cap. V & DPC 2011 Q51)',
+        meaning: 'Navio encalhado necessitando de assistência imediata (CB) e solicitando rebocador (KF) na mesma adriça.',
+        dpcTip: '🏆 Questão Real DPC 2011 Q51: Sinais de emergência diferentes na mesma adriça DEVEM ser separados por Tackline!'
+      },
+      'KF': {
+        name: 'KF — Pedido de Rebocador em Emergência',
+        category: 'Reboque & Socorro (CIS Cap. V)',
+        meaning: 'Necessito de um rebocador (I require a tug).',
+        dpcTip: '💡 Usado em conjunto com CB para navios em perigo de encalhe ou sinistro.'
+      },
+      'ZL': {
+        name: 'ZL — Sinal Não Compreendido',
+        category: 'Sinais de Procedimento (CIS Cap. X)',
+        meaning: 'Seu sinal foi recebido, mas não compreendido (Your signal has been received but not understood).',
+        dpcTip: '💡 Içado para informar o outro navio de que o código transmitido é inválido ou ilegível.'
+      },
+      'RU': {
+        name: 'RU — Manobra com Dificuldade',
+        category: 'RIPEAM / Capacidade Restrita (CIS Seção Geral)',
+        meaning: 'Mantenha-se afastado; estou manobrando com dificuldade (Keep clear of me; I am maneuvering with difficulty).',
+        dpcTip: '💡 Frequentemente associado às marcas diurnas Esfera-Losango-Esfera (RAM).'
+      },
+      '2.5': {
+        name: '2.5 — Profundidade / Valor Decimal',
+        category: 'Sinalização Decimal (CIS Cap. IV)',
+        meaning: 'Profundidade / Valor de 2,5 metros. O AP é içado entre os números 2 e 5 atuando como vírgula decimal.',
+        dpcTip: '⚠️ Regra de Ouro: O Galhardete de Resposta (AP) atua como vírgula decimal quando inserido no meio de numerais.'
+      },
+      '1100': {
+        name: '1100 — Sinal com Substitutas Numéricas',
+        category: 'Substitutas (CIS Cap. V §6 & DPC 2011)',
+        meaning: 'Sequência numérica 1100 montada como: [ 1 ] [ Sub1 ] [ 0 ] [ Sub3 ].',
+        dpcTip: '⚠️ Pegadinha de Prova: A 1ª Substituto repete o 1º numeral, e a 3ª Substituto repete o 3º numeral.'
+      },
+      'G': {
+        name: 'G — Golf (Preciso de Prático)',
+        category: 'Sinal de Uma Letra (CIS Cap. XI & DPC 2011 Q51)',
+        meaning: 'Preciso de prático (I require a pilot). Na pesca: "Estou recolhendo redes".',
+        dpcTip: '🏆 DPC 2011 Q51: Golf isolado significa especificamente "Preciso de prático".'
+      },
+      'H': {
+        name: 'H — Hotel (Tenho Prático a Bordo)',
+        category: 'Sinal de Uma Letra (CIS Cap. XI)',
+        meaning: 'Tenho prático a bordo (I have a pilot on board).',
+        dpcTip: '⚠️ DPC: Hotel isolado indica que o prático já está no passadiço guiando o navio.'
+      },
+      'Q': {
+        name: 'Q — Quebec (Livre Prática)',
+        category: 'Sanidade Portuária (CIS Cap. XI)',
+        meaning: 'Meu navio está limpo e peço livre prática (My vessel is healthy and I request free pratique).',
+        dpcTip: '💡 Içado na chegada ao porto para vistoria da autoridade sanitária.'
+      },
+      'W': {
+        name: 'W — Whiskey (Assistência Médica)',
+        category: 'Emergência de Saúde (CIS Cap. XI)',
+        meaning: 'Preciso de assistência médica (I require medical assistance).',
+        dpcTip: '💡 Sinal de uma única letra para socorro médico imediato.'
+      },
+      'Z': {
+        name: 'Z — Zulu (Preciso de Rebocador)',
+        category: 'Reboque / Pesca (CIS Cap. XI)',
+        meaning: 'Preciso de rebocador. Na pesca: "Estou lançando redes".',
+        dpcTip: '💡 Z isolado pede rebocador em condições normais de navegação.'
+      },
+      'T': {
+        name: 'T — Tango (Pesca de Arrasto)',
+        category: 'COLREG / Pesca (CIS Cap. XI)',
+        meaning: 'Mantenha-se afastado; estou engajado em pesca de arrasto em dupla.',
+        dpcTip: '💡 Acompanhado por 2 cones unidos pelos vértices ou luz Verde sobre Branca.'
+      },
+      'C': {
+        name: 'C — Charlie (Afirmativo)',
+        category: 'Procedimento (CIS Cap. X)',
+        meaning: 'Sim (Afirmativo).',
+        dpcTip: '⚠️ Regra do Cap. X: C, N e RQ NUNCA podem ser anexados a sinais de uma única letra!'
+      },
+      'N': {
+        name: 'N — November (Negativo)',
+        category: 'Procedimento (CIS Cap. X)',
+        meaning: 'Não (Negativo).',
+        dpcTip: '⚠️ Regra do Cap. X: N NUNCA pode ser anexado a sinais de uma única letra.'
+      }
+    };
+
+    let currentDictCategory = 'all';
+
+    function setTranslatorPreset(code) {
+      const input = document.getElementById('text-input');
+      if (input) {
+        input.value = code;
+        translateText();
+      }
+    }
+
+    function setDictCategory(cat) {
+      currentDictCategory = cat;
+      const chips = ['all', 'letters', 'numbers', 'subs'];
+      chips.forEach(c => {
+        const el = document.getElementById('dict-chip-' + c);
+        if (el) {
+          if (c === cat) el.classList.add('active');
+          else el.classList.remove('active');
+        }
+      });
+      filterDictionary();
+    }
+
+    function filterDictionary() {
+      const query = (document.getElementById('dict-search-input')?.value || '').toLowerCase().trim();
+      const grid = document.getElementById('alphabet-dictionary');
+      if (!grid) return;
+
+      const items = grid.querySelectorAll('.alphabet-item');
+      items.forEach(item => {
+        const letter = (item.dataset.letter || '').toLowerCase();
+        const meaning = (item.dataset.meaning || '').toLowerCase();
+        const desc = (item.dataset.desc || '').toLowerCase();
+        
+        const isNumber = ['0','1','2','3','4','5','6','7','8','9'].includes(item.dataset.letter);
+        const isSub = ['sub1','sub2','sub3'].includes(letter);
+        const isLetter = !isNumber && !isSub && letter !== 'ap';
+
+        let categoryMatch = true;
+        if (currentDictCategory === 'letters') categoryMatch = isLetter;
+        else if (currentDictCategory === 'numbers') categoryMatch = isNumber;
+        else if (currentDictCategory === 'subs') categoryMatch = isSub || letter === 'ap';
+
+        const textMatch = !query || letter.includes(query) || meaning.includes(query) || desc.includes(query);
+
+        if (categoryMatch && textMatch) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // Renderizar Dicionário Completo de A-Z, 0-9 e Repetidores
     function initDictionary() {
       const dictionaryGrid = document.getElementById('alphabet-dictionary');
       if (!dictionaryGrid) return;
@@ -540,15 +846,19 @@
         if (letter === 'tackline') return;
         const item = document.createElement('div');
         item.className = 'alphabet-item';
+        item.dataset.letter = letter;
         
-        const flagSvg = `<svg viewBox="0 0 500 500" width="100%" height="100%">${FLAG_SVGS[letter]}</svg>`;
-        const meaning = SIGNAL_MEANINGS[letter] ? SIGNAL_MEANINGS[letter].name : letter;
+        const name = SIGNAL_MEANINGS[letter] ? SIGNAL_MEANINGS[letter].name : letter;
         const desc = SIGNAL_MEANINGS[letter] ? SIGNAL_MEANINGS[letter].desc : '';
+        item.dataset.meaning = name;
+        item.dataset.desc = desc;
+
+        const flagSvg = `<svg viewBox="0 0 500 500" width="100%" height="100%">${FLAG_SVGS[letter]}</svg>`;
         
         item.innerHTML = `
           <div class="alphabet-flag">${flagSvg}</div>
           <div class="alphabet-letter">${letter}</div>
-          <div class="alphabet-meaning">${meaning}</div>
+          <div class="alphabet-meaning">${name}</div>
         `;
         item.title = desc;
         dictionaryGrid.appendChild(item);
@@ -562,38 +872,104 @@
       }
     }
 
+    // Tradutor & Decodificador Inteligente com Mastro Gráfico
     function translateText() {
       const textInput = document.getElementById('text-input');
-      const flagOutput = document.getElementById('flag-output');
-      if (!textInput || !flagOutput) return;
+      const meaningPanel = document.getElementById('code-meaning-panel');
+      const mastFlagsContainer = document.getElementById('translator-mast-flags');
+      if (!textInput || !meaningPanel || !mastFlagsContainer) return;
 
-      const text = textInput.value.toUpperCase();
-      flagOutput.innerHTML = '';
+      const rawInput = textInput.value.trim();
+      const cleanKey = rawInput.toUpperCase().replace(/\s+/g, '');
+      const formattedKey = rawInput.toUpperCase().replace(/\s+/g, '-');
 
-      let delay = 0;
-      for (let char of text) {
-        if (FLAG_SVGS[char]) {
-          const item = document.createElement('div');
-          item.className = 'flag-item';
-          item.style.animationDelay = `${delay}s`;
-          delay += 0.05;
+      mastFlagsContainer.innerHTML = '';
 
-          const flagSvg = `<svg viewBox="0 0 500 500" width="100%" height="100%">${FLAG_SVGS[char]}</svg>`;
-          
-          item.innerHTML = `
-            <div class="flag-graphic">${flagSvg}</div>
-            <div class="flag-letter">${char}</div>
-          `;
-          flagOutput.appendChild(item);
-        } else if (char === ' ') {
-          const space = document.createElement('div');
-          space.style.width = '40px';
-          flagOutput.appendChild(space);
+      if (!rawInput) {
+        meaningPanel.innerHTML = `
+          <div style="color: #9CA3AF; font-size: 0.9rem; text-align: center; padding: 1.5rem 0;">
+            💡 Digite um código no campo acima ou clique em um dos <strong>Atalhos PSCPP</strong> para decodificar a sinalização em tempo real.
+          </div>
+        `;
+        mastFlagsContainer.innerHTML = `<span style="font-size: 0.7rem; color: #64748B;">Mastro Vazio</span>`;
+        return;
+      }
+
+      // 1. Verifica se o código exato está cadastrado no Banco de Códigos do CIS
+      let matchCode = CIS_CODES_DB[cleanKey] || CIS_CODES_DB[formattedKey] || CIS_CODES_DB[rawInput.toUpperCase()];
+
+      // Analisa o código e extrai bandeiras para o mastro
+      let flagSequence = [];
+      if (cleanKey === 'CBKF' || formattedKey === 'CB-KF') {
+        flagSequence = ['C', 'B', 'tackline', 'K', 'F'];
+      } else if (cleanKey === '2.5') {
+        flagSequence = ['2', 'AP', '5'];
+      } else if (cleanKey === '1100') {
+        flagSequence = ['1', 'Sub1', '0', 'Sub3'];
+      } else {
+        // Converte string de texto em bandeiras individuais
+        for (let char of cleanKey) {
+          if (FLAG_SVGS[char]) flagSequence.push(char);
+          else if (char === '.') flagSequence.push('AP');
         }
       }
 
-      if (flagOutput.children.length === 0) {
-        flagOutput.innerHTML = `<span style="color: var(--color-text-muted)">Digite letras de A-Z ou números de 0-9...</span>`;
+      // 2. Renderiza o Painel de Decodificação (Lado Esquerdo)
+      if (matchCode) {
+        meaningPanel.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.6rem;">
+            <div style="font-size: 1.1rem; font-weight: 800; color: var(--color-primary);">${matchCode.name}</div>
+            <span style="font-size: 0.7rem; background: rgba(0, 255, 102, 0.15); color: #86efac; padding: 2px 6px; border-radius: 6px; font-weight: 700;">CÓDIGO OFICIAL</span>
+          </div>
+          <div style="font-size: 0.78rem; color: #9CA3AF; margin-bottom: 0.8rem; font-weight: 600;">📂 ${matchCode.category}</div>
+          <div style="font-size: 0.9rem; color: #F8FAFC; line-height: 1.5; background: rgba(255,255,255,0.05); padding: 0.7rem; border-radius: 8px; margin-bottom: 0.8rem;">
+            <strong>Significado Regulamentar:</strong><br>${matchCode.meaning}
+          </div>
+          <div style="font-size: 0.82rem; color: #FCD34D; background: rgba(255, 204, 0, 0.1); border-left: 3px solid #FFCC00; padding: 0.6rem; border-radius: 4px; line-height: 1.45;">
+            ${matchCode.dpcTip}
+          </div>
+        `;
+      } else if (cleanKey.length === 1 && SIGNAL_MEANINGS[cleanKey]) {
+        const item = SIGNAL_MEANINGS[cleanKey];
+        meaningPanel.innerHTML = `
+          <div style="font-size: 1.1rem; font-weight: 800; color: var(--color-primary); margin-bottom: 0.4rem;">${cleanKey} — Bandeira ${item.name}</div>
+          <div style="font-size: 0.88rem; color: #F8FAFC; line-height: 1.5; background: rgba(255,255,255,0.05); padding: 0.7rem; border-radius: 8px;">
+            <strong>Significado Oficial do CIS:</strong><br>${item.desc}
+          </div>
+        `;
+      } else {
+        meaningPanel.innerHTML = `
+          <div style="font-size: 0.95rem; font-weight: 700; color: #F8FAFC; margin-bottom: 0.4rem;">Soletração do Texto: "${rawInput.toUpperCase()}"</div>
+          <div style="font-size: 0.82rem; color: #9CA3AF; line-height: 1.45;">
+            Sinal composto por ${flagSequence.length} bandeira(s) e flâmula(s). Cada caractere alfabético/numérico é representado por sua respectiva bandeira no mastro.
+          </div>
+        `;
+      }
+
+      // 3. Renderiza as bandeiras empilhadas no mastro gráfico (Lado Direito)
+      if (flagSequence.length === 0) {
+        mastFlagsContainer.innerHTML = `<span style="font-size: 0.7rem; color: #64748B;">Caractere não mapeado</span>`;
+      } else {
+        flagSequence.forEach(flagKey => {
+          if (flagKey === 'tackline') {
+            const tk = document.createElement('div');
+            tk.style.width = '6px';
+            tk.style.height = '18px';
+            tk.style.background = '#9CA3AF';
+            tk.style.borderRadius = '3px';
+            tk.title = 'Tackline (Cabo de 2m)';
+            mastFlagsContainer.appendChild(tk);
+          } else if (FLAG_SVGS[flagKey]) {
+            const item = document.createElement('div');
+            const isPennant = ['0','1','2','3','4','5','6','7','8','9','AP','Sub1','Sub2','Sub3'].includes(flagKey);
+            item.style.width = isPennant ? '32px' : '26px';
+            item.style.height = isPennant ? '18px' : '22px';
+            item.style.boxShadow = '0 2px 4px rgba(0,0,0,0.5)';
+            item.title = flagKey;
+            item.innerHTML = `<svg viewBox="0 0 500 500" width="100%" height="100%">${FLAG_SVGS[flagKey]}</svg>`;
+            mastFlagsContainer.appendChild(item);
+          }
+        });
       }
     }
 
@@ -1329,48 +1705,129 @@
       }
     }
 
-    // Inicializa o inventário de bandeiras
+    // Controle de Filtros do Armário de Bandeiras & Gamificação
+    let currentInventoryCategory = 'all';
+    let levelErrors = 0;
+    let savedStars = {};
+
+    try {
+      const stored = localStorage.getItem('cis_tutor_stars');
+      if (stored) savedStars = JSON.parse(stored);
+    } catch(e) {
+      savedStars = {};
+    }
+
+    function setInventoryCategory(category) {
+      currentInventoryCategory = category;
+      const chips = ['all', 'letters', 'numbers', 'specials'];
+      chips.forEach(c => {
+        const el = document.getElementById('chip-' + c);
+        if (el) {
+          if (c === category) el.classList.add('active');
+          else el.classList.remove('active');
+        }
+      });
+      initInventory();
+    }
+
+    function updateStarScoreDisplay() {
+      let totalStars = 0;
+      Object.keys(savedStars).forEach(k => {
+        totalStars += (savedStars[k] || 0);
+      });
+      const badgeCount = document.getElementById('total-stars-count');
+      if (badgeCount) badgeCount.textContent = totalStars;
+    }
+
+    function triggerErrorJuice() {
+      levelErrors++;
+      const panel = document.getElementById('inventory-card') || document.getElementById('player-hoist-preview');
+      if (panel) {
+        panel.classList.remove('shake-error');
+        void panel.offsetWidth; // Força reflow para reiniciar animação
+        panel.classList.add('shake-error');
+        setTimeout(() => panel.classList.remove('shake-error'), 450);
+      }
+    }
+
+    function triggerConfetti() {
+      const container = document.createElement('div');
+      container.className = 'confetti-container';
+      document.body.appendChild(container);
+
+      const colors = ['#FFCC00', '#D21034', '#00FF66', '#00A2FF', '#FFFFFF', '#FF7700'];
+      
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'confetti-particle';
+        p.style.left = (Math.random() * 100) + 'vw';
+        p.style.top = (Math.random() * 25) + 'vh';
+        p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        p.style.animationDelay = (Math.random() * 0.4) + 's';
+        p.style.transform = `rotate(${Math.random() * 360}deg)`;
+        container.appendChild(p);
+      }
+
+      setTimeout(() => {
+        if (container.parentNode) container.parentNode.removeChild(container);
+      }, 2500);
+    }
+
+    // Inicializa o inventário de bandeiras com suporte a categorias
     function initInventory() {
       const grid = document.getElementById('flag-inventory');
       grid.innerHTML = '';
       
-      // 1. Renderiza primeiro o Tackline e o AP (Sinais especiais) para fácil acesso
-      const specialKeys = ['tackline', 'AP'];
-      specialKeys.forEach(key => {
-        if (key === 'tackline') {
-          const btn = document.createElement('button');
-          btn.className = 'flag-selector-btn';
-          btn.title = 'Tackline: Cabo extensor de 2 metros para separar grupos de sinais';
-          btn.onclick = () => addFlagToPlayerHoist('tackline');
-          btn.innerHTML = `
-            <div style="width: 6px; height: 28px; background: #9CA3AF; border-radius: 3px; box-sizing: border-box; margin: 0 auto 2px auto;"></div>
-            <span class="flag-selector-label">Tackline</span>
-          `;
-          grid.appendChild(btn);
-        } else if (key === 'AP') {
-          const isUsed = playerHoist.includes('AP');
-          const btn = document.createElement('button');
-          btn.className = `flag-selector-btn pennant ${isUsed ? 'used' : ''}`;
-          btn.title = 'Answering Pendant: Sinal de Resposta e ponto decimal.';
-          if (!isUsed) {
-            btn.onclick = () => addFlagToPlayerHoist('AP');
-          }
-          btn.innerHTML = `
-            <svg viewBox="0 0 500 500" width="100%" height="100%">${FLAG_SVGS['AP']}</svg>
-            <span class="flag-selector-label">AP</span>
-          `;
-          grid.appendChild(btn);
-        }
-      });
+      const showSpecials = currentInventoryCategory === 'all' || currentInventoryCategory === 'specials';
+      const showLetters = currentInventoryCategory === 'all' || currentInventoryCategory === 'letters';
+      const showNumbers = currentInventoryCategory === 'all' || currentInventoryCategory === 'numbers';
 
-      // 2. Renderiza as demais letras e numerais
+      // 1. Renderiza primeiro o Tackline e o AP (Sinais especiais) para fácil acesso
+      if (showSpecials) {
+        const specialKeys = ['tackline', 'AP'];
+        specialKeys.forEach(key => {
+          if (key === 'tackline') {
+            const btn = document.createElement('button');
+            btn.className = 'flag-selector-btn';
+            btn.title = 'Tackline: Cabo extensor de 2 metros para separar grupos de sinais';
+            btn.onclick = () => addFlagToPlayerHoist('tackline');
+            btn.innerHTML = `
+              <div style="width: 6px; height: 28px; background: #9CA3AF; border-radius: 3px; box-sizing: border-box; margin: 0 auto 2px auto;"></div>
+              <span class="flag-selector-label">Tackline</span>
+            `;
+            grid.appendChild(btn);
+          } else if (key === 'AP') {
+            const isUsed = playerHoist.includes('AP');
+            const btn = document.createElement('button');
+            btn.className = `flag-selector-btn pennant ${isUsed ? 'used' : ''}`;
+            btn.title = 'Answering Pendant: Sinal de Resposta e ponto decimal.';
+            if (!isUsed) {
+              btn.onclick = () => addFlagToPlayerHoist('AP');
+            }
+            btn.innerHTML = `
+              <svg viewBox="0 0 500 500" width="100%" height="100%">${FLAG_SVGS['AP']}</svg>
+              <span class="flag-selector-label">AP</span>
+            `;
+            grid.appendChild(btn);
+          }
+        });
+      }
+
+      // 2. Renderiza as demais letras e numerais de acordo com a categoria ativa
       Object.keys(FLAG_SVGS).forEach(key => {
-        if (key === 'tackline' || key === 'AP') return; // Já renderizados no início
+        if (key === 'tackline' || key === 'AP') return; // Já tratados acima
+        
+        const isNumber = ['0','1','2','3','4','5','6','7','8','9'].includes(key);
+        const isSub = ['Sub1','Sub2','Sub3'].includes(key);
+        const isLetter = !isNumber && !isSub;
+
+        if (isLetter && !showLetters) return;
+        if (isNumber && !showNumbers) return;
+        if (isSub && !showSpecials) return;
         
         const btn = document.createElement('button');
-        const isPennant = ['0','1','2','3','4','5','6','7','8','9','Sub1','Sub2','Sub3'].includes(key);
+        const isPennant = isNumber || isSub;
         
-        // Verifica se a bandeira já está em uso na adriça (rascunho)
         const isUsed = playerHoist.includes(key);
         btn.className = `flag-selector-btn ${isPennant ? 'pennant' : ''} ${isUsed ? 'used' : ''}`;
         btn.title = SIGNAL_MEANINGS[key].name + ': ' + SIGNAL_MEANINGS[key].desc;
@@ -1673,6 +2130,7 @@
     function submitPlayerHoist() {
       if (playerHoist.length === 0) {
         addLog("Sistema", "Você não pode içar uma adriça vazia!");
+        triggerErrorJuice();
         return;
       }
       playerHoistedOnMast = [...playerHoist]; 
@@ -2002,6 +2460,7 @@
               }, 1500);
             } else {
               addLog("Outro Navio", "Seu sinal não está correto. Lembre-se: rebocador = Z.");
+              triggerErrorJuice();
               playerHoistedOnMast = [];
               renderPlayerMast();
             }
@@ -2048,6 +2507,7 @@
               }, 2500);
             } else {
               addLog("Outro Navio", "Seu sinal de retorno está incorreto. Use ZL para sinalizar que não entendeu.");
+              triggerErrorJuice();
               playerHoistedOnMast = [];
               renderPlayerMast();
             }
@@ -2087,6 +2547,7 @@
               }, 1800);
             } else {
               addLog("Outro Navio", "Sinal incorreto. Use substitutas para '1100'.");
+              triggerErrorJuice();
               playerHoistedOnMast = [];
               renderPlayerMast();
             }
@@ -2116,6 +2577,7 @@
               }, 1800);
             } else {
               addLog("Outro Navio", "Soletração incorreta. Certifique-se de usar YZ + Tackline + R + I + O.");
+              triggerErrorJuice();
               playerHoistedOnMast = [];
               renderPlayerMast();
             }
@@ -2140,6 +2602,7 @@
               }, 1800);
             } else {
               addLog("Outro Navio", "Adriça incorreta. Lembre-se: R, Y, Tackline, U, M na mesma adriça.");
+              triggerErrorJuice();
               playerHoistedOnMast = [];
               renderPlayerMast();
             }
@@ -2164,6 +2627,7 @@
               }, 1800);
             } else {
               addLog("Outro Navio", "Sinal incorreto. Lembre-se: a classe que precede o número repetido (o 2º '3') é a numeral, logo usa-se a Sub2!");
+              triggerErrorJuice();
               playerHoistedOnMast = [];
               renderPlayerMast();
             }
@@ -2191,10 +2655,12 @@
             } else if (isForbiddenSingleLetterRQ) {
               addLog("Sistema", "ALERTA REGULAMENTAR (CIS Cap. X pág. 25): C, N e RQ NÃO podem ser anexados a sinais de uma única letra!");
               addLog("Outro Navio", "Sinal rejeitado por erro de sintaxe no CIS.");
+              triggerErrorJuice();
               playerHoistedOnMast = [];
               renderPlayerMast();
             } else {
               addLog("Outro Navio", "Resposta incorreta. Para responder SIM à pergunta, iça a bandeira C (Charlie).");
+              triggerErrorJuice();
               playerHoistedOnMast = [];
               renderPlayerMast();
             }
@@ -2484,6 +2950,25 @@
       const btn = document.getElementById('level-complete-action-btn');
       if (!container || !btn) return;
       
+      // Cálculo de estrelas obtidas na tentativa
+      let earnedStars = 3;
+      if (levelErrors === 1) earnedStars = 2;
+      else if (levelErrors >= 2) earnedStars = 1;
+
+      const prevStars = savedStars[levelNum] || 0;
+      if (earnedStars > prevStars) {
+        savedStars[levelNum] = earnedStars;
+        try {
+          localStorage.setItem('cis_tutor_stars', JSON.stringify(savedStars));
+        } catch(e) {}
+      }
+      
+      updateStarScoreDisplay();
+      triggerConfetti();
+
+      const starsBadgeText = earnedStars === 3 ? '⭐⭐⭐ (Perfeito!)' : (earnedStars === 2 ? '⭐⭐ (Muito Bom!)' : '⭐ (Concluído)');
+      addLog("Sistema", `Desempenho no Nível ${levelNum}: ${starsBadgeText}`);
+
       const hasQuestion = [3, 4, 6, 7, 14, 18, 22].includes(levelNum);
       
       if (hasQuestion) {
@@ -2530,22 +3015,34 @@
       
       const numLevels = Object.keys(LEVELS).length;
       for (let i = 1; i <= numLevels; i++) {
+        const stars = savedStars[i] || 0;
         const dot = document.createElement('div');
-        dot.className = `tutor-dot ${i === currentLevel ? 'active' : ''} ${i < currentLevel ? 'completed' : ''}`;
-        dot.textContent = i < currentLevel ? '✓' : i;
+        dot.className = `tutor-dot ${i === currentLevel ? 'active' : ''} ${i < currentLevel ? 'completed' : ''} ${stars === 3 ? 'stars-3' : ''}`;
+        dot.textContent = i < currentLevel ? (stars === 3 ? '★' : '✓') : i;
         dot.onclick = () => loadLevel(i);
-        dot.title = LEVELS[i].title;
+        dot.title = `${LEVELS[i].title} ${stars > 0 ? '(' + stars + ' ⭐)' : ''}`;
         track.appendChild(dot);
       }
+      updateStarScoreDisplay();
     }
 
     function loadLevel(levelNum) {
       currentLevel = levelNum;
+      levelErrors = 0; // Reset de erros da tentativa atual
       const level = LEVELS[levelNum];
       
       document.getElementById('level-title').textContent = level.title;
       document.getElementById('level-desc').textContent = level.desc;
-      document.getElementById('instruction-text').innerHTML = level.studyGuide;
+      
+      let guideHTML = level.studyGuide || '';
+      if (level.dpcTip) {
+        guideHTML += `
+          <div class="dpc-tip-box">
+            <strong>⚠️ Cuidado! Pegadinha do Concurso (DPC):</strong><br>${level.dpcTip}
+          </div>
+        `;
+      }
+      document.getElementById('instruction-text').innerHTML = guideHTML;
       
       const scenarioEl = document.getElementById('mission-scenario');
       if (scenarioEl) scenarioEl.textContent = level.scenario;
@@ -2583,6 +3080,239 @@
       renderTutorProgress();
     }
 
+    // ==========================================
+    // DICAS E PEGADINHAS DPC PARA OS 24 NÍVEIS
+    // ==========================================
+    const LEVEL_DPC_TIPS = {
+      1: "O AP a meio mastro (Dip) sinaliza VISTO. O AP no topo (Close-up) sinaliza ENTENDIDO. Não suba o AP antes de decodificar o sinal!",
+      2: "Ao responder a grupos sequenciais, retorne o AP para o Dip entre cada novo grupo içado pela estação emissora!",
+      3: "Zulu (Z) isolado = 'Preciso de rebocador'. Na pesca = 'Estou lançando redes'. Guarde as cores da DPC 2006 Q2: Preto (tralha), Amarelo (topo), Azul (direita), Encarnado (base).",
+      4: "DH sinaliza a profundidade do calado. Exibe Cilindro diurno ou 3 Luzes Encarnadas noturnas (RIPEAM Regra 28 - Restrito pelo Calado).",
+      5: "ZL é o sinal oficial do CIS para 'Sinal recebido, mas não compreendido'. Nunca tente adivinhar um sinal truncado; responda com ZL.",
+      6: "Mike (M) isolado = 'Minha embarcação está parada e sem seguimento'. Duas esferas pretas diurnas = Sem Governo (NUC - RIPEAM Regra 27a).",
+      7: "DPC 2011 Q51: Na sequência 1100, a 1ª Substituto repete o 1º numeral ('1') e a 3ª Substituto repete o 3º numeral ('0'), ambas da classe numeral!",
+      8: "YZ indica que as bandeiras seguintes soletram um nome geográfico. O Tackline DEVE ser inserido entre a bandeira YZ e a primeira letra do nome!",
+      9: "DPC 2011 Q51: Quando dois grupos de mensagens distintas (ex: RY e UM) são içados na mesma adriça, exige-se OBRIGATORIAMENTE o Tackline entre eles!",
+      10: "No grupo L2330, como a letra L antecede os números, a 2ª substituta (Sub2) repete o segundo número ('3') pois a classe numeral reinicia após a letra!",
+      11: "As bandeiras C (Charlie - Sim), N (November - Não) e RQ (Interrogação) NUNCA podem ser anexadas a sinais de uma única letra!",
+      12: "NC é o sinal de socorro primário do CIS (Assistência Imediata). Jamais anexe numerais ou modificadores ao sinal NC!",
+      13: "KF isolado solicita rebocador em emergência. Difere do sinal Z por implicar situação de risco iminente.",
+      14: "DPC 2011 Q51: Golf (G) isolado = 'Preciso de prático'. Não confunda com H ('Tenho prático a bordo') ou HT ('Prático impedido por mau tempo').",
+      15: "Hotel (H) isolado = 'Tenho prático a bordo'. UF = 'Siga a lancha do prático'.",
+      16: "Quebec (Q) isolado = 'Meu navio está limpo e peço livre prática'. Uma esfera preta = Navio fundeado (RIPEAM R.30).",
+      17: "Whiskey (W) isolado = 'Preciso de assistência médica'. Difere de MAB (solicitação de envio presencial de médico).",
+      18: "DPC 2011 Q51: Navio encalhado fazendo água que necessita de rebocador deve içar CB + Tackline + KF na mesma adriça!",
+      19: "O AP atua como vírgula decimal apenas quando inserido no meio de flâmulas numéricas (ex: 2 + AP + 5 = 2.5).",
+      20: "Esfera-Losango-Esfera diurna = Capacidade de Manobra Restrita (RAM - RIPEAM R.27b). RU = Mantenha-se afastado; manobro com dificuldade.",
+      21: "Dois cones unidos pelos vértices = Pesca (R.26). Luz Verde sobre Branca = Pesca de Arrasto. T (Tango) = Pesca de arrasto em dupla.",
+      22: "HT é o código de 2 letras enviado pela lancha do prático avisando que não conseguirá embarcar devido ao mau tempo na barra.",
+      23: "MAB pertence à Seção Médica do CIS (Cap. I) e solicita a vinda presencial de um médico a bordo.",
+      24: "Marca quadrada com esfera acima ou abaixo é um sinal visual de socorro do RIPEAM Anexo IV. A + 3 numerais = Rumo verdadeiro em graus."
+    };
+
+    // ==========================================
+    // MOTOR DO MODO DESAFIO REVERSO (LEITURA)
+    // ==========================================
+    const REVERSE_CHALLENGES = [
+      {
+        flags: ['G'],
+        question: "De acordo com o Cap. XI do CIS, qual o significado regulamentar cobrado na DPC 2011 Q51?",
+        options: [
+          { letter: "a", text: "Preciso de prático.", correct: true },
+          { letter: "b", text: "Tenho prático a bordo." },
+          { letter: "c", text: "O prático não pode vir a bordo devido ao mau tempo." },
+          { letter: "d", text: "Minha embarcação está parada e sem seguimento." }
+        ],
+        explanation: "✅ GABARITO (DPC 2011 Q51): G (Golf) isolado significa 'Preciso de prático'. H significa 'Tenho prático a bordo' e HT significa 'Prático impedido pelo mau tempo'."
+      },
+      {
+        flags: ['H'],
+        question: "Qual o significado da bandeira H (Hotel) isolada no mastro?",
+        options: [
+          { letter: "a", text: "Tenho prático a bordo.", correct: true },
+          { letter: "b", text: "Preciso de prático." },
+          { letter: "c", text: "Solicito rebocador para manobra." },
+          { letter: "d", text: "Tenho fogo a bordo." }
+        ],
+        explanation: "✅ GABARITO: H (Hotel) isolado indica que o prático já está a bordo no passadiço."
+      },
+      {
+        flags: ['1', 'Sub1', '0', 'Sub3'],
+        question: "Qual a sequência numérica transmitida pelo grupo de flâmulas: [ 1 ] [ Sub1 ] [ 0 ] [ Sub3 ]?",
+        options: [
+          { letter: "a", text: "1100", correct: true },
+          { letter: "b", text: "1010" },
+          { letter: "c", text: "1203" },
+          { letter: "d", text: "1000" }
+        ],
+        explanation: "✅ GABARITO: A 1ª Substituto repete o 1º numeral ('1') e a 3ª Substituto repete o 3º numeral ('0'), resultando no grupo 1100."
+      },
+      {
+        flags: ['C', 'B', 'tackline', 'K', 'F'],
+        question: "Qual a mensagem regulamentar transmitida pela adriça: CB + Tackline + KF (DPC 2011 Q51)?",
+        options: [
+          { letter: "a", text: "Navio encalhado fazendo água que solicita assistência imediata e rebocador.", correct: true },
+          { letter: "b", text: "Navio com prático a bordo solicitando consulta médica." },
+          { letter: "c", text: "Navio navegando no rumo verdadeiro de 180°." },
+          { letter: "d", text: "Navio com manobra restrita por pesca de arrasto." }
+        ],
+        explanation: "✅ GABARITO (DPC 2011 Q51): CB indica assistência imediata e KF solicita rebocador em emergência, separados pelo Tackline."
+      },
+      {
+        flags: ['H', 'T'],
+        question: "Qual o significado da sinalização enviada pela lancha da praticagem com as bandeiras HT?",
+        options: [
+          { letter: "a", text: "O prático não pode vir a bordo devido ao mau tempo.", correct: true },
+          { letter: "b", text: "Tenho prático a bordo e navego a 18 nós." },
+          { letter: "c", text: "Preciso de assistência médica urgente." },
+          { letter: "d", text: "Navio fundeado aguardando livre prática." }
+        ],
+        explanation: "✅ GABARITO: HT (CIS Seção Geral Parte IV) significa 'Pilot cannot come on board owing to bad weather'."
+      },
+      {
+        flags: ['M', 'A', 'B'],
+        question: "De acordo com a Seção Médica do CIS, o que o navio solicita com o grupo MAB?",
+        options: [
+          { letter: "a", text: "Solicito o envio de um médico a bordo.", correct: true },
+          { letter: "b", text: "Minha embarcação está sem governo e parada." },
+          { letter: "c", text: "Mantenha-se afastado; estou manobrando com dificuldade." },
+          { letter: "d", text: "Solicito rebocador de grande porte." }
+        ],
+        explanation: "✅ GABARITO: MAB (Seção Médica Cap. I) significa 'I desire a doctor' (Solicito envio presencial de um médico)."
+      },
+      {
+        flags: ['A', '1', '8', '0'],
+        question: "O que a sinalização Alfa 180 (A180) indica ao navio receptor?",
+        options: [
+          { letter: "a", text: "Meu rumo verdadeiro é 180 graus.", correct: true },
+          { letter: "b", text: "Minha velocidade é 18,0 nós." },
+          { letter: "c", text: "Profundidade local de 180 metros." },
+          { letter: "d", text: "Posição de latitude 18° S." }
+        ],
+        explanation: "✅ GABARITO: A (Alfa) seguido por 3 dígitos numéricos indica Rumo Verdadeiro em graus."
+      },
+      {
+        flags: ['2', 'AP', '5'],
+        question: "Qual o valor transmitido utilizando o galhardete de resposta (AP) no grupo [ 2 ] [ AP ] [ 5 ]?",
+        options: [
+          { letter: "a", text: "Valor decimal 2,5.", correct: true },
+          { letter: "b", text: "Sinal de socorro 25." },
+          { letter: "c", text: "Sinal de fim de transmissão." },
+          { letter: "d", text: "Número do canal VHF 25." }
+        ],
+        explanation: "✅ GABARITO: O AP atuando entre numerais funciona como vírgula decimal (2.5)."
+      },
+      {
+        flags: ['N', 'C'],
+        question: "Qual o significado do sinal de emergência primário NC?",
+        options: [
+          { letter: "a", text: "Estou em perigo e necessito de assistência imediata (Socorro Geral).", correct: true },
+          { letter: "b", text: "Resposta negativa ao sinal recebido." },
+          { letter: "c", text: "Preciso de prático no canal de acesso." },
+          { letter: "d", text: "Navio fundeado pedindo livre prática." }
+        ],
+        explanation: "✅ GABARITO: NC é o sinal primário de socorro e emergência do CIS."
+      }
+    ];
+
+    let reverseCurrentIndex = 0;
+    let reverseScore = 0;
+
+    function initNextReverseChallenge() {
+      reverseCurrentIndex = Math.floor(Math.random() * REVERSE_CHALLENGES.length);
+      renderReverseChallenge();
+    }
+
+    function renderReverseChallenge() {
+      const data = REVERSE_CHALLENGES[reverseCurrentIndex];
+      if (!data) return;
+
+      const scoreEl = document.getElementById('reverse-score');
+      if (scoreEl) scoreEl.textContent = reverseScore;
+
+      const mastFlags = document.getElementById('reverse-mast-flags');
+      if (mastFlags) {
+        mastFlags.innerHTML = '';
+        data.flags.forEach(flagKey => {
+          if (flagKey === 'tackline') {
+            const tk = document.createElement('div');
+            tk.style.width = '6px';
+            tk.style.height = '20px';
+            tk.style.background = '#9CA3AF';
+            tk.style.borderRadius = '3px';
+            tk.title = 'Tackline (Cabo de 2m)';
+            mastFlags.appendChild(tk);
+          } else if (FLAG_SVGS[flagKey]) {
+            const item = document.createElement('div');
+            const isPennant = ['0','1','2','3','4','5','6','7','8','9','AP','Sub1','Sub2','Sub3'].includes(flagKey);
+            item.style.width = isPennant ? '34px' : '28px';
+            item.style.height = isPennant ? '20px' : '24px';
+            item.style.boxShadow = '0 2px 5px rgba(0,0,0,0.6)';
+            item.innerHTML = `<svg viewBox="0 0 500 500" width="100%" height="100%">${FLAG_SVGS[flagKey]}</svg>`;
+            mastFlags.appendChild(item);
+          }
+        });
+      }
+
+      document.getElementById('reverse-question-title').textContent = data.question;
+
+      const container = document.getElementById('reverse-options-container');
+      const feedbackBox = document.getElementById('reverse-feedback-box');
+      if (feedbackBox) feedbackBox.style.display = 'none';
+
+      if (container) {
+        container.innerHTML = '';
+        data.options.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = 'reverse-option-btn';
+          btn.innerHTML = `<strong>(${opt.letter.toUpperCase()})</strong> ${opt.text}`;
+          btn.onclick = () => selectReverseChallengeOption(opt, data, btn);
+          container.appendChild(btn);
+        });
+      }
+    }
+
+    function selectReverseChallengeOption(opt, data, clickedBtn) {
+      const container = document.getElementById('reverse-options-container');
+      const buttons = container.querySelectorAll('.reverse-option-btn');
+      
+      buttons.forEach(b => b.onclick = null); // Desabilita novos cliques
+
+      const feedbackBox = document.getElementById('reverse-feedback-box');
+      
+      if (opt.correct) {
+        clickedBtn.classList.add('selected-correct');
+        playSound('bell');
+        triggerConfetti();
+        reverseScore += 100;
+        document.getElementById('reverse-score').textContent = reverseScore;
+
+        if (feedbackBox) {
+          feedbackBox.style.display = 'block';
+          feedbackBox.style.background = 'rgba(0, 255, 102, 0.12)';
+          feedbackBox.style.border = '1px solid rgba(0, 255, 102, 0.4)';
+          feedbackBox.style.color = '#86EFAC';
+          feedbackBox.innerHTML = `🎉 <strong>ACERTOU! (+100 Pontos)</strong><br>${data.explanation}`;
+        }
+      } else {
+        clickedBtn.classList.add('selected-wrong');
+        triggerErrorJuice();
+
+        // Destaca a alternativa correta em verde
+        data.options.forEach((o, i) => {
+          if (o.correct && buttons[i]) buttons[i].classList.add('selected-correct');
+        });
+
+        if (feedbackBox) {
+          feedbackBox.style.display = 'block';
+          feedbackBox.style.background = 'rgba(255, 51, 68, 0.12)';
+          feedbackBox.style.border = '1px solid rgba(255, 51, 68, 0.4)';
+          feedbackBox.style.color = '#FCA5A5';
+          feedbackBox.innerHTML = `⚠️ <strong>INCORRETO!</strong><br>${data.explanation}`;
+        }
+      }
+    }
+
     // Controle de abas exclusivas para Mobile
     let currentMobileTab = 'left';
 
@@ -2595,22 +3325,37 @@
       let index = 0;
       if (tabName === 'center') index = 1;
       if (tabName === 'translator') index = 2;
+      if (tabName === 'reverse') index = 3;
       if (navItems[index]) navItems[index].classList.add('active');
       
       const tabGame = document.getElementById('tab-game');
       const tabTranslator = document.getElementById('tab-translator');
-      
+      const tabReverse = document.getElementById('tab-reverse');
+
       if (tabName === 'translator') {
         if (tabGame) tabGame.classList.remove('active');
+        if (tabReverse) tabReverse.classList.remove('active');
         if (tabTranslator) {
           tabTranslator.classList.add('active');
           tabTranslator.style.display = 'block';
+        }
+      } else if (tabName === 'reverse') {
+        if (tabGame) tabGame.classList.remove('active');
+        if (tabTranslator) tabTranslator.classList.remove('active');
+        if (tabReverse) {
+          tabReverse.classList.add('active');
+          tabReverse.style.display = 'block';
+          initNextReverseChallenge();
         }
       } else {
         if (tabGame) tabGame.classList.add('active');
         if (tabTranslator) {
           tabTranslator.classList.remove('active');
           tabTranslator.style.display = '';
+        }
+        if (tabReverse) {
+          tabReverse.classList.remove('active');
+          tabReverse.style.display = '';
         }
         
         const colLeft = document.querySelector('.col-left');
@@ -2619,7 +3364,6 @@
         
         if (colLeft) colLeft.classList.toggle('mobile-visible', tabName === 'left');
         if (colCenter) colCenter.classList.toggle('mobile-visible', tabName === 'center');
-        // Painel foi fundido ao Simulador: o conteúdo de col-right é movido para a cena no mobile
       }
     }
 
@@ -2688,9 +3432,9 @@
       <span class="nav-icon">🔄</span>
       <span class="nav-text">Tradutor</span>
     </button>
-    <button class="mobile-nav-item" onclick="startTutorial()">
-      <span class="nav-icon">💡</span>
-      <span class="nav-text">Tutorial</span>
+    <button class="mobile-nav-item" onclick="setMobileTab('reverse')">
+      <span class="nav-icon">🎯</span>
+      <span class="nav-text">Leitura</span>
     </button>
   </div>
 
