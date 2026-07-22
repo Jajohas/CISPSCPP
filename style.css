@@ -883,6 +883,21 @@ footer {
   color: #FCA5A5 !important;
 }
 
+/* Elevação dos Navios, Nomes e Água no Desktop (Impede sobreposição com a barra de controles) */
+@media (min-width: 851px) {
+  .ship {
+    bottom: 55px !important;
+  }
+  .sea-waves {
+    height: 130px !important;
+    bottom: 0 !important;
+  }
+  .ship-name {
+    bottom: -22px !important;
+    font-size: 0.88rem !important;
+  }
+}
+
 .ship-left .ship-halyard {
   left: 112px;
 }
