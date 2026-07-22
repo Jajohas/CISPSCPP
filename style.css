@@ -332,10 +332,19 @@ header p {
 }
 
 .alphabet-flag {
-  width: 60px;
-  height: 60px;
+  width: 65px;
+  height: 55px;
   margin: 0 auto 0.8rem;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+}
+
+.alphabet-flag svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .alphabet-letter {
@@ -842,6 +851,13 @@ footer {
 }
 
 /* Modo Desafio Reverso */
+#tab-reverse {
+  padding: 1rem 1.5rem 80px 1.5rem;
+  overflow-y: auto;
+  max-height: calc(100vh - 50px);
+  box-sizing: border-box;
+}
+
 .reverse-card {
   background: rgba(30, 41, 59, 0.7);
   border: 1px solid rgba(255, 204, 0, 0.3);
@@ -895,6 +911,26 @@ footer {
   .ship-name {
     bottom: -24px !important;
     font-size: 0.88rem !important;
+  }
+
+  /* No PC: Armário de Bandeiras em Grid Multi-colunas preenchendo a caixa inteira */
+  .flag-selector-grid {
+    display: grid !important;
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: 6px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    flex-wrap: wrap !important;
+    align-content: start;
+    padding: 0.5rem !important;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .flag-selector-btn {
+    width: 100% !important;
+    flex: none !important;
+    height: 48px !important;
   }
 }
 
@@ -1083,7 +1119,7 @@ html, body {
 }
 
 /* Widescreen 3-Column Grid */
-.game-view-container {
+.game-view-container.active, .tab-content.active.game-view-container {
   display: grid !important;
   grid-template-columns: 280px 1fr 320px;
   gap: 0.8rem;
@@ -1093,8 +1129,8 @@ html, body {
   overflow: hidden;
 }
 
-.tab-content.active.game-view-container {
-  display: grid !important;
+.tab-content:not(.active) {
+  display: none !important;
 }
 
 .col-left, .col-right {
@@ -1787,6 +1823,25 @@ html, body {
     font-size: 0.72rem !important;
     padding: 0.45rem 1rem !important;
     border-radius: 8px !important;
+  }
+
+  /* Ajuste de Espaçamento do Desafio Reverso no Mobile */
+  #tab-reverse, #tab-translator {
+    padding: 0.6rem 0.6rem 110px 0.6rem !important;
+    max-height: calc(100vh - 60px) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .reverse-card {
+    padding: 0.8rem !important;
+    margin-bottom: 3rem !important;
+  }
+
+  .reverse-option-btn {
+    padding: 0.65rem 0.8rem !important;
+    font-size: 0.82rem !important;
+    line-height: 1.35 !important;
   }
 
   /* Organização do Armário de Bandeiras no Mobile */
