@@ -1162,10 +1162,10 @@ html, body {
 /* Nuvem de obstrução (Nível 5 - Cobre as bandeiras do navio direito) */
 .cloud-obstruct {
   position: absolute;
-  bottom: 85px;
+  bottom: 165px;
   right: 8%;
-  width: 220px;
-  height: 95px;
+  width: 280px;
+  height: 120px;
   background: rgba(220, 232, 245, 0.92);
   border-radius: 50px;
   filter: blur(6px);
@@ -1493,9 +1493,9 @@ html, body {
   }
   
   .cloud-obstruct {
-    width: 150px !important;
-    height: 65px !important;
-    bottom: 60px !important;
+    width: 250px !important;
+    height: 115px !important;
+    bottom: 135px !important;
     right: 5% !important;
   }
 
