@@ -43,8 +43,11 @@
           <p id="level-desc">Aprenda a responder a um sinal simples usando o AP.</p>
         </div>
 
-        <div class="card-panel manual-card">
-          <h5 style="margin:0; font-size:0.85rem; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.05em;">❓ Não sabe o que fazer?</h5>
+        <div class="card-panel manual-card collapsed" id="tutorial-hint-card">
+          <div class="manual-header" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleCollapse('tutorial-hint-card'); onUsedHintCard();">
+            <h5 style="margin:0; font-size:0.85rem; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.05em;">❓ Não sabe o que fazer?</h5>
+            <button class="collapse-btn" title="Minimizar/Maximizar" style="background:none; border:none; color:#fff; cursor:pointer; font-size:0.85rem; padding:0 4px;">➕</button>
+          </div>
           <div id="instruction-text" class="manual-content" style="margin-top: 0.5rem; font-size: 0.8rem; line-height: 1.4;">
             O navio adversário fará um sinal. Siga os passos indicados.
           </div>
@@ -3017,6 +3020,18 @@
       }
     }
 
+    let usedHintThisLevel = false;
+
+    function onUsedHintCard() {
+      const el = document.getElementById('tutorial-hint-card');
+      if (el && !el.classList.contains('collapsed')) {
+        if (!usedHintThisLevel) {
+          usedHintThisLevel = true;
+          addLog("Dica", "⚠️ Você abriu a ajuda 'Não sabe o que fazer?'. (-1 Estrela de penalidade se concluir a missão)");
+        }
+      }
+    }
+
     function showLevelCompleteButton(levelNum) {
       const container = document.getElementById('level-complete-action-container');
       const btn = document.getElementById('level-complete-action-btn');
@@ -3026,6 +3041,11 @@
       let earnedStars = 3;
       if (levelErrors === 1) earnedStars = 2;
       else if (levelErrors >= 2) earnedStars = 1;
+
+      // Penalidade de -1 estrela se usou o card de ajuda
+      if (usedHintThisLevel) {
+        earnedStars = Math.max(1, earnedStars - 1);
+      }
 
       const prevStars = savedStars[levelNum] || 0;
       if (earnedStars > prevStars) {
@@ -3101,6 +3121,7 @@
     function loadLevel(levelNum) {
       currentLevel = levelNum;
       levelErrors = 0; // Reset de erros da tentativa atual
+      usedHintThisLevel = false; // Reset de dica usada
       const level = LEVELS[levelNum];
       
       document.getElementById('level-title').textContent = level.title;
@@ -3287,29 +3308,45 @@
       }
     ];
 
-    // Gerador dinâmico de perguntas com 1 única bandeira/flâmula
+    // Gerador dinâmico de perguntas com 1 única bandeira/flâmula (Mistura Modos de Resposta)
     function generateSingleFlagChallenges() {
       const keys = Object.keys(FLAG_SVGS).filter(k => k !== 'tackline');
       const singleChallenges = [];
 
-      keys.forEach(key => {
+      keys.forEach((key, keyIdx) => {
         const info = SIGNAL_MEANINGS[key];
         if (!info) return;
 
         const otherKeys = keys.filter(k => k !== key && SIGNAL_MEANINGS[k]);
         const shuffledOthers = [...otherKeys].sort(() => 0.5 - Math.random()).slice(0, 3);
 
-        const correctText = `${info.name} — ${info.desc}`;
+        // Alterna dinamicamente entre 3 modos de desafio para variabilidade:
+        // Modo 0: Só a Letra/Nome (ex: Golf (G))
+        // Modo 1: Só o Significado Regulamentar (ex: "Preciso de prático.")
+        // Modo 2: Letra/Nome + Significado Completo (ex: Golf (G) — "Preciso de prático.")
+        const mode = keyIdx % 3;
+
+        const getOptionText = (k) => {
+          const item = SIGNAL_MEANINGS[k];
+          if (mode === 0) return `${item.name} (${k})`;
+          if (mode === 1) return item.desc || item.name;
+          return `${item.name} (${k}) — ${item.desc}`;
+        };
+
+        let questionText = "Qual a identificação e o significado oficial da bandeira isolada no mastro?";
+        if (mode === 0) questionText = `Qual é a LETRA / NOME da bandeira exibida no mastro?`;
+        else if (mode === 1) questionText = `Qual é o SIGNIFICADO REGULAMENTAR da bandeira exibida no mastro?`;
+
+        const correctText = getOptionText(key);
         const options = [
           { letter: "a", text: correctText, correct: true }
         ];
 
         const letters = ['b', 'c', 'd'];
         shuffledOthers.forEach((dk, idx) => {
-          const dInfo = SIGNAL_MEANINGS[dk];
           options.push({
             letter: letters[idx],
-            text: `${dInfo.name} — ${dInfo.desc}`
+            text: getOptionText(dk)
           });
         });
 
@@ -3320,9 +3357,9 @@
 
         singleChallenges.push({
           flags: [key],
-          question: `Qual a identificação e o significado oficial da bandeira isolada no mastro?`,
+          question: questionText,
           options: options,
-          explanation: `✅ GABARITO: A bandeira exibida é "${info.name}". Significado oficial no CIS: ${info.desc}`
+          explanation: `✅ GABARITO: A bandeira exibida é "${info.name}" (${key}). Significado no CIS: ${info.desc}`
         });
       });
 
